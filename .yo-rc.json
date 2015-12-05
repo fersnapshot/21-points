@@ -1,0 +1,26 @@
+{
+  "generator-jhipster": {
+    "baseName": "21points",
+    "packageName": "com.desprogramar.jhipster",
+    "packageFolder": "com/desprogramar/jhipster",
+    "authenticationType": "xauth",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "elasticsearch",
+    "useSass": false,
+    "buildTool": "gradle",
+    "frontendBuilder": "grunt",
+    "enableTranslation": true,
+    "enableSocialSignIn": false,
+    "rememberMeKey": "1dfc1c567fb2d329a8415c454b9df1111db63e5a",
+    "testFrameworks": [
+      "gatling",
+      "cucumber",
+      "protractor"
+    ]
+  }
+}
