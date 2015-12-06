@@ -1,0 +1,21 @@
+{
+    "health": {
+        "title": "Control de saúde",
+        "refresh.button": "Refrescar",
+        "health.details.details": "Detalles",
+        "stacktrace": "Stacktrace",
+        "indicator": {
+            "diskSpace": "Espazo en disco",
+            "mail": "Email",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Nome do servizo",
+            "status": "Estado"
+        },
+        "status": {
+            "UP": "LEVANTADO",
+            "DOWN": "CAÍDO"
+        }
+    }
+}

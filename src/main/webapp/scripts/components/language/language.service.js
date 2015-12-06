@@ -8,7 +8,7 @@ angular.module('21pointsApp')
                 var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
 
                 if (angular.isUndefined(language)) {
-                    language = 'en';
+                    language = 'es';
                 }
 
                 deferred.resolve(language);
@@ -27,7 +27,9 @@ angular.module('21pointsApp')
  They are written in English to avoid character encoding issues (not a perfect solution)
  */
     .constant('LANGUAGES', [
-        'en', 'fr'
+        'es'
+        ,'gl'
+        ,'en'
         // jhipster-needle-006 - JHipster will add new languages here
     ]
 );

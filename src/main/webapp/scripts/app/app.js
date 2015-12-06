@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate', 
+angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar'])
 
@@ -18,7 +18,7 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
                 $window.document.title = title;
             });
         };
-        
+
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
@@ -28,12 +28,12 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             if (Principal.isIdentityResolved()) {
                 Auth.authorize();
             }
-            
+
             // Update the language
             Language.getCurrent().then(function (language) {
                 $translate.use(language);
             });
-            
+
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
@@ -54,11 +54,11 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             }
             updateTitle(titleKey);
         });
-        
+
         // if the current translation changes, update the window title
         $rootScope.$on('$translateChangeSuccess', function() { updateTitle(); });
 
-        
+
         $rootScope.back = function() {
             // If previous state is 'activate' or do not exist go to 'home'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
@@ -100,13 +100,13 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         $httpProvider.interceptors.push('authExpiredInterceptor');
         $httpProvider.interceptors.push('authInterceptor');
         $httpProvider.interceptors.push('notificationInterceptor');
-        
+
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('es');
         $translateProvider.useCookieStorage();
         $translateProvider.useSanitizeValueStrategy('escaped');
         $translateProvider.addInterpolation('$translateMessageFormatInterpolation');
@@ -114,7 +114,7 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage();
         tmhDynamicLocaleProvider.storageKey('NG_TRANSLATE_LANG_KEY');
-        
+
     })
     .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {
         $urlMatcherFactory.type('boolean', {
