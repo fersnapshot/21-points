@@ -1,5 +1,10 @@
 # 21points
 
+Esta aplicación está realizada siguiendo el libro [The JHipster Mini-Book][]
+
+
+# Readme
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -82,3 +87,4 @@ To setup this project in Jenkins, use the following configuration:
 [Karma]: http://karma-runner.github.io/
 [Jasmine]: http://jasmine.github.io/2.0/introduction.html
 [Protractor]: https://angular.github.io/protractor/
+[The JHipster Mini-Book]: http://www.jhipster-book.com/
