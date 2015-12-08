@@ -1,0 +1,65 @@
+<div>
+    <h2 translate="21pointsApp.goal.home.title">Goals</h2>
+    <jh-alert></jh-alert>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" ui-sref="goal.new">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="21pointsApp.goal.home.createLabel">Create a new Goal</span>
+                </button>
+            </div>
+            <div class="col-md-8">
+                <form name="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                    </div>
+                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Goal</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><span translate="global.field.id">ID</span></th>
+                    <th><span translate="21pointsApp.goal.version">Version</span></th>
+                    <th><span translate="21pointsApp.goal.name">Name</span></th>
+                    <th><span translate="21pointsApp.goal.description">Description</span></th>
+                    <th><span translate="21pointsApp.goal.user">user</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="goal in goals track by goal.id">
+                    <td><a ui-sref="goal.detail({id:goal.id})">{{goal.id}}</a></td>
+                    <td>{{goal.version}}</td>
+                    <td>{{goal.name}}</td>
+                    <td>{{goal.description}}</td>
+                    <td>
+                        {{goal.user.login}}
+                    </td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="goal.detail({id:goal.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="goal.edit({id:goal.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="goal.delete({id:goal.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

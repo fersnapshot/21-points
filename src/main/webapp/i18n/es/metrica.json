@@ -1,0 +1,24 @@
+{
+    "21pointsApp": {
+        "metrica" : {
+            "home": {
+                "title": "Metricas",
+                "createLabel": "Crear nuevo Metrica",
+                "createOrEditLabel": "Crear o editar Metrica"
+            },
+            "created": "Un nuevo Metrica ha sido creado con el identificador {{ param }}",
+            "updated": "Un Metrica ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Metrica ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Metrica {{ id }}?"
+            },
+            "detail": {
+                "title": "Metrica"
+            },
+            "version": "Version",
+            "name": "Name",
+            "amount": "Amount",
+            "entry": "Entry"
+        }
+    }
+}

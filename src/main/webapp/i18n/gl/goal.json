@@ -1,0 +1,25 @@
+{
+    "21pointsApp": {
+        "goal" : {
+            "home": {
+                "title": "Goals",
+                "createLabel": "Crear novo Goal",
+                "createOrEditLabel": "Crear ou editar Goal"
+            },
+            "created": "Un novo Goal foi creado co identificador {{ param }}",
+            "updated": "Un Goal foi actualizado co identificador {{ param }}",
+            "deleted": "Un Goal foi eliminado co identificador {{ param }}",
+            "delete": {
+                "question": "Seguro que desexa eliminar Goal {{ id }}?"
+            },
+            "detail": {
+                "title": "Goal"
+            },
+            "version": "Version",
+            "name": "Name",
+            "description": "Description",
+            "user": "User",
+            "entry": "Entry"
+        }
+    }
+}

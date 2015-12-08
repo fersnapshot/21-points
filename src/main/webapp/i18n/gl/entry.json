@@ -1,0 +1,28 @@
+{
+    "21pointsApp": {
+        "entry" : {
+            "home": {
+                "title": "Entrys",
+                "createLabel": "Crear novo Entry",
+                "createOrEditLabel": "Crear ou editar Entry"
+            },
+            "created": "Un novo Entry foi creado co identificador {{ param }}",
+            "updated": "Un Entry foi actualizado co identificador {{ param }}",
+            "deleted": "Un Entry foi eliminado co identificador {{ param }}",
+            "delete": {
+                "question": "Seguro que desexa eliminar Entry {{ id }}?"
+            },
+            "detail": {
+                "title": "Entry"
+            },
+            "version": "Version",
+            "date": "Date",
+            "exercise": "Exercise",
+            "meals": "Meals",
+            "alcohol": "Alcohol",
+            "notes": "Notes",
+            "goal": "Goal",
+            "metrica": "Metrica"
+        }
+    }
+}

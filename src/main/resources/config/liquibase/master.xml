@@ -5,5 +5,13 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151207131257_added_entity_Metrica.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151207132700_added_entity_Entry.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151207132956_added_entity_Goal.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20151207134700_added_foreignkeyconstraint_Metrica_Entry.xml" relativeToChangelogFile="false"/>
+
+    <!--Si añado datos no aparecen en las búsquedas con elasticsearch-->
+    <!--<include file="classpath:config/liquibase/changelog/20151208174400_loadData_Goal_Entry_Metrica.xml" relativeToChangelogFile="false"/>-->
+
     <!-- jhipster-needle-005 - JHipster will add liquibase changelogs here -->
 </databaseChangeLog>
