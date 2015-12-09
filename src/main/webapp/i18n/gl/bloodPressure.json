@@ -1,0 +1,25 @@
+{
+    "21pointsApp": {
+        "bloodPressure" : {
+            "home": {
+                "title": "BloodPressures",
+                "createLabel": "Crear novo BloodPressure",
+                "createOrEditLabel": "Crear ou editar BloodPressure"
+            },
+            "created": "Un novo BloodPressure foi creado co identificador {{ param }}",
+            "updated": "Un BloodPressure foi actualizado co identificador {{ param }}",
+            "deleted": "Un BloodPressure foi eliminado co identificador {{ param }}",
+            "delete": {
+                "question": "Seguro que desexa eliminar BloodPressure {{ id }}?"
+            },
+            "detail": {
+                "title": "BloodPressure"
+            },
+            "version": "Version",
+            "timestamp": "Timestamp",
+            "systolic": "Systolic",
+            "diastolic": "Diastolic",
+            "user": "User"
+        }
+    }
+}

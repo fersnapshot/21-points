@@ -1,0 +1,24 @@
+{
+    "21pointsApp": {
+        "weight" : {
+            "home": {
+                "title": "Weights",
+                "createLabel": "Crear novo Weight",
+                "createOrEditLabel": "Crear ou editar Weight"
+            },
+            "created": "Un novo Weight foi creado co identificador {{ param }}",
+            "updated": "Un Weight foi actualizado co identificador {{ param }}",
+            "deleted": "Un Weight foi eliminado co identificador {{ param }}",
+            "delete": {
+                "question": "Seguro que desexa eliminar Weight {{ id }}?"
+            },
+            "detail": {
+                "title": "Weight"
+            },
+            "version": "Version",
+            "timestamp": "Timestamp",
+            "weight": "Weight",
+            "user": "User"
+        }
+    }
+}

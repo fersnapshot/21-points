@@ -1,0 +1,46 @@
+
+<div>
+    <h2><span translate="21pointsApp.preference.detail.title">Preference</span> {{preference.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.preference.version">Version</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{preference.version}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.preference.weekly_goal">Weekly_goal</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{preference.weekly_goal}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.preference.weight_units">Weight_units</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'21pointsApp.Units.' + preference.weight_units}}">{{preference.weight_units}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

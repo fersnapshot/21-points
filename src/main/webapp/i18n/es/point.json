@@ -1,0 +1,27 @@
+{
+    "21pointsApp": {
+        "point" : {
+            "home": {
+                "title": "Points",
+                "createLabel": "Crear nuevo Point",
+                "createOrEditLabel": "Crear o editar Point"
+            },
+            "created": "Un nuevo Point ha sido creado con el identificador {{ param }}",
+            "updated": "Un Point ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Point ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Point {{ id }}?"
+            },
+            "detail": {
+                "title": "Point"
+            },
+            "version": "Version",
+            "date": "Date",
+            "exercise": "Exercise",
+            "meals": "Meals",
+            "alcohol": "Alcohol",
+            "notes": "Notes",
+            "user": "User"
+        }
+    }
+}

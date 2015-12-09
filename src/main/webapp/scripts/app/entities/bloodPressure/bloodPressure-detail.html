@@ -1,0 +1,62 @@
+
+<div>
+    <h2><span translate="21pointsApp.bloodPressure.detail.title">BloodPressure</span> {{bloodPressure.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.bloodPressure.version">Version</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{bloodPressure.version}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.bloodPressure.timestamp">Timestamp</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{bloodPressure.timestamp | date:'medium'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.bloodPressure.systolic">Systolic</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{bloodPressure.systolic}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.bloodPressure.diastolic">Diastolic</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{bloodPressure.diastolic}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.bloodPressure.user">user</span>
+                </td>
+                <td>
+                    {{bloodPressure.user.login}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

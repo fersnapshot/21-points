@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Added the preference field to User -->
+    <changeSet author="fer (generated)" id="1449686711566-1">
+        <addColumn tableName="jhi_user">
+            <column name="preference_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fer (generated)" id="1449686711566-2">
+        <addForeignKeyConstraint baseColumnNames="preference_id"
+                                 baseTableName="jhi_user"
+                                 constraintName="fk_user_preference_id"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="preference"/>
+    </changeSet>
+
+    <!-- Added the user field to Preference -->
+    <changeSet author="fer (generated)" id="1449686711566-3">
+        <addColumn tableName="preference">
+            <column name="user_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="fer (generated)" id="1449686711566-4">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="preference"
+                                 constraintName="fk_preference_user_id"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+    </changeSet>
+
+</databaseChangeLog>

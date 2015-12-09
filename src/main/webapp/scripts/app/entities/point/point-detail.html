@@ -1,0 +1,78 @@
+
+<div>
+    <h2><span translate="21pointsApp.point.detail.title">Point</span> {{point.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.version">Version</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.version}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.date">Date</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.date | date:'mediumDate'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.exercise">Exercise</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.exercise}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.meals">Meals</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.meals}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.alcohol">Alcohol</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.alcohol}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.notes">Notes</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{point.notes}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="21pointsApp.point.user">user</span>
+                </td>
+                <td>
+                    {{point.user.login}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

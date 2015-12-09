@@ -1,0 +1,43 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "one-to-one",
+            "ownerSide": false
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "version",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "weekly_goal",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": "10",
+            "fieldValidateRulesMax": "21"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "weight_units",
+            "fieldType": "Units",
+            "fieldValues": "kg,lg",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20151209174108",
+    "dto": "no",
+    "service": "no",
+    "pagination": "no"
+}

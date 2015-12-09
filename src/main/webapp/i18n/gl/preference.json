@@ -1,0 +1,24 @@
+{
+    "21pointsApp": {
+        "preference" : {
+            "home": {
+                "title": "Preferences",
+                "createLabel": "Crear novo Preference",
+                "createOrEditLabel": "Crear ou editar Preference"
+            },
+            "created": "Un novo Preference foi creado co identificador {{ param }}",
+            "updated": "Un Preference foi actualizado co identificador {{ param }}",
+            "deleted": "Un Preference foi eliminado co identificador {{ param }}",
+            "delete": {
+                "question": "Seguro que desexa eliminar Preference {{ id }}?"
+            },
+            "detail": {
+                "title": "Preference"
+            },
+            "version": "Version",
+            "weekly_goal": "Weekly_goal",
+            "weight_units": "Weight_units",
+            "user": "User"
+        }
+    }
+}
