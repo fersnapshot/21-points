@@ -16,19 +16,25 @@
     <!--
         Added the entity Preference.
     -->
-    <changeSet id="20151209174108" author="jhipster">
+    <changeSet id="20151212160052" author="jhipster">
         <createTable tableName="preference">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="version" type="integer"/>
             <column name="weekly_goal" type="integer">
                 <constraints nullable="false" />
             </column>
             <column name="weight_units" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="user_id" type="bigint"/>
         </createTable>
         
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="preference"
+                                 constraintName="fk_preference_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
     </changeSet>
 </databaseChangeLog>

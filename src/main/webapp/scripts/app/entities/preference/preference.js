@@ -63,9 +63,8 @@ angular.module('21pointsApp')
                         resolve: {
                             entity: function () {
                                 return {
-                                    version: null,
-                                    weekly_goal: null,
-                                    weight_units: null,
+                                    weeklyGoal: null,
+                                    weightUnits: null,
                                     id: null
                                 };
                             }

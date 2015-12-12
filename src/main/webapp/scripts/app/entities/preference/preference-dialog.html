@@ -14,49 +14,49 @@
                     ng-model="preference.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" translate="21pointsApp.preference.version" for="field_version">Version</label>
-            <input type="number" class="form-control" name="version" id="field_version"
-                    ng-model="preference.version"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" translate="21pointsApp.preference.weekly_goal" for="field_weekly_goal">Weekly_goal</label>
-            <input type="number" class="form-control" name="weekly_goal" id="field_weekly_goal"
-                    ng-model="preference.weekly_goal"
+            <label class="control-label" translate="21pointsApp.preference.weeklyGoal" for="field_weeklyGoal">WeeklyGoal</label>
+            <input type="number" class="form-control" name="weeklyGoal" id="field_weeklyGoal"
+                    ng-model="preference.weeklyGoal"
                     required min="10" max="21" />
-            <div ng-show="editForm.weekly_goal.$invalid">
+            <div ng-show="editForm.weeklyGoal.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.weekly_goal.$error.required" translate="entity.validation.required">
+                    ng-show="editForm.weeklyGoal.$error.required" translate="entity.validation.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.weekly_goal.$error.min" translate="entity.validation.min" translate-value-min="10">
+                    ng-show="editForm.weeklyGoal.$error.min" translate="entity.validation.min" translate-value-min="10">
                     This field should be more than 10.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.weekly_goal.$error.max" translate="entity.validation.max" translate-value-max="21">
+                    ng-show="editForm.weeklyGoal.$error.max" translate="entity.validation.max" translate-value-max="21">
                     This field cannot be more than 21.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.weekly_goal.$error.number" translate="entity.validation.number">
+                    ng-show="editForm.weeklyGoal.$error.number" translate="entity.validation.number">
                     This field should be a number.
                 </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" translate="21pointsApp.preference.weight_units" for="field_weight_units">Weight_units</label>
-            <select class="form-control" name="weight_units" ng-model="preference.weight_units" id="field_weight_units" required>
+            <label class="control-label" translate="21pointsApp.preference.weightUnits" for="field_weightUnits">WeightUnits</label>
+            <select class="form-control" name="weightUnits" ng-model="preference.weightUnits" id="field_weightUnits" required>
                 <option value="kg" translate="21pointsApp.Units.kg">kg</option>
                 <option value="lg" translate="21pointsApp.Units.lg">lg</option>
             </select>
-            <div ng-show="editForm.weight_units.$invalid">
+            <div ng-show="editForm.weightUnits.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.weight_units.$error.required" translate="entity.validation.required">
+                    ng-show="editForm.weightUnits.$error.required" translate="entity.validation.required">
                     This field is required.
                 </p>
             </div>
         </div>
 
+        <div class="form-group">
+            <label translate="21pointsApp.preference.user" for="field_user">user</label>
+            <select class="form-control" id="field_user" name="user" ng-model="preference.userId" ng-options="user.id as user.login for user in users">
+                <option value=""></option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

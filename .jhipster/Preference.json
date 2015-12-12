@@ -4,19 +4,14 @@
             "relationshipId": 1,
             "relationshipName": "user",
             "otherEntityName": "user",
-            "relationshipType": "one-to-one",
-            "ownerSide": false
+            "relationshipType": "many-to-one",
+            "otherEntityField": "login"
         }
     ],
     "fields": [
         {
             "fieldId": 1,
-            "fieldName": "version",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldId": 2,
-            "fieldName": "weekly_goal",
+            "fieldName": "weeklyGoal",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required",
@@ -27,8 +22,8 @@
             "fieldValidateRulesMax": "21"
         },
         {
-            "fieldId": 3,
-            "fieldName": "weight_units",
+            "fieldId": 2,
+            "fieldName": "weightUnits",
             "fieldType": "Units",
             "fieldValues": "kg,lg",
             "fieldValidateRules": [
@@ -36,8 +31,8 @@
             ]
         }
     ],
-    "changelogDate": "20151209174108",
-    "dto": "no",
+    "changelogDate": "20151212160052",
+    "dto": "mapstruct",
     "service": "no",
     "pagination": "no"
 }

@@ -1,10 +1,5 @@
-package com.desprogramar.jhipster.domain;
+package com.desprogramar.jhipster.web.rest.dto;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,34 +9,24 @@ import java.util.Objects;
 import com.desprogramar.jhipster.domain.enumeration.Units;
 
 /**
- * A Preference.
+ * A DTO for the Preference entity.
  */
-@Entity
-@Table(name = "preference")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "preference")
-public class Preference implements Serializable {
+public class PreferenceDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
     @Min(value = 10)
     @Max(value = 21)
-    @Column(name = "weekly_goal", nullable = false)
     private Integer weeklyGoal;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "weight_units", nullable = false)
     private Units weightUnits;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
-    
+    private String userLogin;
+
     public Long getId() {
         return id;
     }
@@ -66,12 +51,20 @@ public class Preference implements Serializable {
         this.weightUnits = weightUnits;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     @Override
@@ -82,8 +75,12 @@ public class Preference implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Preference preference = (Preference) o;
-        return Objects.equals(id, preference.id);
+
+        PreferenceDTO preferenceDTO = (PreferenceDTO) o;
+
+        if ( ! Objects.equals(id, preferenceDTO.id)) return false;
+
+        return true;
     }
 
     @Override
@@ -93,7 +90,7 @@ public class Preference implements Serializable {
 
     @Override
     public String toString() {
-        return "Preference{" +
+        return "PreferenceDTO{" +
             "id=" + id +
             ", weeklyGoal='" + weeklyGoal + "'" +
             ", weightUnits='" + weightUnits + "'" +

@@ -4,18 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <button class="btn btn-primary" ui-sref="preference.new">
+                <button class="btn btn-primary" ui-sref="preference.new" ng-show="preferences.length == 0">
                     <span class="glyphicon glyphicon-flash"></span> <span translate="21pointsApp.preference.home.createLabel">Create a new Preference</span>
                 </button>
             </div>
             <div class="col-md-8">
-                <form name="searchForm" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
-                    </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Preference</span>
-                    </button>
-                </form>
             </div>
         </div>
     </div>
@@ -25,18 +18,20 @@
             <thead>
                 <tr>
                     <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="21pointsApp.preference.version">Version</span></th>
-                    <th><span translate="21pointsApp.preference.weekly_goal">Weekly_goal</span></th>
-                    <th><span translate="21pointsApp.preference.weight_units">Weight_units</span></th>
+                    <th><span translate="21pointsApp.preference.weeklyGoal">WeeklyGoal</span></th>
+                    <th><span translate="21pointsApp.preference.weightUnits">WeightUnits</span></th>
+                    <th><span translate="21pointsApp.preference.user">user</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="preference in preferences track by preference.id">
                     <td><a ui-sref="preference.detail({id:preference.id})">{{preference.id}}</a></td>
-                    <td>{{preference.version}}</td>
-                    <td>{{preference.weekly_goal}}</td>
-                    <td translate="{{'21pointsApp.Units.' + preference.weight_units}}">{{preference.weight_units}}</td>
+                    <td>{{preference.weeklyGoal}}</td>
+                    <td translate="{{'21pointsApp.Units.' + preference.weightUnits}}">{{preference.weightUnits}}</td>
+                    <td>
+                        {{preference.userLogin}}
+                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="preference.detail({id:preference.id})"

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('21pointsApp')
-    .controller('PreferenceController', function ($scope, $state, Preference, PreferenceSearch) {
+    .controller('PreferenceController', function ($scope, $state, Preference) {
 
         $scope.preferences = [];
         $scope.loadAll = function() {
@@ -11,17 +11,6 @@ angular.module('21pointsApp')
         };
         $scope.loadAll();
 
-
-        $scope.search = function () {
-            PreferenceSearch.query({query: $scope.searchQuery}, function(result) {
-                $scope.preferences = result;
-            }, function(response) {
-                if(response.status === 404) {
-                    $scope.loadAll();
-                }
-            });
-        };
-
         $scope.refresh = function () {
             $scope.loadAll();
             $scope.clear();
@@ -29,9 +18,8 @@ angular.module('21pointsApp')
 
         $scope.clear = function () {
             $scope.preference = {
-                version: null,
-                weekly_goal: null,
-                weight_units: null,
+                weeklyGoal: null,
+                weightUnits: null,
                 id: null
             };
         };

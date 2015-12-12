@@ -3,7 +3,8 @@ package com.desprogramar.jhipster.web.rest;
 import com.desprogramar.jhipster.Application;
 import com.desprogramar.jhipster.domain.Preference;
 import com.desprogramar.jhipster.repository.PreferenceRepository;
-import com.desprogramar.jhipster.repository.search.PreferenceSearchRepository;
+import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
+import com.desprogramar.jhipster.web.rest.mapper.PreferenceMapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +45,6 @@ import com.desprogramar.jhipster.domain.enumeration.Units;
 public class PreferenceResourceIntTest {
 
 
-    private static final Integer DEFAULT_VERSION = 0;
-    private static final Integer UPDATED_VERSION = 1;
-
     private static final Integer DEFAULT_WEEKLY_GOAL = 10;
     private static final Integer UPDATED_WEEKLY_GOAL = 11;
 
@@ -58,7 +56,7 @@ public class PreferenceResourceIntTest {
     private PreferenceRepository preferenceRepository;
 
     @Inject
-    private PreferenceSearchRepository preferenceSearchRepository;
+    private PreferenceMapper preferenceMapper;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -74,8 +72,8 @@ public class PreferenceResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         PreferenceResource preferenceResource = new PreferenceResource();
-        ReflectionTestUtils.setField(preferenceResource, "preferenceSearchRepository", preferenceSearchRepository);
         ReflectionTestUtils.setField(preferenceResource, "preferenceRepository", preferenceRepository);
+        ReflectionTestUtils.setField(preferenceResource, "preferenceMapper", preferenceMapper);
         this.restPreferenceMockMvc = MockMvcBuilders.standaloneSetup(preferenceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -84,9 +82,8 @@ public class PreferenceResourceIntTest {
     @Before
     public void initTest() {
         preference = new Preference();
-//        preference.setVersion(DEFAULT_VERSION);
-        preference.setWeekly_goal(DEFAULT_WEEKLY_GOAL);
-        preference.setWeight_units(DEFAULT_WEIGHT_UNITS);
+        preference.setWeeklyGoal(DEFAULT_WEEKLY_GOAL);
+        preference.setWeightUnits(DEFAULT_WEIGHT_UNITS);
     }
 
     @Test
@@ -95,33 +92,34 @@ public class PreferenceResourceIntTest {
         int databaseSizeBeforeCreate = preferenceRepository.findAll().size();
 
         // Create the Preference
+        PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
 
         restPreferenceMockMvc.perform(post("/api/preferences")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(preference)))
+                .content(TestUtil.convertObjectToJsonBytes(preferenceDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the Preference in the database
         List<Preference> preferences = preferenceRepository.findAll();
         assertThat(preferences).hasSize(databaseSizeBeforeCreate + 1);
         Preference testPreference = preferences.get(preferences.size() - 1);
-        assertThat(testPreference.getVersion()).isEqualTo(DEFAULT_VERSION);
-        assertThat(testPreference.getWeekly_goal()).isEqualTo(DEFAULT_WEEKLY_GOAL);
-        assertThat(testPreference.getWeight_units()).isEqualTo(DEFAULT_WEIGHT_UNITS);
+        assertThat(testPreference.getWeeklyGoal()).isEqualTo(DEFAULT_WEEKLY_GOAL);
+        assertThat(testPreference.getWeightUnits()).isEqualTo(DEFAULT_WEIGHT_UNITS);
     }
 
     @Test
     @Transactional
-    public void checkWeekly_goalIsRequired() throws Exception {
+    public void checkWeeklyGoalIsRequired() throws Exception {
         int databaseSizeBeforeTest = preferenceRepository.findAll().size();
         // set the field null
-        preference.setWeekly_goal(null);
+        preference.setWeeklyGoal(null);
 
         // Create the Preference, which fails.
+        PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
 
         restPreferenceMockMvc.perform(post("/api/preferences")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(preference)))
+                .content(TestUtil.convertObjectToJsonBytes(preferenceDTO)))
                 .andExpect(status().isBadRequest());
 
         List<Preference> preferences = preferenceRepository.findAll();
@@ -130,16 +128,17 @@ public class PreferenceResourceIntTest {
 
     @Test
     @Transactional
-    public void checkWeight_unitsIsRequired() throws Exception {
+    public void checkWeightUnitsIsRequired() throws Exception {
         int databaseSizeBeforeTest = preferenceRepository.findAll().size();
         // set the field null
-        preference.setWeight_units(null);
+        preference.setWeightUnits(null);
 
         // Create the Preference, which fails.
+        PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
 
         restPreferenceMockMvc.perform(post("/api/preferences")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(preference)))
+                .content(TestUtil.convertObjectToJsonBytes(preferenceDTO)))
                 .andExpect(status().isBadRequest());
 
         List<Preference> preferences = preferenceRepository.findAll();
@@ -157,9 +156,8 @@ public class PreferenceResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(preference.getId().intValue())))
-                .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
-                .andExpect(jsonPath("$.[*].weekly_goal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
-                .andExpect(jsonPath("$.[*].weight_units").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
+                .andExpect(jsonPath("$.[*].weeklyGoal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
+                .andExpect(jsonPath("$.[*].weightUnits").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
     }
 
     @Test
@@ -173,9 +171,8 @@ public class PreferenceResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(preference.getId().intValue()))
-            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
-            .andExpect(jsonPath("$.weekly_goal").value(DEFAULT_WEEKLY_GOAL))
-            .andExpect(jsonPath("$.weight_units").value(DEFAULT_WEIGHT_UNITS.toString()));
+            .andExpect(jsonPath("$.weeklyGoal").value(DEFAULT_WEEKLY_GOAL))
+            .andExpect(jsonPath("$.weightUnits").value(DEFAULT_WEIGHT_UNITS.toString()));
     }
 
     @Test
@@ -195,22 +192,21 @@ public class PreferenceResourceIntTest {
 		int databaseSizeBeforeUpdate = preferenceRepository.findAll().size();
 
         // Update the preference
-//        preference.setVersion(UPDATED_VERSION);
-        preference.setWeekly_goal(UPDATED_WEEKLY_GOAL);
-        preference.setWeight_units(UPDATED_WEIGHT_UNITS);
+        preference.setWeeklyGoal(UPDATED_WEEKLY_GOAL);
+        preference.setWeightUnits(UPDATED_WEIGHT_UNITS);
+        PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
 
         restPreferenceMockMvc.perform(put("/api/preferences")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(preference)))
+                .content(TestUtil.convertObjectToJsonBytes(preferenceDTO)))
                 .andExpect(status().isOk());
 
         // Validate the Preference in the database
         List<Preference> preferences = preferenceRepository.findAll();
         assertThat(preferences).hasSize(databaseSizeBeforeUpdate);
         Preference testPreference = preferences.get(preferences.size() - 1);
-        assertThat(testPreference.getVersion()).isEqualTo(UPDATED_VERSION);
-        assertThat(testPreference.getWeekly_goal()).isEqualTo(UPDATED_WEEKLY_GOAL);
-        assertThat(testPreference.getWeight_units()).isEqualTo(UPDATED_WEIGHT_UNITS);
+        assertThat(testPreference.getWeeklyGoal()).isEqualTo(UPDATED_WEEKLY_GOAL);
+        assertThat(testPreference.getWeightUnits()).isEqualTo(UPDATED_WEIGHT_UNITS);
     }
 
     @Test
