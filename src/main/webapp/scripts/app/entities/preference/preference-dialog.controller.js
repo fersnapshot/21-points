@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('21pointsApp').controller('PreferenceDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Preference', 'User',
-        function($scope, $stateParams, $uibModalInstance, entity, Preference, User) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Preference',
+        function($scope, $stateParams, $uibModalInstance, entity, Preference) {
 
         $scope.preference = entity;
-        $scope.users = User.query();
         $scope.load = function(id) {
             Preference.get({id : id}, function(result) {
                 $scope.preference = result;

@@ -24,8 +24,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 /**
  * REST controller for managing Preference.
  */
@@ -53,6 +51,13 @@ public class PreferenceResource {
         if (preferenceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("preference", "idexists", "A new preference cannot already have an ID")).body(null);
         }
+
+        // sólo puede quedar uno
+        List<Preference> lista = preferenceRepository.findByUserIsCurrentUser();
+        if (lista.size() != 0) {
+            preferenceDTO.setId(lista.get(0).getId());
+        }
+
         Preference preference = preferenceMapper.preferenceDTOToPreference(preferenceDTO);
         preference = preferenceRepository.save(preference);
         PreferenceDTO result = preferenceMapper.preferenceToPreferenceDTO(preference);
@@ -91,7 +96,7 @@ public class PreferenceResource {
     @Transactional(readOnly = true)
     public List<PreferenceDTO> getAllPreferences() {
         log.debug("REST request to get all Preferences");
-        return preferenceRepository.findAll().stream()
+        return StreamSupport.stream(preferenceRepository.findAll().spliterator(), false)
             .map(preferenceMapper::preferenceToPreferenceDTO)
             .collect(Collectors.toCollection(LinkedList::new));
             }

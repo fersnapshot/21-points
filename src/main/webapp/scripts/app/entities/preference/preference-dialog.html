@@ -51,12 +51,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label translate="21pointsApp.preference.user" for="field_user">user</label>
-            <select class="form-control" id="field_user" name="user" ng-model="preference.userId" ng-options="user.id as user.login for user in users">
-                <option value=""></option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">

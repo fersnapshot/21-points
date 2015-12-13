@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('21pointsApp')
-    .controller('PreferenceDetailController', function ($scope, $rootScope, $stateParams, entity, Preference, User) {
+    .controller('PreferenceDetailController', function ($scope, $rootScope, $stateParams, entity, Preference) {
         $scope.preference = entity;
         $scope.load = function (id) {
             Preference.get({id: id}, function(result) {

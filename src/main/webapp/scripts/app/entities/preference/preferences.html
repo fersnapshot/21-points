@@ -20,7 +20,6 @@
                     <th><span translate="global.field.id">ID</span></th>
                     <th><span translate="21pointsApp.preference.weeklyGoal">WeeklyGoal</span></th>
                     <th><span translate="21pointsApp.preference.weightUnits">WeightUnits</span></th>
-                    <th><span translate="21pointsApp.preference.user">user</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,9 +28,6 @@
                     <td><a ui-sref="preference.detail({id:preference.id})">{{preference.id}}</a></td>
                     <td>{{preference.weeklyGoal}}</td>
                     <td translate="{{'21pointsApp.Units.' + preference.weightUnits}}">{{preference.weightUnits}}</td>
-                    <td>
-                        {{preference.userLogin}}
-                    </td>
                     <td>
                         <button type="submit"
                                 ui-sref="preference.detail({id:preference.id})"

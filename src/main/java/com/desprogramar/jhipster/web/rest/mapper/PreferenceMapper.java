@@ -1,29 +1,32 @@
 package com.desprogramar.jhipster.web.rest.mapper;
 
 import com.desprogramar.jhipster.domain.*;
+import com.desprogramar.jhipster.repository.UserRepository;
+import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 
 import org.mapstruct.*;
+
+import javax.inject.Inject;
 
 /**
  * Mapper for the entity Preference and its DTO PreferenceDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface PreferenceMapper {
+public abstract class PreferenceMapper {
 
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "user.login", target = "userLogin")
-    PreferenceDTO preferenceToPreferenceDTO(Preference preference);
+    @Inject
+    UserRepository userRepository;
 
-    @Mapping(source = "userId", target = "user")
-    Preference preferenceDTOToPreference(PreferenceDTO preferenceDTO);
+    public abstract PreferenceDTO preferenceToPreferenceDTO(Preference preference);
 
-    default User userFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        User user = new User();
-        user.setId(id);
-        return user;
+    public Preference preferenceDTOToPreference(PreferenceDTO preferenceDTO) {
+        Preference preference = new Preference();
+        preference.setUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        preference.setId(preferenceDTO.getId());
+        preference.setWeeklyGoal(preferenceDTO.getWeeklyGoal());
+        preference.setWeightUnits(preferenceDTO.getWeightUnits());
+        return preference;
     }
+
 }
