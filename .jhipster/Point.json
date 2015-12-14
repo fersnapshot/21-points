@@ -25,17 +25,17 @@
         {
             "fieldId": 3,
             "fieldName": "exercise",
-            "fieldType": "Integer"
+            "fieldType": "Boolean"
         },
         {
             "fieldId": 4,
             "fieldName": "meals",
-            "fieldType": "Integer"
+            "fieldType": "Boolean"
         },
         {
             "fieldId": 5,
             "fieldName": "alcohol",
-            "fieldType": "Integer"
+            "fieldType": "Boolean"
         },
         {
             "fieldId": 6,

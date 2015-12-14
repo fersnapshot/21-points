@@ -25,9 +25,9 @@
             <column name="date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="exercise" type="integer"/>
-            <column name="meals" type="integer"/>
-            <column name="alcohol" type="integer"/>
+            <column name="exercise" type="bit"/>
+            <column name="meals" type="bit"/>
+            <column name="alcohol" type="bit"/>
             <column name="notes" type="varchar(140)"/>
             <column name="user_id" type="bigint"/>
         </createTable>

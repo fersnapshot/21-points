@@ -51,14 +51,14 @@ public class PointResourceIntTest {
     private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Integer DEFAULT_EXERCISE = 1;
-    private static final Integer UPDATED_EXERCISE = 2;
+    private static final Boolean DEFAULT_EXERCISE = false;
+    private static final Boolean UPDATED_EXERCISE = true;
 
-    private static final Integer DEFAULT_MEALS = 1;
-    private static final Integer UPDATED_MEALS = 2;
+    private static final Boolean DEFAULT_MEALS = false;
+    private static final Boolean UPDATED_MEALS = true;
 
-    private static final Integer DEFAULT_ALCOHOL = 1;
-    private static final Integer UPDATED_ALCOHOL = 2;
+    private static final Boolean DEFAULT_ALCOHOL = false;
+    private static final Boolean UPDATED_ALCOHOL = true;
     private static final String DEFAULT_NOTES = "AAAAA";
     private static final String UPDATED_NOTES = "BBBBB";
 
@@ -155,9 +155,9 @@ public class PointResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(point.getId().intValue())))
                 .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
                 .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-                .andExpect(jsonPath("$.[*].exercise").value(hasItem(DEFAULT_EXERCISE)))
-                .andExpect(jsonPath("$.[*].meals").value(hasItem(DEFAULT_MEALS)))
-                .andExpect(jsonPath("$.[*].alcohol").value(hasItem(DEFAULT_ALCOHOL)))
+                .andExpect(jsonPath("$.[*].exercise").value(hasItem(DEFAULT_EXERCISE.booleanValue())))
+                .andExpect(jsonPath("$.[*].meals").value(hasItem(DEFAULT_MEALS.booleanValue())))
+                .andExpect(jsonPath("$.[*].alcohol").value(hasItem(DEFAULT_ALCOHOL.booleanValue())))
                 .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())));
     }
 
@@ -174,9 +174,9 @@ public class PointResourceIntTest {
             .andExpect(jsonPath("$.id").value(point.getId().intValue()))
             .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.exercise").value(DEFAULT_EXERCISE))
-            .andExpect(jsonPath("$.meals").value(DEFAULT_MEALS))
-            .andExpect(jsonPath("$.alcohol").value(DEFAULT_ALCOHOL))
+            .andExpect(jsonPath("$.exercise").value(DEFAULT_EXERCISE.booleanValue()))
+            .andExpect(jsonPath("$.meals").value(DEFAULT_MEALS.booleanValue()))
+            .andExpect(jsonPath("$.alcohol").value(DEFAULT_ALCOHOL.booleanValue()))
             .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()));
     }
 

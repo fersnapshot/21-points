@@ -34,13 +34,13 @@ public class Point implements Serializable {
     private LocalDate date;
 
     @Column(name = "exercise")
-    private Integer exercise;
+    private Boolean exercise;
 
     @Column(name = "meals")
-    private Integer meals;
+    private Boolean meals;
 
     @Column(name = "alcohol")
-    private Integer alcohol;
+    private Boolean alcohol;
 
     @Size(max = 140)
     @Column(name = "notes", length = 140)
@@ -50,7 +50,7 @@ public class Point implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+    
     public Long getId() {
         return id;
     }
@@ -75,27 +75,27 @@ public class Point implements Serializable {
         this.date = date;
     }
 
-    public Integer getExercise() {
+    public Boolean getExercise() {
         return exercise;
     }
 
-    public void setExercise(Integer exercise) {
+    public void setExercise(Boolean exercise) {
         this.exercise = exercise;
     }
 
-    public Integer getMeals() {
+    public Boolean getMeals() {
         return meals;
     }
 
-    public void setMeals(Integer meals) {
+    public void setMeals(Boolean meals) {
         this.meals = meals;
     }
 
-    public Integer getAlcohol() {
+    public Boolean getAlcohol() {
         return alcohol;
     }
 
-    public void setAlcohol(Integer alcohol) {
+    public void setAlcohol(Boolean alcohol) {
         this.alcohol = alcohol;
     }
 

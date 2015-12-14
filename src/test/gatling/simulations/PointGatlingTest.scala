@@ -70,7 +70,7 @@ class PointGatlingTest extends Simulation {
             .exec(http("Create new point")
             .post("/api/points")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "version":"0", "date":"2020-01-01T00:00:00.000Z", "exercise":"0", "meals":"0", "alcohol":"0", "notes":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "version":"0", "date":"2020-01-01T00:00:00.000Z", "exercise":null, "meals":null, "alcohol":null, "notes":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_point_url")))
             .pause(10)
