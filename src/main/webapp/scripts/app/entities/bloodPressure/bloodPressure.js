@@ -60,9 +60,10 @@ angular.module('21pointsApp')
                         size: 'lg',
                         resolve: {
                             entity: function () {
+                                var now = new Date();
                                 return {
                                     version: null,
-                                    timestamp: null,
+                                    timestamp: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()),
                                     systolic: null,
                                     diastolic: null,
                                     id: null

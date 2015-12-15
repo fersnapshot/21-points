@@ -87,7 +87,10 @@
             "delete": "Delete",
             "edit": "Edit",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "search": "Search",
+            "new": "Add",
+            "actions": "Actions"
         },
         "detail": {
             "field": "Field",

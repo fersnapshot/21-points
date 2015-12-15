@@ -59,13 +59,13 @@ angular.module('21pointsApp')
                         controller: 'PointDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: function () {
+                            entity: function () {     // valores por defecto para nueva entidad
                                 return {
                                     version: null,
-                                    date: null,
-                                    exercise: null,
-                                    meals: null,
-                                    alcohol: null,
+                                    date: new Date(),
+                                    exercise: true,
+                                    meals: true,
+                                    alcohol: true,
                                     notes: null,
                                     id: null
                                 };

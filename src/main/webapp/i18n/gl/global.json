@@ -87,7 +87,10 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "save": "Gardar",
-            "view": "Vista"
+            "view": "Vista",
+            "search": "Busca",
+            "new": "Engadir",
+            "actions": "Acciones"
         },
         "detail": {
             "field": "Campo",

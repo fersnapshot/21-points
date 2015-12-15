@@ -1,6 +1,6 @@
 
 <div>
-    <h2><span translate="21pointsApp.weight.detail.title">Weight</span> {{weight.id}}</h2>
+    <h2><span translate="21pointsApp.weight.detail.title">Weight</span></h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -12,18 +12,10 @@
             <tbody>
             <tr>
                 <td>
-                    <span translate="21pointsApp.weight.version">Version</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{weight.version}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <span translate="21pointsApp.weight.timestamp">Timestamp</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{weight.timestamp | date:'medium'}}</span>
+                    <span class="form-control-static">{{weight.timestamp | date:'short'}}</span>
                 </td>
             </tr>
             <tr>

@@ -4,7 +4,7 @@
             "home": {
                 "title": "BloodPressures",
                 "createLabel": "Crear novo BloodPressure",
-                "createOrEditLabel": "Crear ou editar BloodPressure"
+                "editLabel": "Editar BloodPressure"
             },
             "created": "Un novo BloodPressure foi creado co identificador {{ param }}",
             "updated": "Un BloodPressure foi actualizado co identificador {{ param }}",

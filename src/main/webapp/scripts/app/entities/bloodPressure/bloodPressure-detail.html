@@ -1,6 +1,6 @@
 
 <div>
-    <h2><span translate="21pointsApp.bloodPressure.detail.title">BloodPressure</span> {{bloodPressure.id}}</h2>
+    <h2><span translate="21pointsApp.bloodPressure.detail.title">BloodPressure</span></h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -12,18 +12,10 @@
             <tbody>
             <tr>
                 <td>
-                    <span translate="21pointsApp.bloodPressure.version">Version</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{bloodPressure.version}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <span translate="21pointsApp.bloodPressure.timestamp">Timestamp</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{bloodPressure.timestamp | date:'medium'}}</span>
+                    <span class="form-control-static">{{bloodPressure.timestamp | date:'short'}}</span>
                 </td>
             </tr>
             <tr>

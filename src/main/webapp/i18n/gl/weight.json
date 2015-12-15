@@ -4,7 +4,7 @@
             "home": {
                 "title": "Weights",
                 "createLabel": "Crear novo Weight",
-                "createOrEditLabel": "Crear ou editar Weight"
+                "editLabel": "Editar Weight"
             },
             "created": "Un novo Weight foi creado co identificador {{ param }}",
             "updated": "Un Weight foi actualizado co identificador {{ param }}",

@@ -4,7 +4,8 @@
             "home": {
                 "title": "Points",
                 "createLabel": "Crear novo Point",
-                "createOrEditLabel": "Crear ou editar Point"
+                "editLabel": "Crear ou editar Point",
+                "search": "Busca"
             },
             "created": "Un novo Point foi creado co identificador {{ param }}",
             "updated": "Un Point foi actualizado co identificador {{ param }}",
@@ -16,12 +17,13 @@
                 "title": "Point"
             },
             "version": "Version",
-            "date": "Date",
-            "exercise": "Exercise",
-            "meals": "Meals",
-            "alcohol": "Alcohol",
-            "notes": "Notes",
-            "user": "User"
+            "date": "Data",
+            "exercise": "Fixeches exercicio",
+            "meals": "Comiches san",
+            "alcohol": "Non bebiches alcol",
+            "notes": "Notas",
+            "user": "Usuario"
+
         }
     }
 }

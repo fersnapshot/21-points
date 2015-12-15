@@ -2,24 +2,25 @@
     "21pointsApp": {
         "point" : {
             "home": {
-                "title": "Points",
-                "createLabel": "Create a new Point",
-                "createOrEditLabel": "Create or edit a Point"
+                "title": "Daily Points",
+                "createLabel": "Add Points",
+                "editLabel": "Edit Points",
+                "search": "Search"
             },
-            "created": "A new Point is created with identifier {{ param }}",
-            "updated": "A Point is updated with identifier {{ param }}",
-            "deleted": "A Point is deleted with identifier {{ param }}",
+            "created": "Points added successfully.",
+            "updated": "Points updated successfully.",
+            "deleted": "Points deleted.",
             "delete": {
-                "question": "Are you sure you want to delete Point {{ id }}?"
+                "question": "Are you sure you want to delete this?"
             },
             "detail": {
                 "title": "Point"
             },
             "version": "Version",
             "date": "Date",
-            "exercise": "Exercise",
-            "meals": "Meals",
-            "alcohol": "Alcohol",
+            "exercise": "Did you exercise?",
+            "meals": "Did you eat well?",
+            "alcohol": "Didn't you drink?",
             "notes": "Notes",
             "user": "User"
         }

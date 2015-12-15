@@ -1,62 +1,55 @@
 <div>
-    <h2 translate="21pointsApp.weight.home.title">Weights</h2>
-    <jh-alert></jh-alert>
-    <div class="container">
+    <div>
         <div class="row">
-            <div class="col-md-4">
-                <button class="btn btn-primary" ui-sref="weight.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="21pointsApp.weight.home.createLabel">Create a new Weight</span>
-                </button>
+            <div class="col-xs-4">
+                <h2 translate="21pointsApp.weight.home.title">Weights</h2>
             </div>
-            <div class="col-md-8">
+            <div class="col-xs-8 text-right" style="margin-top: 20px;">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="{{'entity.action.search' | translate}}">
+                        <button class="btn btn-info" ng-click="search()" uib-tooltip="{{'entity.action.search' | translate}}"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="btn btn-primary" ui-sref="weight.new" uib-tooltip="{{'entity.action.new' | translate}}"><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
-                    <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Weight</span>
-                    </button>
                 </form>
             </div>
         </div>
     </div>
+    <jh-alert></jh-alert>
 
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
-                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="version"><span translate="21pointsApp.weight.version">Version</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="timestamp"><span translate="21pointsApp.weight.timestamp">Timestamp</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="weight"><span translate="21pointsApp.weight.weight">Weight</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="user.login"><span translate="21pointsApp.weight.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
+                    <th translate="entity.action.actions" class="col-md-2">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="weight in weights track by weight.id">
-                    <td><a ui-sref="weight.detail({id:weight.id})">{{weight.id}}</a></td>
-                    <td>{{weight.version}}</td>
-                    <td>{{weight.timestamp | date:'medium'}}</td>
+                    <td><a ui-sref="weight.detail({id:weight.id})">{{weight.timestamp | date:'short'}}</a></td>
                     <td>{{weight.weight}}</td>
+                    <td>{{weight.user.login}}</td>
                     <td>
-                        {{weight.user.login}}
-                    </td>
-                    <td>
-                        <button type="submit"
-                                ui-sref="weight.detail({id:weight.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="weight.edit({id:weight.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
-                        </button>
-                        <button type="submit"
-                                ui-sref="weight.delete({id:weight.id})"
-                                class="btn btn-danger btn-sm">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
-                        </button>
+                        <div class="btn-group">
+                            <button type="submit"
+                                    ui-sref="weight.detail({id:weight.id})"
+                                    class="btn btn-info btn-sm" uib-tooltip="{{'entity.action.view' | translate}}">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="weight.edit({id:weight.id})"
+                                    class="btn btn-primary btn-sm" uib-tooltip="{{'entity.action.edit' | translate}}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="weight.delete({id:weight.id})"
+                                    class="btn btn-danger btn-sm" uib-tooltip="{{'entity.action.delete' | translate}}">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>

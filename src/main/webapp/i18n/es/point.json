@@ -2,26 +2,27 @@
     "21pointsApp": {
         "point" : {
             "home": {
-                "title": "Points",
-                "createLabel": "Crear nuevo Point",
-                "createOrEditLabel": "Crear o editar Point"
+                "title": "Puntos Diarios",
+                "createLabel": "Añadir Punto",
+                "editLabel": "Editar Punto",
+                "search": "Buscar"
             },
-            "created": "Un nuevo Point ha sido creado con el identificador {{ param }}",
-            "updated": "Un Point ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Point ha sido eliminado con el identificador {{ param }}",
+            "created": "Punto añadido",
+            "updated": "Punto actualizado",
+            "deleted": "Punto eliminado",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Point {{ id }}?"
+                "question": "¿Seguro que quieres eliminarlo?"
             },
             "detail": {
-                "title": "Point"
+                "title": "Punto"
             },
             "version": "Version",
-            "date": "Date",
-            "exercise": "Exercise",
-            "meals": "Meals",
-            "alcohol": "Alcohol",
-            "notes": "Notes",
-            "user": "User"
+            "date": "Fecha",
+            "exercise": "Hiciste ejercicio",
+            "meals": "Comiste sano",
+            "alcohol": "No bebiste alcohol",
+            "notes": "Notas",
+            "user": "Usuario"
         }
     }
 }

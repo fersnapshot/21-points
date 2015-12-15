@@ -7,10 +7,10 @@
             "jhipster-needle-003": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
-                "point": "Point",
-                "weight": "Weight",
-                "bloodPressure": "BloodPressure",
-                "preference": "Preference",
+                "point": "Puntos",
+                "weight": "Pesos",
+                "bloodPressure": "Presión Sanguínea",
+                "preference": "Preferencias",
                 "jhipster-needle-004": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -19,7 +19,7 @@
                 "password": "Contraseña",
                 "sessions": "Sesiones",
                 "login": "Iniciar sesión",
-                "logout": "Cerrar la sesión",
+                "logout": "Cerrar sesión",
                 "register": "Crear una cuenta"
             },
             "admin": {
@@ -87,7 +87,10 @@
             "delete": "Eliminar",
             "edit": "Editar",
             "save": "Guardar",
-            "view": "Vista"
+            "view": "Ver",
+            "search": "Buscar",
+            "new": "Añadir",
+            "actions": "Acciones"
         },
         "detail": {
             "field": "Campo",

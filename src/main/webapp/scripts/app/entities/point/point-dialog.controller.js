@@ -5,6 +5,7 @@ angular.module('21pointsApp').controller('PointDialogController',
         function($scope, $stateParams, $uibModalInstance, entity, Point, User) {
 
         $scope.point = entity;
+        $scope.point.date = new Date(entity.date);
         $scope.users = User.query();
         $scope.load = function(id) {
             Point.get({id : id}, function(result) {

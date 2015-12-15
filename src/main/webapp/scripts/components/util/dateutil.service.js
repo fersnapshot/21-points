@@ -4,7 +4,7 @@ angular.module('21pointsApp')
     .service('DateUtils', function ($filter) {
       this.convertLocaleDateToServer = function(date) {
         if (date) {
-          return $filter('date')(date, 'yyyy-MM-dd');
+          return new Date($filter('date')(date, 'yyyy-MM-dd'));
         } else {
           return null;
         }
