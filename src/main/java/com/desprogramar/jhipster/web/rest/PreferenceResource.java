@@ -3,6 +3,7 @@ package com.desprogramar.jhipster.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.desprogramar.jhipster.domain.Preference;
 import com.desprogramar.jhipster.repository.PreferenceRepository;
+import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 import com.desprogramar.jhipster.web.rest.mapper.PreferenceMapper;

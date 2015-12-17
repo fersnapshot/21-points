@@ -2,7 +2,9 @@ package com.desprogramar.jhipster.web.rest;
 
 import com.desprogramar.jhipster.Application;
 import com.desprogramar.jhipster.domain.Preference;
+import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.PreferenceRepository;
+import com.desprogramar.jhipster.service.UserService;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 import com.desprogramar.jhipster.web.rest.mapper.PreferenceMapper;
 
@@ -11,13 +13,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -47,10 +50,8 @@ import com.desprogramar.jhipster.domain.enumeration.Units;
 @IntegrationTest
 public class PreferenceResourceIntTest {
 
-
     private static final Integer DEFAULT_WEEKLY_GOAL = 10;
     private static final Integer UPDATED_WEEKLY_GOAL = 11;
-
 
     private static final Units DEFAULT_WEIGHT_UNITS = Units.kg;
     private static final Units UPDATED_WEIGHT_UNITS = Units.lg;
@@ -71,6 +72,9 @@ public class PreferenceResourceIntTest {
 
     private Preference preference;
 
+    @Autowired
+    private UserService userService;
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -81,9 +85,24 @@ public class PreferenceResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
 
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("user", "user"));
-        SecurityContextHolder.setContext(securityContext);
+    }
+
+    private void createUsuarioConRolUser() {
+        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+
+        UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(
+            new org.springframework.security.core.userdetails.User(
+                user.getLogin(), // login de usuario en base de datos (nuestro User)
+                user.getPassword(),
+                AuthorityUtils.createAuthorityList("ROLE_USER")
+            ),
+            "user");
+
+        SecurityContextHolder.getContext().setAuthentication(userAuth);
+    }
+
+    private void deleteUsuarioConRolUser() {
+        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
     }
 
     @Before
@@ -93,9 +112,12 @@ public class PreferenceResourceIntTest {
         preference.setWeightUnits(DEFAULT_WEIGHT_UNITS);
     }
 
-//    @Test
+    @Test
     @Transactional
     public void createPreference() throws Exception {
+
+        this.createUsuarioConRolUser();
+
         int databaseSizeBeforeCreate = preferenceRepository.findAll().size();
 
         // Create the Preference
@@ -112,6 +134,8 @@ public class PreferenceResourceIntTest {
         Preference testPreference = preferences.get(preferences.size() - 1);
         assertThat(testPreference.getWeeklyGoal()).isEqualTo(DEFAULT_WEEKLY_GOAL);
         assertThat(testPreference.getWeightUnits()).isEqualTo(DEFAULT_WEIGHT_UNITS);
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -193,6 +217,9 @@ public class PreferenceResourceIntTest {
     @Test
     @Transactional
     public void updatePreference() throws Exception {
+
+        this.createUsuarioConRolUser();
+
         // Initialize the database
         preferenceRepository.saveAndFlush(preference);
 
@@ -214,6 +241,8 @@ public class PreferenceResourceIntTest {
         Preference testPreference = preferences.get(preferences.size() - 1);
         assertThat(testPreference.getWeeklyGoal()).isEqualTo(UPDATED_WEEKLY_GOAL);
         assertThat(testPreference.getWeightUnits()).isEqualTo(UPDATED_WEIGHT_UNITS);
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test

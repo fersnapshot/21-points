@@ -7,6 +7,7 @@ import com.desprogramar.jhipster.repository.AuthorityRepository;
 import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.UserSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
+import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.service.MailService;
 import com.desprogramar.jhipster.service.UserService;
 import com.desprogramar.jhipster.web.rest.dto.ManagedUserDTO;
@@ -167,7 +168,12 @@ public class UserResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<ManagedUserDTO>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
-        Page<User> page = userRepository.findAll(pageable);
+        Page<User> page;
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            page = userRepository.findAll(pageable);
+        } else {
+            page = userRepository.findAllByUserIsCurrentUser(pageable);
+        }
         List<ManagedUserDTO> managedUserDTOs = page.getContent().stream()
             .map(user -> new ManagedUserDTO(user))
             .collect(Collectors.toList());
@@ -184,10 +190,13 @@ public class UserResource {
     @Timed
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
-        return userService.getUserWithAuthoritiesByLogin(login)
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || login.equals(SecurityUtils.getCurrentUserLogin())) {
+            return userService.getUserWithAuthoritiesByLogin(login)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     /**
      * DELETE  USER :login -> delete the "login" User.

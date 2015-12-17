@@ -20,6 +20,8 @@ import java.time.ZonedDateTime;
  */
 public class TestUtil {
 
+    public static String USUARIO_LOGIN = "usuariokeseguronoestaenbasededatos";
+
     /** MediaType for JSON UTF8 */
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(
             MediaType.APPLICATION_JSON.getType(),

@@ -166,11 +166,13 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core'
     testCompile group: 'com.mattbertolini', name: 'liquibase-slf4j', version: liquibase_slf4j_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library'
-    
+
     testCompile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: gatling_version
-    
+
     testCompile group: 'com.h2database', name: 'h2'
     optional group: 'org.springframework.boot', name:'spring-boot-configuration-processor', version: spring_boot_version
+
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: spring_security_version
 }
 
 compileJava.dependsOn(processResources)

@@ -3,6 +3,9 @@ package com.desprogramar.jhipster.repository;
 import com.desprogramar.jhipster.domain.User;
 
 import java.time.ZonedDateTime;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,5 +31,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Override
     void delete(User t);
+
+    @Query("select u from User u where u.login = ?#{principal.username}")
+    Page<User> findAllByUserIsCurrentUser(Pageable pageable);
+
 
 }
