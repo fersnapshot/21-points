@@ -24,7 +24,9 @@ import java.time.ZonedDateTime;
 @Document(indexName = "user")
 public class User extends AbstractAuditingEntity implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = -731548945525012124L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

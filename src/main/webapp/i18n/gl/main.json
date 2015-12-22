@@ -1,7 +1,7 @@
 {
     "main": {
-        "title": "Benvido, Java Hipster!",
-        "subtitle": "Esta é a súa páxina de inicio",
+        "title": "Benvido, {{name}}!",
+        "subtitle": "21-Points está aquí para realizar un seguimento da túa saúde e mellorar a túa vida. &#128522;",
         "logged": {
             "message": "Está conectado como \"{{username}}\"."
         },
@@ -14,6 +14,25 @@
             "contact": "contacto @java_hipster en Twitter"
         },
         "like": "Se gústache JHipster, dános unha estrela en",
-        "github": "Github"
+        "github": "Github",
+        "point": {
+            "thisWeek": "Puntos da semana do {{date}}",
+            "thisWeekMobile": "Puntos do {{date}}",
+            "add": "Engadir Punto",
+            "no-datos": "Non hai puntos aínda esta semana, just do it!",
+            "points": "{{points}} puntos esta semana."
+        },
+        "weight": {
+            "name": "Peso",
+            "add": "Engadir Peso"
+        },
+        "blood": {
+            "name": "Presión Sanguínea",
+            "add": "Engadir Presión Sanguínea",
+            "addMobile": "Engadir PS"
+        },
+        "preference": {
+            "add": "Preferencias"
+        }
     }
 }

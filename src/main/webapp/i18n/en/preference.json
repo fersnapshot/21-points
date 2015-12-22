@@ -3,20 +3,20 @@
         "preference" : {
             "home": {
                 "title": "Preferences",
-                "createLabel": "Create a new Preference",
-                "createOrEditLabel": "Create or edit a Preference"
+                "createLabel": "Add Preference",
+                "editLabel": "Edit Preference"
             },
-            "created": "A new Preference is created with identifier {{ param }}",
-            "updated": "A Preference is updated with identifier {{ param }}",
-            "deleted": "A Preference is deleted with identifier {{ param }}",
+            "created": "Preference added successfully.",
+            "updated": "Preference updated successfully.",
+            "deleted": "Preference deleted.",
             "delete": {
-                "question": "Are you sure you want to delete Preference {{ id }}?"
+                "question": "Are you sure you want to delete this?"
             },
             "detail": {
                 "title": "Preference"
             },
-            "weeklyGoal": "WeeklyGoal",
-            "weightUnits": "WeightUnits",
+            "weeklyGoal": "Weekly Goal",
+            "weightUnits": "Weight Units",
             "user": "User"
         }
     }

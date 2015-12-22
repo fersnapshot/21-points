@@ -2,24 +2,25 @@
     "21pointsApp": {
         "bloodPressure" : {
             "home": {
-                "title": "BloodPressures",
-                "createLabel": "Crear novo BloodPressure",
-                "editLabel": "Editar BloodPressure"
+                "title": "Presión Sanguínea",
+                "createLabel": "Engadir Presión",
+                "editLabel": "Editar Presión",
+                "search": "Buscar"
             },
-            "created": "Un novo BloodPressure foi creado co identificador {{ param }}",
-            "updated": "Un BloodPressure foi actualizado co identificador {{ param }}",
-            "deleted": "Un BloodPressure foi eliminado co identificador {{ param }}",
+            "created": "Presión engadida.",
+            "updated": "Presión actualizada.",
+            "deleted": "Presión eliminada.",
             "delete": {
-                "question": "Seguro que desexa eliminar BloodPressure {{ id }}?"
+                "question": "Seguro que queres eliminala?"
             },
             "detail": {
-                "title": "BloodPressure"
+                "title": "Presión Sanguínea"
             },
             "version": "Version",
-            "timestamp": "Timestamp",
-            "systolic": "Systolic",
-            "diastolic": "Diastolic",
-            "user": "User"
+            "timestamp": "Día e Hora",
+            "systolic": "Alta",
+            "diastolic": "Baixa",
+            "user": "Usuario"
         }
     }
 }

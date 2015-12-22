@@ -45,6 +45,9 @@ local.properties
 # PDT-specific
 .buildpath
 
+# Plugin Eclipse AngularJS
+.tern-project
+
 ######################
 # Intellij
 ######################
@@ -54,6 +57,12 @@ local.properties
 *.ipr
 *.ids
 *.orig
+
+######################
+# NetBeans
+######################
+.factorypath
+/nbproject/**
 
 ######################
 # Maven
@@ -126,3 +135,5 @@ Desktop.ini
 # Maven Wrapper
 ######################
 !.mvn/wrapper/maven-wrapper.jar
+/.apt_generated/
+/nbproject/private/

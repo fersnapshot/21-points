@@ -2,19 +2,19 @@
     "21pointsApp": {
         "point" : {
             "home": {
-                "title": "Points",
-                "createLabel": "Crear novo Point",
-                "editLabel": "Crear ou editar Point",
+                "title": "Puntos Diarios",
+                "createLabel": "Crear novo Punto",
+                "editLabel": "Crear ou editar Punto",
                 "search": "Busca"
             },
-            "created": "Un novo Point foi creado co identificador {{ param }}",
-            "updated": "Un Point foi actualizado co identificador {{ param }}",
-            "deleted": "Un Point foi eliminado co identificador {{ param }}",
+            "created": "Punto engadido.",
+            "updated": "Punto actualizado.",
+            "deleted": "Punto eliminado.",
             "delete": {
-                "question": "Seguro que desexa eliminar Point {{ id }}?"
+                "question": "Seguro que queres eliminalo?"
             },
             "detail": {
-                "title": "Point"
+                "title": "Punto"
             },
             "version": "Version",
             "date": "Data",

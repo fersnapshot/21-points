@@ -17,8 +17,10 @@ import java.io.Serializable;
 @Table(name = "jhi_authority")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
-
-    @NotNull
+	
+	private static final long serialVersionUID = 5861191923193073561L;
+	
+	@NotNull
     @Size(min = 0, max = 50)
     @Id
     @Column(length = 50)

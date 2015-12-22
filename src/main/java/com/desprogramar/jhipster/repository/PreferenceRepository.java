@@ -4,7 +4,7 @@ import com.desprogramar.jhipster.domain.Preference;
 
 import org.springframework.data.jpa.repository.*;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Preference entity.
@@ -12,6 +12,6 @@ import java.util.List;
 public interface PreferenceRepository extends JpaRepository<Preference,Long> {
 
     @Query("select preference from Preference preference where preference.user.login = ?#{principal.username}")
-    List<Preference> findByUserIsCurrentUser();
+    Optional<Preference> findByUserIsCurrentUser();
 
 }

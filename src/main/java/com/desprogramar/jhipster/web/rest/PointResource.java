@@ -7,6 +7,7 @@ import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.PointSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
+import com.desprogramar.jhipster.web.rest.dto.PointsPerWeekDTO;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -172,5 +175,27 @@ public class PointResource {
         return StreamSupport
             .stream(pointSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * GET  /points -> get all the points for the current week.
+     */
+    @RequestMapping(value = "/points-this-week",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PointsPerWeekDTO> getAllPointsThisWeek() {
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes = hoy.with(WeekFields.ISO.dayOfWeek(), 1);
+        LocalDate domingo = hoy.with(WeekFields.ISO.dayOfWeek(), 7);
+        log.debug("REST request to get a points between: {} and {}", lunes, domingo);
+
+        List<Point> puntos = pointRepository.findAllByDateBetweenAndUsersCurrentUser(lunes, domingo);
+        Integer numPuntos = puntos.stream()
+            .mapToInt(p ->  (p.getExercise()?1:0) + (p.getMeals()?1:0) + (p.getAlcohol()?1:0) )
+            .sum();
+
+        PointsPerWeekDTO count = new PointsPerWeekDTO(lunes, numPuntos);
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 }

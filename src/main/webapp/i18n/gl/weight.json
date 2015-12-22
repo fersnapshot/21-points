@@ -2,23 +2,24 @@
     "21pointsApp": {
         "weight" : {
             "home": {
-                "title": "Weights",
-                "createLabel": "Crear novo Weight",
-                "editLabel": "Editar Weight"
+                "title": "Pesos",
+                "createLabel": "Engadir Peso",
+                "editLabel": "Editar Peso",
+                "search": "Buscar"
             },
-            "created": "Un novo Weight foi creado co identificador {{ param }}",
-            "updated": "Un Weight foi actualizado co identificador {{ param }}",
-            "deleted": "Un Weight foi eliminado co identificador {{ param }}",
+            "created": "Peso engadido.",
+            "updated": "Peso actualizado.",
+            "deleted": "Peso eliminado.",
             "delete": {
-                "question": "Seguro que desexa eliminar Weight {{ id }}?"
+                "question": "Seguro que queres eliminalo?"
             },
             "detail": {
-                "title": "Weight"
+                "title": "Peso"
             },
-            "version": "Version",
-            "timestamp": "Timestamp",
-            "weight": "Weight",
-            "user": "User"
+            "version": "Versión",
+            "timestamp": "Día e Hora",
+            "weight": "Peso",
+            "user": "Usuario"
         }
     }
 }

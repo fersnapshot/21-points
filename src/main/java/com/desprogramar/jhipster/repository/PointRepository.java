@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,4 +27,7 @@ public interface PointRepository extends JpaRepository<Point,Long> {
     @Transactional
     @Query("delete from Point p where p.user.login = ?#{principal.username} and p.id = ?1")
     void deleteByUserIsCurrentUser(Long id);
+
+    @Query("select p from Point p where p.user.login = ?#{principal.username} and p.date between ?1 and ?2")
+    List<Point> findAllByDateBetweenAndUsersCurrentUser(LocalDate firstDate, LocalDate secondDate);
 }

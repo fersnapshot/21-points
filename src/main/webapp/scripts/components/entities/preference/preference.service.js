@@ -11,6 +11,14 @@ angular.module('21pointsApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'user': {
+                method: 'GET',
+                url: '/api/my-preferences',
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            }
         });
     });

@@ -29,11 +29,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.WeekFields;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -346,5 +349,57 @@ public class PointResourceIntTest {
 
         // borra usuario con rol USER
         userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
+    }
+
+
+    // Implementing the UI mockup
+    // 2. Adding an API to get points achieved during the current week.
+
+    private void createPointsByWeek(LocalDate esteLunes) {
+        User user = userRepository.findOneByLogin("user").get();
+
+        // Crea puntos en 2 semanas distintas
+        point = new Point(esteLunes.plusDays(2), true, true, true, user);
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(esteLunes.plusDays(3), true, true, false, user);
+        pointRepository.saveAndFlush(point);
+
+        LocalDate pasadoLunes = esteLunes.minusWeeks(1);
+
+        point = new Point(pasadoLunes.plusDays(3), false, false, true, user);
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(pasadoLunes.plusDays(4), true, true, false, user);
+        pointRepository.saveAndFlush(point);
+    }
+
+    @Test
+    @Transactional
+    public void getPointsThisWeek() throws Exception {
+        LocalDate hoy = LocalDate.now();
+        LocalDate esteLunes = hoy.with(WeekFields.ISO.dayOfWeek(), 1);
+        this.createPointsByWeek(esteLunes);
+
+        // create security-aware mockMvc
+        MockMvc restPointMockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
+            .apply(springSecurity())
+            .build();
+
+        // Get all the points
+        restPointMockMvc.perform(get("/api/points")
+            .with(user("user").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(4)));
+
+        // Get the points for this week only
+        restPointMockMvc.perform(get("/api/points-this-week")
+            .with(user("user").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.week").value(esteLunes.toString()))
+                .andExpect(jsonPath("$.points").value(5));
     }
 }

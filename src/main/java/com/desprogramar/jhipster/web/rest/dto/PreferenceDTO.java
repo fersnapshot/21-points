@@ -2,8 +2,6 @@ package com.desprogramar.jhipster.web.rest.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 import com.desprogramar.jhipster.domain.enumeration.Units;
@@ -13,7 +11,9 @@ import com.desprogramar.jhipster.domain.enumeration.Units;
  */
 public class PreferenceDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = -547900858488314L;
+
+	private Long id;
 
     @NotNull
     @Min(value = 10)

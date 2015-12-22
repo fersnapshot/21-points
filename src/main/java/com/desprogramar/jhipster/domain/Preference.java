@@ -7,8 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 import com.desprogramar.jhipster.domain.enumeration.Units;
@@ -22,7 +20,9 @@ import com.desprogramar.jhipster.domain.enumeration.Units;
 @Document(indexName = "preference")
 public class Preference implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = -5562396558269687584L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

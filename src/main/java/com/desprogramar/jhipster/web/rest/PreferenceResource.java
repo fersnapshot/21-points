@@ -54,9 +54,9 @@ public class PreferenceResource {
         }
 
         // sólo puede quedar uno
-        List<Preference> lista = preferenceRepository.findByUserIsCurrentUser();
-        if (lista.size() != 0) {
-            preferenceDTO.setId(lista.get(0).getId());
+        Optional<Preference> preferenceOptional = preferenceRepository.findByUserIsCurrentUser();
+        if (preferenceOptional.isPresent()) {
+            preferenceDTO.setId(preferenceOptional.get().getId());
         }
 
         Preference preference = preferenceMapper.preferenceDTOToPreference(preferenceDTO);
@@ -131,6 +131,26 @@ public class PreferenceResource {
         log.debug("REST request to delete Preference : {}", id);
         preferenceRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("preference", id.toString())).build();
+    }
+
+    /**
+     * GET  /my-preferences -> get the current user's preferences.
+     */
+    @RequestMapping(value = "/my-preferences",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<PreferenceDTO> getUserPreference() {
+        log.debug("REST request to get Preference : {}", SecurityUtils.getCurrentUserLogin());
+        Optional<Preference> preference = preferenceRepository.findByUserIsCurrentUser();
+        PreferenceDTO preferenceDTO;
+        if (preference.isPresent()) {
+            preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference.get());
+        } else {
+            preferenceDTO = new PreferenceDTO();
+            preferenceDTO.setWeeklyGoal(10);
+        }
+        return new ResponseEntity<>(preferenceDTO, HttpStatus.OK);
     }
 
 }

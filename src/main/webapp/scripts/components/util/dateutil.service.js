@@ -22,5 +22,5 @@ angular.module('21pointsApp')
         } else {
           return null;
         }
-      }
+      };
     });

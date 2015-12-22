@@ -7,9 +7,9 @@
                 "editLabel": "Editar Punto",
                 "search": "Buscar"
             },
-            "created": "Punto añadido",
-            "updated": "Punto actualizado",
-            "deleted": "Punto eliminado",
+            "created": "Punto añadido.",
+            "updated": "Punto actualizado.",
+            "deleted": "Punto eliminado.",
             "delete": {
                 "question": "¿Seguro que quieres eliminarlo?"
             },

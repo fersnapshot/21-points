@@ -7,9 +7,9 @@
                 "editLabel": "Editar Presión",
                 "search": "Buscar"
             },
-            "created": "Presión añadida",
-            "updated": "Presión actualizada",
-            "deleted": "Presión eliminada",
+            "created": "Presión añadida.",
+            "updated": "Presión actualizada.",
+            "deleted": "Presión eliminada.",
             "delete": {
                 "question": "¿Seguro que quieres eliminarla?"
             },
@@ -17,7 +17,7 @@
                 "title": "Presión Sanguínea"
             },
             "version": "Version",
-            "timestamp": "Hora",
+            "timestamp": "Día y Hora",
             "systolic": "Alta",
             "diastolic": "Baja",
             "user": "Usuario"

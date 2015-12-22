@@ -8,8 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -21,7 +19,9 @@ import java.util.Objects;
 @Document(indexName = "bloodpressure")
 public class BloodPressure implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = -5029849404636769881L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

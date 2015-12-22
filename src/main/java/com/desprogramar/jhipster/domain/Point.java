@@ -8,8 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -21,7 +19,9 @@ import java.util.Objects;
 @Document(indexName = "point")
 public class Point implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 5632380433273990085L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -50,7 +50,18 @@ public class Point implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    
+    public Point() {
+        super();
+    }
+    public Point(LocalDate date, Boolean exercise, Boolean meals, Boolean alcohol, User user) {
+        this();
+        this.date = date;
+        this.exercise = exercise;
+        this.meals = meals;
+        this.alcohol = alcohol;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

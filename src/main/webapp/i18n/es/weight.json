@@ -7,17 +7,17 @@
                 "editLabel": "Editar Peso",
                 "search": "Buscar"
             },
-            "created": "Peso añadido",
-            "updated": "Peso actualizado",
-            "deleted": "Peso eliminado",
+            "created": "Peso añadido.",
+            "updated": "Peso actualizado.",
+            "deleted": "Peso eliminado.",
             "delete": {
                 "question": "¿Seguro que quieres eliminarlo?"
             },
             "detail": {
                 "title": "Peso"
             },
-            "version": "Version",
-            "timestamp": "Hora",
+            "version": "Versión",
+            "timestamp": "Día y Hora",
             "weight": "Peso",
             "user": "Usuario"
         }

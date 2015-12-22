@@ -2,22 +2,22 @@
     "21pointsApp": {
         "preference" : {
             "home": {
-                "title": "Preferences",
-                "createLabel": "Crear novo Preference",
-                "createOrEditLabel": "Crear ou editar Preference"
+                "title": "Preferencias",
+                "createLabel": "Crear Preferencias",
+                "editLabel": "Editar Preferencias"
             },
-            "created": "Un novo Preference foi creado co identificador {{ param }}",
-            "updated": "Un Preference foi actualizado co identificador {{ param }}",
-            "deleted": "Un Preference foi eliminado co identificador {{ param }}",
+            "created": "Preferencias engadidas.",
+            "updated": "Preferencias actualizadas.",
+            "deleted": "Preferencias eliminadas.",
             "delete": {
-                "question": "Seguro que desexa eliminar Preference {{ id }}?"
+                "question": "Seguro que quere eliminalas?"
             },
             "detail": {
-                "title": "Preference"
+                "title": "Preferencias"
             },
-            "weeklyGoal": "WeeklyGoal",
-            "weightUnits": "WeightUnits",
-            "user": "User"
+            "weeklyGoal": "Obxectivo Semanal",
+            "weightUnits": "Unidades de Peso",
+            "user": "Usuario"
         }
     }
 }

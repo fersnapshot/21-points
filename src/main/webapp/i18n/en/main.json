@@ -1,7 +1,7 @@
 {
     "main": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome, {{name}}!",
+        "subtitle": "21-Points is here to track your health and improve your life. &#128522;",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
@@ -14,6 +14,25 @@
             "contact": "contact @java_hipster on Twitter"
         },
         "like": "If you like JHipster, don't forget to give us a star on",
-        "github": "Github"
+        "github": "Github",
+        "point": {
+            "thisWeek": "Points of the week of {{date}}",
+            "thisWeekMobile": "Points of {{date}}",
+            "add": "Add Punto",
+            "no-datos": "No points yet this week, just do it!",
+            "points": "{{points}} points this week."
+        },
+        "weight": {
+            "name": "Weight",
+            "add": "Add Weight"
+        },
+        "blood": {
+            "name": "Blood Pressure",
+            "add": "Add Blood Pressure",
+            "addMobile": "Add BP"
+        },
+        "preference": {
+            "add": "Preferences"
+        }
     }
 }
