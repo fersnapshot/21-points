@@ -35,5 +35,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.login = ?#{principal.username}")
     Page<User> findAllByUserIsCurrentUser(Pageable pageable);
 
+    @Query("select u from User u where u.login = ?#{principal.username}")
+    Optional<User> findOneByUserIsCurrentUser();
 
 }

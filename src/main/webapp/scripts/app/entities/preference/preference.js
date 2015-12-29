@@ -53,7 +53,7 @@ angular.module('21pointsApp')
                 parent: 'preference',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -73,14 +73,14 @@ angular.module('21pointsApp')
                         $state.go('preference', null, { reload: true });
                     }, function() {
                         $state.go('preference');
-                    })
+                    });
                 }]
             })
             .state('preference.edit', {
                 parent: 'preference',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -96,14 +96,14 @@ angular.module('21pointsApp')
                         $state.go('preference', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             })
             .state('preference.delete', {
                 parent: 'preference',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -111,15 +111,15 @@ angular.module('21pointsApp')
                         controller: 'PreferenceDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Preference', function(Preference) {
-                                return Preference.get({id : $stateParams.id});
-                            }]
+                            id: function() {
+                                return $stateParams.id;
+                            }
                         }
                     }).result.then(function(result) {
                         $state.go('preference', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             });
     });

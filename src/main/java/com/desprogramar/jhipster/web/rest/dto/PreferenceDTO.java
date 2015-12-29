@@ -23,7 +23,18 @@ public class PreferenceDTO implements Serializable {
     @NotNull
     private Units weightUnits;
 
-    public Long getId() {
+    public PreferenceDTO() {
+		super();
+	}
+
+    public PreferenceDTO(Long id, Integer weeklyGoal, Units weightUnits) {
+		this();
+		this.id = id;
+		this.weeklyGoal = weeklyGoal;
+		this.weightUnits = weightUnits;
+	}
+
+	public Long getId() {
         return id;
     }
 

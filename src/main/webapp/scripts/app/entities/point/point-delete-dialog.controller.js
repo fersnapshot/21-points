@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('21pointsApp')
-	.controller('PointDeleteController', function($scope, $uibModalInstance, entity, Point) {
+	.controller('PointDeleteController', function($scope, $uibModalInstance, id, Point) {
 
-        $scope.point = entity;
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
-        $scope.confirmDelete = function (id) {
+        $scope.confirmDelete = function () {
             Point.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);

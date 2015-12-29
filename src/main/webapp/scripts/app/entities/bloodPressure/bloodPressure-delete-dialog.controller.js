@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('21pointsApp')
-	.controller('BloodPressureDeleteController', function($scope, $uibModalInstance, entity, BloodPressure) {
+	.controller('BloodPressureDeleteController', function($scope, $uibModalInstance, id, BloodPressure) {
 
-        $scope.bloodPressure = entity;
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
-        $scope.confirmDelete = function (id) {
+        $scope.confirmDelete = function () {
             BloodPressure.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);

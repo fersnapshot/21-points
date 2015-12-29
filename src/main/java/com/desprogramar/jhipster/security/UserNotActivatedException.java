@@ -7,7 +7,9 @@ import org.springframework.security.core.AuthenticationException;
  */
 public class UserNotActivatedException extends AuthenticationException {
 
-    public UserNotActivatedException(String message) {
+	private static final long serialVersionUID = -1848025128460669765L;
+
+	public UserNotActivatedException(String message) {
         super(message);
     }
 

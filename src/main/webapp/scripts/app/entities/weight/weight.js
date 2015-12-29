@@ -51,7 +51,7 @@ angular.module('21pointsApp')
                 parent: 'weight',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -73,14 +73,14 @@ angular.module('21pointsApp')
                         $state.go('weight', null, { reload: true });
                     }, function() {
                         $state.go('weight');
-                    })
+                    });
                 }]
             })
             .state('weight.edit', {
                 parent: 'weight',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -96,14 +96,14 @@ angular.module('21pointsApp')
                         $state.go('weight', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             })
             .state('weight.delete', {
                 parent: 'weight',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -111,15 +111,15 @@ angular.module('21pointsApp')
                         controller: 'WeightDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Weight', function(Weight) {
-                                return Weight.get({id : $stateParams.id});
-                            }]
+                            id: function() {
+                                return $stateParams.id;
+                            }
                         }
                     }).result.then(function(result) {
                         $state.go('weight', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             });
     });

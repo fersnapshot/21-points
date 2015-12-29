@@ -87,7 +87,7 @@ public class Point implements Serializable {
     }
 
     public Boolean getExercise() {
-        return exercise;
+        return exercise == null ? new Boolean(false) : exercise;
     }
 
     public void setExercise(Boolean exercise) {
@@ -95,7 +95,7 @@ public class Point implements Serializable {
     }
 
     public Boolean getMeals() {
-        return meals;
+        return meals == null ? new Boolean(false) : meals;
     }
 
     public void setMeals(Boolean meals) {
@@ -103,7 +103,7 @@ public class Point implements Serializable {
     }
 
     public Boolean getAlcohol() {
-        return alcohol;
+        return alcohol == null ? new Boolean(false) : alcohol;
     }
 
     public void setAlcohol(Boolean alcohol) {

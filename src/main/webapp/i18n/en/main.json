@@ -29,7 +29,13 @@
         "blood": {
             "name": "Blood Pressure",
             "add": "Add Blood Pressure",
-            "addMobile": "Add BP"
+            "addMobile": "Add BP",
+            "no-datos": "No blood pressure readings found.",
+            "title": "Last 30 dates",
+            "xAxis": "Dates",
+            "yAxis": "Blood Pressure",
+            "systolic": "Systolic",
+            "diastolic": "Diastolic"
         },
         "preference": {
             "add": "Preferences"

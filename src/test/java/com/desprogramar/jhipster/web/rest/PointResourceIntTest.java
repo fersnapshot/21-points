@@ -5,23 +5,17 @@ import com.desprogramar.jhipster.domain.Point;
 import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.PointRepository;
 import com.desprogramar.jhipster.repository.UserRepository;
-import com.desprogramar.jhipster.repository.search.PointSearchRepository;
 
-import com.desprogramar.jhipster.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.hasItem;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.WeekFields;
@@ -75,38 +68,39 @@ public class PointResourceIntTest {
     @Inject
     private PointRepository pointRepository;
 
-    @Inject
-    private PointSearchRepository pointSearchRepository;
-
-    @Inject
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Inject
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
     private MockMvc restPointMockMvc;
 
     private Point point;
 
+    private User user;
+    
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private UserService userService;
-
     @PostConstruct
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-        PointResource pointResource = new PointResource();
-        ReflectionTestUtils.setField(pointResource, "pointSearchRepository", pointSearchRepository);
-        ReflectionTestUtils.setField(pointResource, "pointRepository", pointRepository);
-        ReflectionTestUtils.setField(pointResource, "userRepository", userRepository);
-        this.restPointMockMvc = MockMvcBuilders.standaloneSetup(pointResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setMessageConverters(jacksonMessageConverter).build();
+//        MockitoAnnotations.initMocks(this);
+//        PointResource pointResource = new PointResource();
+//        ReflectionTestUtils.setField(pointResource, "pointSearchRepository", pointSearchRepository);
+//        ReflectionTestUtils.setField(pointResource, "pointRepository", pointRepository);
+//        ReflectionTestUtils.setField(pointResource, "userRepository", userRepository);
+
+//        this.restPointMockMvc = MockMvcBuilders.standaloneSetup(pointResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setMessageConverters(jacksonMessageConverter).build();
+        
+        user = userRepository.findOneByLogin("user").get();
+
+        // create security-aware mockMvc
+        restPointMockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
+            .apply(springSecurity())
+            .build();
+
+
     }
 
     @Before
@@ -124,12 +118,6 @@ public class PointResourceIntTest {
     @Transactional
     public void createPoint() throws Exception {
         int databaseSizeBeforeCreate = pointRepository.findAll().size();
-
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
 
         // Create the Point
 
@@ -161,8 +149,9 @@ public class PointResourceIntTest {
         // Create the Point, which fails.
 
         restPointMockMvc.perform(post("/api/points")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(point)))
+            .with(user("user"))
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(point)))
                 .andExpect(status().isBadRequest());
 
         List<Point> points = pointRepository.findAll();
@@ -172,14 +161,12 @@ public class PointResourceIntTest {
     @Test
     @Transactional
     public void getAllPointsRoleAdmin() throws Exception {
+    	
+        // le asigna el usuario "user" con rol USER al Point
+    	point.setUser(userRepository.findOneByLogin("admin").get());
+    	
         // Initialize the database
         pointRepository.saveAndFlush(point);
-
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
 
         // Get all the points
         restPointMockMvc.perform(get("/api/points?sort=id,desc")
@@ -192,81 +179,65 @@ public class PointResourceIntTest {
                 .andExpect(jsonPath("$.[*].exercise").value(hasItem(DEFAULT_EXERCISE.booleanValue())))
                 .andExpect(jsonPath("$.[*].meals").value(hasItem(DEFAULT_MEALS.booleanValue())))
                 .andExpect(jsonPath("$.[*].alcohol").value(hasItem(DEFAULT_ALCOHOL.booleanValue())))
-                .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())));
+                .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
+                .andExpect(jsonPath("$.[*].user.login").value(hasItem("admin")));
     }
 
     @Test
     @Transactional
     public void getAllPointsRoleUser() throws Exception {
 
-        // crea usuario con rol USER y le asigna el Point
-        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+        // le asigna el usuario "user" con rol USER al Point
         point.setUser(user);
 
         // Initialize the database
         pointRepository.saveAndFlush(point);
 
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
-
         // Get all the points
-        restPointMockMvc.perform(get("/api/points?sort=id,desc").with(user(TestUtil.USUARIO_LOGIN).roles("USER")))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(point.getId().intValue())))
-            .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
-            .andExpect(jsonPath("$.[*].exercise").value(hasItem(DEFAULT_EXERCISE.booleanValue())))
-            .andExpect(jsonPath("$.[*].meals").value(hasItem(DEFAULT_MEALS.booleanValue())))
-            .andExpect(jsonPath("$.[*].alcohol").value(hasItem(DEFAULT_ALCOHOL.booleanValue())))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())));
-
-        // borra usuario con rol USER
-        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
+        restPointMockMvc.perform(get("/api/points?sort=id,desc")
+        	.with(user("user").roles("USER")))
+	            .andExpect(status().isOk())
+	            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+	            .andExpect(jsonPath("$.[*].id").value(hasItem(point.getId().intValue())))
+	            .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
+	            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+	            .andExpect(jsonPath("$.[*].exercise").value(hasItem(DEFAULT_EXERCISE.booleanValue())))
+	            .andExpect(jsonPath("$.[*].meals").value(hasItem(DEFAULT_MEALS.booleanValue())))
+	            .andExpect(jsonPath("$.[*].alcohol").value(hasItem(DEFAULT_ALCOHOL.booleanValue())))
+	            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
+        		.andExpect(jsonPath("$.[*].user.login").value(hasItem("user")));
     }
 
     @Test
     @Transactional
     public void getPoint() throws Exception {
 
-        // crea usuario con rol USER y le asigna el Point
-        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+        // le asigna el usuario "user" con rol USER al Point
         point.setUser(user);
 
         // Initialize the database
         pointRepository.saveAndFlush(point);
 
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
-
         // Get the point
         restPointMockMvc.perform(get("/api/points/{id}", point.getId())
-            .with(user(TestUtil.USUARIO_LOGIN)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(point.getId().intValue()))
-            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
-            .andExpect(jsonPath("$.exercise").value(DEFAULT_EXERCISE.booleanValue()))
-            .andExpect(jsonPath("$.meals").value(DEFAULT_MEALS.booleanValue()))
-            .andExpect(jsonPath("$.alcohol").value(DEFAULT_ALCOHOL.booleanValue()))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()));
-
-        // borra usuario con rol USER
-        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
+        	.with(user("user").roles("USER")))
+	            .andExpect(status().isOk())
+	            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+	            .andExpect(jsonPath("$.id").value(point.getId().intValue()))
+	            .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
+	            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
+	            .andExpect(jsonPath("$.exercise").value(DEFAULT_EXERCISE.booleanValue()))
+	            .andExpect(jsonPath("$.meals").value(DEFAULT_MEALS.booleanValue()))
+	            .andExpect(jsonPath("$.alcohol").value(DEFAULT_ALCOHOL.booleanValue()))
+	            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingPoint() throws Exception {
         // Get the point
-        restPointMockMvc.perform(get("/api/points/{id}", Long.MAX_VALUE))
+        restPointMockMvc.perform(get("/api/points/{id}", Long.MAX_VALUE)
+    		.with(user("user")))
                 .andExpect(status().isNotFound());
     }
 
@@ -274,8 +245,7 @@ public class PointResourceIntTest {
     @Transactional
     public void updatePoint() throws Exception {
 
-        // crea usuario con rol USER y le asigna el Point
-        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+        // le asigna el usuario "user" con rol USER al Point
         point.setUser(user);
 
         // Initialize the database
@@ -290,12 +260,6 @@ public class PointResourceIntTest {
         point.setMeals(UPDATED_MEALS);
         point.setAlcohol(UPDATED_ALCOHOL);
         point.setNotes(UPDATED_NOTES);
-
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
 
         restPointMockMvc.perform(put("/api/points")
             .with(user(TestUtil.USUARIO_LOGIN))
@@ -313,17 +277,13 @@ public class PointResourceIntTest {
         assertThat(testPoint.getMeals()).isEqualTo(UPDATED_MEALS);
         assertThat(testPoint.getAlcohol()).isEqualTo(UPDATED_ALCOHOL);
         assertThat(testPoint.getNotes()).isEqualTo(UPDATED_NOTES);
-
-        // borra usuario con rol USER
-        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
     }
 
     @Test
     @Transactional
     public void deletePoint() throws Exception {
 
-        // crea usuario con rol USER y le asigna el Point
-        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+        // le asigna el usuario "user" con rol USER al Point
         point.setUser(user);
 
         // Initialize the database
@@ -331,24 +291,15 @@ public class PointResourceIntTest {
 
 		int databaseSizeBeforeDelete = pointRepository.findAll().size();
 
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
-
         // Get the point
         restPointMockMvc.perform(delete("/api/points/{id}", point.getId())
-            .with(user(TestUtil.USUARIO_LOGIN))
+            .with(user("user"))
             .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         // Validate the database is empty
         List<Point> points = pointRepository.findAll();
         assertThat(points).hasSize(databaseSizeBeforeDelete - 1);
-
-        // borra usuario con rol USER
-        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
     }
 
 
@@ -356,7 +307,6 @@ public class PointResourceIntTest {
     // 2. Adding an API to get points achieved during the current week.
 
     private void createPointsByWeek(LocalDate esteLunes) {
-        User user = userRepository.findOneByLogin("user").get();
 
         // Crea puntos en 2 semanas distintas
         point = new Point(esteLunes.plusDays(2), true, true, true, user);
@@ -381,12 +331,6 @@ public class PointResourceIntTest {
         LocalDate esteLunes = hoy.with(WeekFields.ISO.dayOfWeek(), 1);
         this.createPointsByWeek(esteLunes);
 
-        // create security-aware mockMvc
-        MockMvc restPointMockMvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply(springSecurity())
-            .build();
-
         // Get all the points
         restPointMockMvc.perform(get("/api/points")
             .with(user("user").roles("USER")))
@@ -402,4 +346,5 @@ public class PointResourceIntTest {
                 .andExpect(jsonPath("$.week").value(esteLunes.toString()))
                 .andExpect(jsonPath("$.points").value(5));
     }
+    
 }

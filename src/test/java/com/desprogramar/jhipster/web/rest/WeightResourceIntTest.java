@@ -1,19 +1,26 @@
 package com.desprogramar.jhipster.web.rest;
 
 import com.desprogramar.jhipster.Application;
+import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.domain.Weight;
+import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.WeightRepository;
 import com.desprogramar.jhipster.repository.search.WeightSearchRepository;
+import com.desprogramar.jhipster.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -75,15 +82,41 @@ public class WeightResourceIntTest {
 
     private Weight weight;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         WeightResource weightResource = new WeightResource();
         ReflectionTestUtils.setField(weightResource, "weightSearchRepository", weightSearchRepository);
         ReflectionTestUtils.setField(weightResource, "weightRepository", weightRepository);
+        ReflectionTestUtils.setField(weightResource, "userRepository", userRepository);
         this.restWeightMockMvc = MockMvcBuilders.standaloneSetup(weightResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    private User createUsuarioConRolUser() {
+        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprogramar.com", "es");
+
+        UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(
+            new org.springframework.security.core.userdetails.User(
+                user.getLogin(), // login de usuario en base de datos (nuestro User)
+                user.getPassword(),
+                AuthorityUtils.createAuthorityList("ROLE_USER")
+            ),
+            "user");
+
+        SecurityContextHolder.getContext().setAuthentication(userAuth);
+        return user;
+    }
+
+    private void deleteUsuarioConRolUser() {
+        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
     }
 
     @Before
@@ -97,6 +130,9 @@ public class WeightResourceIntTest {
     @Test
     @Transactional
     public void createWeight() throws Exception {
+
+        this.createUsuarioConRolUser();
+
         int databaseSizeBeforeCreate = weightRepository.findAll().size();
 
         // Create the Weight
@@ -113,6 +149,8 @@ public class WeightResourceIntTest {
         assertThat(testWeight.getVersion()).isEqualTo(DEFAULT_VERSION);
         assertThat(testWeight.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
         assertThat(testWeight.getWeight()).isEqualTo(DEFAULT_WEIGHT);
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -154,6 +192,9 @@ public class WeightResourceIntTest {
     @Test
     @Transactional
     public void getAllWeights() throws Exception {
+    	
+    	weight.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         weightRepository.saveAndFlush(weight);
 
@@ -165,11 +206,16 @@ public class WeightResourceIntTest {
                 .andExpect(jsonPath("$.[*].version").value(hasItem(DEFAULT_VERSION)))
                 .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP_STR)))
                 .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
+        
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
     @Transactional
     public void getWeight() throws Exception {
+    	
+    	weight.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         weightRepository.saveAndFlush(weight);
 
@@ -181,6 +227,8 @@ public class WeightResourceIntTest {
             .andExpect(jsonPath("$.version").value(DEFAULT_VERSION))
             .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP_STR))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
+        
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -194,6 +242,9 @@ public class WeightResourceIntTest {
     @Test
     @Transactional
     public void updateWeight() throws Exception {
+    	
+    	weight.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         weightRepository.saveAndFlush(weight);
 
@@ -216,11 +267,16 @@ public class WeightResourceIntTest {
         assertThat(testWeight.getVersion()).isEqualTo(UPDATED_VERSION);
         assertThat(testWeight.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
         assertThat(testWeight.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
     @Transactional
     public void deleteWeight() throws Exception {
+    	
+    	weight.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         weightRepository.saveAndFlush(weight);
 
@@ -234,5 +290,7 @@ public class WeightResourceIntTest {
         // Validate the database is empty
         List<Weight> weights = weightRepository.findAll();
         assertThat(weights).hasSize(databaseSizeBeforeDelete - 1);
+        
+        this.deleteUsuarioConRolUser();
     }
 }

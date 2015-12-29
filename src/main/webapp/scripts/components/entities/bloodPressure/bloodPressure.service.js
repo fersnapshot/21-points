@@ -1,7 +1,12 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('21pointsApp')
-    .factory('BloodPressure', function ($resource, DateUtils) {
+    angular
+            .module('21pointsApp')
+            .factory('BloodPressure', BloodPressure);
+
+    BloodPressure.$inject = ['$resource', 'DateUtils'];
+    function BloodPressure($resource, DateUtils) {
         return $resource('api/bloodPressures/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
@@ -12,6 +17,15 @@ angular.module('21pointsApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'lastDays': { 
+                method: 'GET',
+                url: '/api/bp-by-days/:days',
+                transformResponse: function (data) {
+                    return angular.fromJson(data);
+                }}
         });
-    });
+    }
+    
+
+})();

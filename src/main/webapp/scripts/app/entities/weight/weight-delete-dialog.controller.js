@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('21pointsApp')
-	.controller('WeightDeleteController', function($scope, $uibModalInstance, entity, Weight) {
+	.controller('WeightDeleteController', function($scope, $uibModalInstance, id, Weight) {
 
-        $scope.weight = entity;
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
-        $scope.confirmDelete = function (id) {
+        $scope.confirmDelete = function () {
             Weight.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);

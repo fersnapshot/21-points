@@ -119,7 +119,7 @@
         "userexists": "El login ya existe!",
         "emailexists": "El correo ya existe!",
         "idexists": "La nueva {{entityName}} ya existe!",
-        "idNoExists": "El ID {{id}} no existe!"
+        "idNoExists": "El ID {{ param }} no existe!"
     },
     "footer": "pie de página"
 }

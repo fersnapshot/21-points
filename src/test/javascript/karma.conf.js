@@ -35,6 +35,9 @@ module.exports = function (config) {
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/sockjs-client/dist/sockjs.js',
             'main/webapp/bower_components/stomp-websocket/lib/stomp.min.js',
+            'main/webapp/bower_components/d3/d3.js',
+            'main/webapp/bower_components/nvd3/build/nv.d3.js',
+            'main/webapp/bower_components/angular-nvd3/dist/angular-nvd3.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/bower_components/messageformat/locale/es.js',

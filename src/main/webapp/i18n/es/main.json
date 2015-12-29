@@ -27,9 +27,15 @@
             "add": "Añadir Peso"
         },
         "blood": {
-            "name": "Presión Sanguínea",
-            "add": "Añadir Presión Sanguínea",
-            "addMobile": "Añadir PS"
+            "name": "Presión Arterial",
+            "add": "Añadir Presión Arterial",
+            "addMobile": "Añadir PA",
+            "no-datos": "No hay lecturas de la presión arterial.",
+            "title": "Últimos 30 días",
+            "xAxis": "Fechas",
+            "yAxis": "Presión Arterial",
+            "systolic": "Alta",
+            "diastolic": "Baja"
         },
         "preference": {
             "add": "Preferencias"

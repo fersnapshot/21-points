@@ -28,7 +28,6 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -64,9 +63,9 @@ public class PointResource {
         if (point.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("point", "idexists", "A new point cannot already have an ID")).body(null);
         }
-        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || point.getUser() == null) {
-            log.debug("No user passed in, using current user: {}", SecurityUtils.getCurrentUserLogin());
-            point.setUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        if(point.getUser() == null) {
+            log.debug("No user passed in, using current user");
+            point.setUser(userRepository.findOneByUserIsCurrentUser().get());
         }
         Point result = pointRepository.save(point);
         pointSearchRepository.save(result);
@@ -87,9 +86,9 @@ public class PointResource {
         if (point.getId() == null) {
             return createPoint(point);
         }
-        if(!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) || point.getUser() == null) {
-            log.debug("No user passed in, using current user: {}", SecurityUtils.getCurrentUserLogin());
-            point.setUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        if(point.getUser() == null) {
+            log.debug("No user passed in, using current user");
+            point.setUser(userRepository.findOneByUserIsCurrentUser().get());
         }
         Point result = pointRepository.save(point);
         pointSearchRepository.save(result);
@@ -110,7 +109,7 @@ public class PointResource {
         log.debug("REST request to get a page of Points");
         Page<Point> page;
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
-            page = pointRepository.findAllByOrderByDateDesc(pageable);
+            page = pointRepository.findAll(pageable);
         } else {
             page = pointRepository.findAllByUserIsCurrentUser(pageable);
         }
@@ -128,17 +127,13 @@ public class PointResource {
     public ResponseEntity<Point> getPoint(@PathVariable Long id) {
         log.debug("REST request to get Point : {}", id);
         Point point = pointRepository.findOne(id);
-        if (point != null &&
-            !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
-            !point.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
-                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("point", "idNoExists", "El ID '"+id+"' no existe!")).body(null);
-                // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (point == null || (
+        		!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
+        		!point.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) ) {
+//            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(id.toString(), "idNoExists", "")).body(null);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return Optional.ofNullable(point)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    	return  new ResponseEntity<>(point, HttpStatus.OK);
     }
 
     /**
@@ -151,11 +146,11 @@ public class PointResource {
     public ResponseEntity<Void> deletePoint(@PathVariable Long id) {
         log.debug("REST request to delete Point : {}", id);
         Point point = pointRepository.findOne(id);
-        if (point != null &&
-            !SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
-            !point.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("point", "idNoExists", "El ID '"+id+"' no existe!")).build();
-            // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (point == null || (
+        		!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN) &&
+        		!point.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) ) {
+//          return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(id.toString(), "idNoExists", "")).body(null);
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         pointRepository.delete(id);
         pointSearchRepository.delete(id);
@@ -195,7 +190,7 @@ public class PointResource {
             .mapToInt(p ->  (p.getExercise()?1:0) + (p.getMeals()?1:0) + (p.getAlcohol()?1:0) )
             .sum();
 
-        PointsPerWeekDTO count = new PointsPerWeekDTO(lunes, numPuntos);
-        return new ResponseEntity<>(count, HttpStatus.OK);
+        PointsPerWeekDTO pointsPerWeek = new PointsPerWeekDTO(lunes, numPuntos);
+        return new ResponseEntity<>(pointsPerWeek, HttpStatus.OK);
     }
 }

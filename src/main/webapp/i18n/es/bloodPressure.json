@@ -2,7 +2,7 @@
     "21pointsApp": {
         "bloodPressure" : {
             "home": {
-                "title": "Presión Sanguínea",
+                "title": "Presión Arterial",
                 "createLabel": "Añadir Presión",
                 "editLabel": "Editar Presión",
                 "search": "Buscar"
@@ -14,9 +14,9 @@
                 "question": "¿Seguro que quieres eliminarla?"
             },
             "detail": {
-                "title": "Presión Sanguínea"
+                "title": "Presión Arterial"
             },
-            "version": "Version",
+            "version": "Versión",
             "timestamp": "Día y Hora",
             "systolic": "Alta",
             "diastolic": "Baja",

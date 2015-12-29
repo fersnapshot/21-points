@@ -51,7 +51,7 @@ angular.module('21pointsApp')
                 parent: 'point',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -75,14 +75,14 @@ angular.module('21pointsApp')
                         $state.go('point', null, { reload: true });
                     }, function() {
                         $state.go('point');
-                    })
+                    });
                 }]
             })
             .state('point.edit', {
                 parent: 'point',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -98,14 +98,14 @@ angular.module('21pointsApp')
                         $state.go('point', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             })
             .state('point.delete', {
                 parent: 'point',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -113,15 +113,15 @@ angular.module('21pointsApp')
                         controller: 'PointDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['Point', function(Point) {
-                                return Point.get({id : $stateParams.id});
-                            }]
+                            id: function() {
+                                return $stateParams.id;
+                            }
                         }
                     }).result.then(function(result) {
                         $state.go('point', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             });
     });

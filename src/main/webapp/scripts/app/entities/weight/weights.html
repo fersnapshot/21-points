@@ -23,7 +23,7 @@
                 <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
                     <th jh-sort-by="timestamp"><span translate="21pointsApp.weight.timestamp">Timestamp</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="weight"><span translate="21pointsApp.weight.weight">Weight</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="user.login"><span translate="21pointsApp.weight.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="user.login" has-authority="ROLE_ADMIN"><span translate="21pointsApp.weight.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th translate="entity.action.actions" class="col-md-2">Actions</th>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@
                 <tr ng-repeat="weight in weights track by weight.id">
                     <td><a ui-sref="weight.detail({id:weight.id})">{{weight.timestamp | date:'short'}}</a></td>
                     <td>{{weight.weight}}</td>
-                    <td>{{weight.user.login}}</td>
+                    <td has-authority="ROLE_ADMIN">{{weight.user.login}}</td>
                     <td>
                         <div class="btn-group">
                             <button type="submit"

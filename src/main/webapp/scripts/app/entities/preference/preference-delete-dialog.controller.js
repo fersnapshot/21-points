@@ -1,13 +1,12 @@
 'use strict';
 
 angular.module('21pointsApp')
-	.controller('PreferenceDeleteController', function($scope, $uibModalInstance, entity, Preference) {
+	.controller('PreferenceDeleteController', function($scope, $uibModalInstance, id, Preference) {
 
-        $scope.preference = entity;
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
-        $scope.confirmDelete = function (id) {
+        $scope.confirmDelete = function () {
             Preference.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);

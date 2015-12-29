@@ -23,7 +23,7 @@
                     <span translate="21pointsApp.point.exercise">Exercise</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{point.exercise}}</span>
+                    <span class="form-control-static glyphicon" ng-class="{'glyphicon-ok text-success': point.exercise, 'glyphicon-remove text-danger': !point.exercise}"></span>
                 </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                     <span translate="21pointsApp.point.meals">Meals</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{point.meals}}</span>
+                    <span class="form-control-static glyphicon" ng-class="{'glyphicon-ok text-success': point.meals, 'glyphicon-remove text-danger': !point.meals}"></span>
                 </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@
                     <span translate="21pointsApp.point.alcohol">Alcohol</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{point.alcohol}}</span>
+                    <span class="form-control-static glyphicon" ng-class="{'glyphicon-ok text-success': point.alcohol, 'glyphicon-remove text-danger': !point.alcohol}"></span>
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <span class="form-control-static">{{point.notes}}</span>
                 </td>
             </tr>
-            <tr>
+            <tr has-authority="ROLE_ADMIN">
                 <td>
                     <span translate="21pointsApp.point.user">user</span>
                 </td>

@@ -2,27 +2,29 @@ package com.desprogramar.jhipster.web.rest.mapper;
 
 import com.desprogramar.jhipster.domain.*;
 import com.desprogramar.jhipster.repository.UserRepository;
-import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 
-import org.mapstruct.*;
-
-import javax.inject.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper for the entity Preference and its DTO PreferenceDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
-public abstract class PreferenceMapper {
+@Component
+public class PreferenceMapper {
 
-    @Inject
+    @Autowired
     UserRepository userRepository;
 
-    public abstract PreferenceDTO preferenceToPreferenceDTO(Preference preference);
+    public PreferenceDTO preferenceToPreferenceDTO(Preference p) {
+    	if (p == null)  return null;
+    	return new PreferenceDTO(p.getId(), p.getWeeklyGoal(), p.getWeightUnits());
+    }
 
     public Preference preferenceDTOToPreference(PreferenceDTO preferenceDTO) {
+    	if (preferenceDTO == null) return null;
         Preference preference = new Preference();
-        preference.setUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
+        preference.setUser(userRepository.findOneByUserIsCurrentUser().get());
         preference.setId(preferenceDTO.getId());
         preference.setWeeklyGoal(preferenceDTO.getWeeklyGoal());
         preference.setWeightUnits(preferenceDTO.getWeightUnits());

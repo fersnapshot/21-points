@@ -59,7 +59,7 @@ public class PreferenceResourceIntTest {
     @Inject
     private PreferenceRepository preferenceRepository;
 
-    @Inject
+    @Autowired
     private PreferenceMapper preferenceMapper;
 
     @Inject
@@ -87,8 +87,8 @@ public class PreferenceResourceIntTest {
 
     }
 
-    private void createUsuarioConRolUser() {
-        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprograma.com", "es");
+    private User createUsuarioConRolUser() {
+        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprogramar.com", "es");
 
         UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(
             new org.springframework.security.core.userdetails.User(
@@ -99,6 +99,7 @@ public class PreferenceResourceIntTest {
             "user");
 
         SecurityContextHolder.getContext().setAuthentication(userAuth);
+        return user;
     }
 
     private void deleteUsuarioConRolUser() {
@@ -179,6 +180,9 @@ public class PreferenceResourceIntTest {
     @Test
     @Transactional
     public void getAllPreferences() throws Exception {
+    	
+    	preference.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         preferenceRepository.saveAndFlush(preference);
 
@@ -189,11 +193,16 @@ public class PreferenceResourceIntTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(preference.getId().intValue())))
                 .andExpect(jsonPath("$.[*].weeklyGoal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
                 .andExpect(jsonPath("$.[*].weightUnits").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
+        
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
     @Transactional
     public void getPreference() throws Exception {
+    	
+    	preference.setUser(createUsuarioConRolUser());
+    	
         // Initialize the database
         preferenceRepository.saveAndFlush(preference);
 
@@ -204,6 +213,8 @@ public class PreferenceResourceIntTest {
             .andExpect(jsonPath("$.id").value(preference.getId().intValue()))
             .andExpect(jsonPath("$.weeklyGoal").value(DEFAULT_WEEKLY_GOAL))
             .andExpect(jsonPath("$.weightUnits").value(DEFAULT_WEIGHT_UNITS.toString()));
+        
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -218,7 +229,7 @@ public class PreferenceResourceIntTest {
     @Transactional
     public void updatePreference() throws Exception {
 
-        this.createUsuarioConRolUser();
+        preference.setUser(createUsuarioConRolUser());
 
         // Initialize the database
         preferenceRepository.saveAndFlush(preference);
@@ -248,6 +259,9 @@ public class PreferenceResourceIntTest {
     @Test
     @Transactional
     public void deletePreference() throws Exception {
+
+        preference.setUser(createUsuarioConRolUser());
+
         // Initialize the database
         preferenceRepository.saveAndFlush(preference);
 
@@ -261,5 +275,7 @@ public class PreferenceResourceIntTest {
         // Validate the database is empty
         List<Preference> preferences = preferenceRepository.findAll();
         assertThat(preferences).hasSize(databaseSizeBeforeDelete - 1);
+
+        this.deleteUsuarioConRolUser();
     }
 }

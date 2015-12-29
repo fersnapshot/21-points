@@ -45,8 +45,19 @@ public class BloodPressure implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+	public BloodPressure() {
+		super();
+	}
 
-    public Long getId() {
+	public BloodPressure(ZonedDateTime timestamp, Integer systolic, Integer diastolic, User user) {
+		this();
+		this.timestamp = timestamp;
+		this.systolic = systolic;
+		this.diastolic = diastolic;
+		this.user = user;
+	}
+
+	public Long getId() {
         return id;
     }
 

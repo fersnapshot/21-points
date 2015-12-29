@@ -2,18 +2,26 @@ package com.desprogramar.jhipster.web.rest;
 
 import com.desprogramar.jhipster.Application;
 import com.desprogramar.jhipster.domain.BloodPressure;
+import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.BloodPressureRepository;
+import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.BloodPressureSearchRepository;
+import com.desprogramar.jhipster.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
+
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -33,7 +41,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 /**
  * Test class for the BloodPressureResource REST controller.
@@ -78,15 +86,41 @@ public class BloodPressureResourceIntTest {
 
     private BloodPressure bloodPressure;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         BloodPressureResource bloodPressureResource = new BloodPressureResource();
         ReflectionTestUtils.setField(bloodPressureResource, "bloodPressureSearchRepository", bloodPressureSearchRepository);
         ReflectionTestUtils.setField(bloodPressureResource, "bloodPressureRepository", bloodPressureRepository);
+        ReflectionTestUtils.setField(bloodPressureResource, "userRepository", userRepository);
         this.restBloodPressureMockMvc = MockMvcBuilders.standaloneSetup(bloodPressureResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    private User createUsuarioConRolUser() {
+        User user = userService.createUserInformation(TestUtil.USUARIO_LOGIN, "password", "Juan", "Palomo", "palomo@desprogramar.com", "es");
+
+        UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(
+            new org.springframework.security.core.userdetails.User(
+                user.getLogin(), // login de usuario en base de datos (nuestro User)
+                user.getPassword(),
+                AuthorityUtils.createAuthorityList("ROLE_USER")
+            ),
+            "user");
+
+        SecurityContextHolder.getContext().setAuthentication(userAuth);
+        return user;
+    }
+
+    private void deleteUsuarioConRolUser() {
+        userService.deleteUserInformation(TestUtil.USUARIO_LOGIN);
     }
 
     @Before
@@ -101,6 +135,9 @@ public class BloodPressureResourceIntTest {
     @Test
     @Transactional
     public void createBloodPressure() throws Exception {
+
+        this.createUsuarioConRolUser();
+
         int databaseSizeBeforeCreate = bloodPressureRepository.findAll().size();
 
         // Create the BloodPressure
@@ -118,6 +155,8 @@ public class BloodPressureResourceIntTest {
         assertThat(testBloodPressure.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
         assertThat(testBloodPressure.getSystolic()).isEqualTo(DEFAULT_SYSTOLIC);
         assertThat(testBloodPressure.getDiastolic()).isEqualTo(DEFAULT_DIASTOLIC);
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -177,6 +216,9 @@ public class BloodPressureResourceIntTest {
     @Test
     @Transactional
     public void getAllBloodPressures() throws Exception {
+
+    	bloodPressure.setUser(createUsuarioConRolUser());
+
         // Initialize the database
         bloodPressureRepository.saveAndFlush(bloodPressure);
 
@@ -189,11 +231,16 @@ public class BloodPressureResourceIntTest {
                 .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP_STR)))
                 .andExpect(jsonPath("$.[*].systolic").value(hasItem(DEFAULT_SYSTOLIC)))
                 .andExpect(jsonPath("$.[*].diastolic").value(hasItem(DEFAULT_DIASTOLIC)));
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
     @Transactional
     public void getBloodPressure() throws Exception {
+
+    	bloodPressure.setUser(createUsuarioConRolUser());
+
         // Initialize the database
         bloodPressureRepository.saveAndFlush(bloodPressure);
 
@@ -206,6 +253,8 @@ public class BloodPressureResourceIntTest {
             .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP_STR))
             .andExpect(jsonPath("$.systolic").value(DEFAULT_SYSTOLIC))
             .andExpect(jsonPath("$.diastolic").value(DEFAULT_DIASTOLIC));
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
@@ -219,6 +268,9 @@ public class BloodPressureResourceIntTest {
     @Test
     @Transactional
     public void updateBloodPressure() throws Exception {
+
+    	bloodPressure.setUser(createUsuarioConRolUser());
+
         // Initialize the database
         bloodPressureRepository.saveAndFlush(bloodPressure);
 
@@ -243,11 +295,16 @@ public class BloodPressureResourceIntTest {
         assertThat(testBloodPressure.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
         assertThat(testBloodPressure.getSystolic()).isEqualTo(UPDATED_SYSTOLIC);
         assertThat(testBloodPressure.getDiastolic()).isEqualTo(UPDATED_DIASTOLIC);
+
+        this.deleteUsuarioConRolUser();
     }
 
     @Test
     @Transactional
     public void deleteBloodPressure() throws Exception {
+
+    	bloodPressure.setUser(createUsuarioConRolUser());
+
         // Initialize the database
         bloodPressureRepository.saveAndFlush(bloodPressure);
 
@@ -261,5 +318,55 @@ public class BloodPressureResourceIntTest {
         // Validate the database is empty
         List<BloodPressure> bloodPressures = bloodPressureRepository.findAll();
         assertThat(bloodPressures).hasSize(databaseSizeBeforeDelete - 1);
+
+        this.deleteUsuarioConRolUser();
     }
+    
+    private void createBloodPressureByMonth() {
+		User user = this.createUsuarioConRolUser();
+		// this month
+    	ZonedDateTime now = ZonedDateTime.now().withNano(0);
+		bloodPressure = new BloodPressure(now, 120, 0, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(10), 120, 10, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(20), 120, 20, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(27), 120, 27, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(28), 120, 28, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(29), 120, 29, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(30), 130, 30, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(now.minusDays(31), 130, 31, user);
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+    }
+    
+    @Test
+    @Transactional
+    public void getBloodPressureForLast30Days() throws Exception {
+        createBloodPressureByMonth();
+        
+        // Get all the blood pressure readings
+        restBloodPressureMockMvc.perform(get("/api/bloodPressures"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(8)));
+        
+        // Get the blood pressure readings for the last 30 days
+        restBloodPressureMockMvc.perform(get("/api/bp-by-days/{days}", 30))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.period").value(30))
+            .andExpect(jsonPath("$.readings.[*].systolic").value(hasItem(120)))
+        	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItems(0, 10, 20, 27, 28, 29)))
+        	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItem(30)));
+//        	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItem(31)));	// ERROR minusDays(31)
+
+        this.deleteUsuarioConRolUser();
+    }
+
 }

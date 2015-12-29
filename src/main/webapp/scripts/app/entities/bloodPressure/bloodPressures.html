@@ -24,7 +24,7 @@
                     <th jh-sort-by="timestamp"><span translate="21pointsApp.bloodPressure.timestamp">Timestamp</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="systolic"><span translate="21pointsApp.bloodPressure.systolic">Systolic</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="diastolic"><span translate="21pointsApp.bloodPressure.diastolic">Diastolic</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="user.login"><span translate="21pointsApp.bloodPressure.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="user.login" has-authority="ROLE_ADMIN"><span translate="21pointsApp.bloodPressure.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th translate="entity.action.actions" class="col-md-2">Actions</th>
                 </tr>
             </thead>
@@ -33,7 +33,7 @@
                     <td><a ui-sref="bloodPressure.detail({id:bloodPressure.id})">{{bloodPressure.timestamp | date:'short'}}</a></td>
                     <td>{{bloodPressure.systolic}}</td>
                     <td>{{bloodPressure.diastolic}}</td>
-                    <td>{{bloodPressure.user.login}}</td>
+                    <td has-authority="ROLE_ADMIN">{{bloodPressure.user.login}}</td>
                     <td>
                         <div class="btn-group">
                             <button type="submit"

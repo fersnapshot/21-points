@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface PreferenceRepository extends JpaRepository<Preference,Long> {
 
-    @Query("select preference from Preference preference where preference.user.login = ?#{principal.username}")
-    Optional<Preference> findByUserIsCurrentUser();
+    @Query("select x from Preference x where x.user.login = ?#{principal.username}")
+    Optional<Preference> findOneByUserIsCurrentUser();
 
 }

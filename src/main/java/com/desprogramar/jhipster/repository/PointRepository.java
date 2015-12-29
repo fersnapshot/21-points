@@ -9,25 +9,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Point entity.
  */
 public interface PointRepository extends JpaRepository<Point,Long> {
 
-    @Query("select point from Point point where point.user.login = ?#{principal.username} order by point.date desc")
+    @Query("select x from Point x where x.user.login = ?#{principal.username} ")
     Page<Point> findAllByUserIsCurrentUser(Pageable pageable);
 
-    Page<Point> findAllByOrderByDateDesc(Pageable pageable);
-
-    @Query("select point from Point point where point.user.login = ?#{principal.username} and point.id = ?1")
-    Point findOneByUserIsCurrentUser(Long id);
+    @Query("select x from Point x where x.user.login = ?#{principal.username} and x.id = ?1")
+    Optional<Point> findOneByUserIsCurrentUser(Long id);
 
     @Modifying
     @Transactional
-    @Query("delete from Point p where p.user.login = ?#{principal.username} and p.id = ?1")
+    @Query("delete from Point x where x.user.login = ?#{principal.username} and x.id = ?1")
     void deleteByUserIsCurrentUser(Long id);
 
-    @Query("select p from Point p where p.user.login = ?#{principal.username} and p.date between ?1 and ?2")
+    @Query("select x from Point x where x.user.login = ?#{principal.username} and x.date between ?1 and ?2")
     List<Point> findAllByDateBetweenAndUsersCurrentUser(LocalDate firstDate, LocalDate secondDate);
 }

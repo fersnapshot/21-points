@@ -19,11 +19,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing Preference.
@@ -54,7 +53,7 @@ public class PreferenceResource {
         }
 
         // sólo puede quedar uno
-        Optional<Preference> preferenceOptional = preferenceRepository.findByUserIsCurrentUser();
+        Optional<Preference> preferenceOptional = preferenceRepository.findOneByUserIsCurrentUser();
         if (preferenceOptional.isPresent()) {
             preferenceDTO.setId(preferenceOptional.get().getId());
         }
@@ -79,7 +78,12 @@ public class PreferenceResource {
         if (preferenceDTO.getId() == null) {
             return createPreference(preferenceDTO);
         }
-        Preference preference = preferenceMapper.preferenceDTOToPreference(preferenceDTO);
+        Preference preference = preferenceRepository.findOne(preferenceDTO.getId());
+        if (preference == null || !preference.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        preference = preferenceMapper.preferenceDTOToPreference(preferenceDTO);
         preference = preferenceRepository.save(preference);
         PreferenceDTO result = preferenceMapper.preferenceToPreferenceDTO(preference);
         return ResponseEntity.ok()
@@ -97,10 +101,14 @@ public class PreferenceResource {
     @Transactional(readOnly = true)
     public List<PreferenceDTO> getAllPreferences() {
         log.debug("REST request to get all Preferences");
-        return StreamSupport.stream(preferenceRepository.findAll().spliterator(), false)
-            .map(preferenceMapper::preferenceToPreferenceDTO)
-            .collect(Collectors.toCollection(LinkedList::new));
-            }
+        
+        Optional<Preference> preferenceOpt = preferenceRepository.findOneByUserIsCurrentUser();
+        if (preferenceOpt.isPresent()) {
+        	return Arrays.asList(preferenceOpt.map(preferenceMapper::preferenceToPreferenceDTO).get());
+        }
+        		
+        return new ArrayList<>();
+    }
 
     /**
      * GET  /preferences/:id -> get the "id" preference.
@@ -112,6 +120,9 @@ public class PreferenceResource {
     public ResponseEntity<PreferenceDTO> getPreference(@PathVariable Long id) {
         log.debug("REST request to get Preference : {}", id);
         Preference preference = preferenceRepository.findOne(id);
+        if (preference == null || !preference.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
         return Optional.ofNullable(preferenceDTO)
             .map(result -> new ResponseEntity<>(
@@ -129,6 +140,10 @@ public class PreferenceResource {
     @Timed
     public ResponseEntity<Void> deletePreference(@PathVariable Long id) {
         log.debug("REST request to delete Preference : {}", id);
+        Preference preference = preferenceRepository.findOne(id);
+        if (preference == null || !preference.getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin())) {
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         preferenceRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("preference", id.toString())).build();
     }
@@ -142,10 +157,10 @@ public class PreferenceResource {
     @Timed
     public ResponseEntity<PreferenceDTO> getUserPreference() {
         log.debug("REST request to get Preference : {}", SecurityUtils.getCurrentUserLogin());
-        Optional<Preference> preference = preferenceRepository.findByUserIsCurrentUser();
+        Optional<Preference> preferenceOpt = preferenceRepository.findOneByUserIsCurrentUser();
         PreferenceDTO preferenceDTO;
-        if (preference.isPresent()) {
-            preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference.get());
+        if (preferenceOpt.isPresent()) {
+            preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preferenceOpt.get());
         } else {
             preferenceDTO = new PreferenceDTO();
             preferenceDTO.setWeeklyGoal(10);

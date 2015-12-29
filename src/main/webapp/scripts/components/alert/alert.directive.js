@@ -45,8 +45,13 @@ angular.module('21pointsApp')
                                 var errorHeader = httpResponse.headers('X-21pointsApp-error');
                                 var entityKey = httpResponse.headers('X-21pointsApp-params');
                                 if (errorHeader) {
-                                    var entityName = $translate.instant('global.menu.entities.' + entityKey);
-                                    addErrorAlert(errorHeader, errorHeader, {entityName: entityName});
+                                    var pos = errorHeader.search("error.");
+                                    if (pos === -1) {
+                                        var entityName = $translate.instant('global.menu.entities.' + entityKey);
+                                        addErrorAlert(errorHeader, errorHeader, {entityName: entityName});
+                                    } else {
+                                        addErrorAlert(errorHeader, errorHeader, {param: entityKey});                                        
+                                    }
                                 } else if (httpResponse.data && httpResponse.data.fieldErrors) {
                                     for (i = 0; i < httpResponse.data.fieldErrors.length; i++) {
                                         var fieldError = httpResponse.data.fieldErrors[i];

@@ -51,7 +51,7 @@ angular.module('21pointsApp')
                 parent: 'bloodPressure',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -74,14 +74,14 @@ angular.module('21pointsApp')
                         $state.go('bloodPressure', null, { reload: true });
                     }, function() {
                         $state.go('bloodPressure');
-                    })
+                    });
                 }]
             })
             .state('bloodPressure.edit', {
                 parent: 'bloodPressure',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -97,14 +97,14 @@ angular.module('21pointsApp')
                         $state.go('bloodPressure', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             })
             .state('bloodPressure.delete', {
                 parent: 'bloodPressure',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -112,15 +112,15 @@ angular.module('21pointsApp')
                         controller: 'BloodPressureDeleteController',
                         size: 'md',
                         resolve: {
-                            entity: ['BloodPressure', function(BloodPressure) {
-                                return BloodPressure.get({id : $stateParams.id});
-                            }]
+                            id: function() {
+                                return $stateParams.id;
+                            }
                         }
                     }).result.then(function(result) {
                         $state.go('bloodPressure', null, { reload: true });
                     }, function() {
                         $state.go('^');
-                    })
+                    });
                 }]
             });
     });
