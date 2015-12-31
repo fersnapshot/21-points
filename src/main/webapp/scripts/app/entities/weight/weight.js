@@ -57,7 +57,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/weight/weight-dialog.html',
                         controller: 'WeightDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: function () {
                                 var now = new Date();
@@ -86,7 +86,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/weight/weight-dialog.html',
                         controller: 'WeightDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: ['Weight', function(Weight) {
                                 return Weight.get({id : $stateParams.id});

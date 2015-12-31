@@ -37,6 +37,11 @@ public class Preference implements Serializable {
     @Column(name = "weight_units", nullable = false)
     private Units weightUnits;
 
+    @NotNull
+    @Min(value = 1)
+    @Column(name = "days", nullable = false)
+    private Integer days;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -64,6 +69,14 @@ public class Preference implements Serializable {
 
     public void setWeightUnits(Units weightUnits) {
         this.weightUnits = weightUnits;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
     }
 
     public User getUser() {
@@ -97,6 +110,7 @@ public class Preference implements Serializable {
             "id=" + id +
             ", weeklyGoal='" + weeklyGoal + "'" +
             ", weightUnits='" + weightUnits + "'" +
+            ", days='" + days + "'" +
             '}';
     }
 }

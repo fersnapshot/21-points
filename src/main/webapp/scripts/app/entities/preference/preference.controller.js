@@ -20,6 +20,7 @@ angular.module('21pointsApp')
             $scope.preference = {
                 weeklyGoal: null,
                 weightUnits: null,
+                days: null,
                 id: null
             };
         };

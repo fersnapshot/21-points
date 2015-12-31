@@ -29,6 +29,16 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "days",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": "1"
         }
     ],
     "changelogDate": "20151212160052",

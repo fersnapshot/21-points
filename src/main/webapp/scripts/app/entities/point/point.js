@@ -57,7 +57,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/point/point-dialog.html',
                         controller: 'PointDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: function () {     // valores por defecto para nueva entidad
                                 return {
@@ -88,7 +88,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/point/point-dialog.html',
                         controller: 'PointDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: ['Point', function(Point) {
                                 return Point.get({id : $stateParams.id});

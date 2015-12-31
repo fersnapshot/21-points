@@ -12,7 +12,7 @@ import com.desprogramar.jhipster.domain.enumeration.Units;
 public class PreferenceDTO implements Serializable {
 
 	private static final long serialVersionUID = -547900858488314L;
-
+	
 	private Long id;
 
     @NotNull
@@ -23,18 +23,23 @@ public class PreferenceDTO implements Serializable {
     @NotNull
     private Units weightUnits;
 
+    @NotNull
+    @Min(value = 1)
+    private Integer days;
+
     public PreferenceDTO() {
 		super();
 	}
 
-    public PreferenceDTO(Long id, Integer weeklyGoal, Units weightUnits) {
+    public PreferenceDTO(Long id, Integer weeklyGoal, Units weightUnits, Integer days) {
 		this();
 		this.id = id;
 		this.weeklyGoal = weeklyGoal;
 		this.weightUnits = weightUnits;
+		this.days = days;
 	}
-
-	public Long getId() {
+    
+    public Long getId() {
         return id;
     }
 
@@ -56,6 +61,14 @@ public class PreferenceDTO implements Serializable {
 
     public void setWeightUnits(Units weightUnits) {
         this.weightUnits = weightUnits;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
     }
 
     @Override
@@ -85,6 +98,7 @@ public class PreferenceDTO implements Serializable {
             "id=" + id +
             ", weeklyGoal='" + weeklyGoal + "'" +
             ", weightUnits='" + weightUnits + "'" +
+            ", days='" + days + "'" +
             '}';
     }
 }

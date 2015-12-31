@@ -24,14 +24,19 @@
         },
         "weight": {
             "name": "Peso",
-            "add": "Engadir Peso"
+            "add": "Engadir Peso",
+            "no-datos": "Non hai lecturas do peso.",
+            "title": "Últimos {{days}} días",
+            "xAxis": "Datas",
+            "yAxis": "Peso",
+            "weight": "Peso"
         },
         "blood": {
             "name": "Presión Arterial",
             "add": "Engadir Presión Arterial",
             "addMobile": "Engadir PA",
             "no-datos": "Non hai lecturas da presión arterial.",
-            "title": "Últimos 30 días",
+            "title": "Últimos {{days}} días",
             "xAxis": "Datas",
             "yAxis": "Presión Arterial",
             "systolic": "Alta",

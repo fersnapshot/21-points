@@ -41,10 +41,30 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label" translate="21pointsApp.preference.days" for="field_days">Days</label>
+            <input type="number" class="form-control" name="days" id="field_days"
+                    ng-model="preference.days"
+                    required min="1" />
+            <div ng-show="editForm.days.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.days.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.days.$error.min" translate="entity.validation.min" translate-value-min="1">
+                    This field should be more than 1.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.days.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label" translate="21pointsApp.preference.weightUnits" for="field_weightUnits">WeightUnits</label>
             <select class="form-control" name="weightUnits" ng-model="preference.weightUnits" id="field_weightUnits" required>
                 <option value="kg" translate="21pointsApp.Units.kg">kg</option>
-                <option value="lg" translate="21pointsApp.Units.lg">lg</option>
+                <option value="lb" translate="21pointsApp.Units.lb">lb</option>
             </select>
             <div ng-show="editForm.weightUnits.$invalid">
                 <p class="help-block"

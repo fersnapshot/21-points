@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('21pointsApp')
-        .controller('MainController', function ($scope, Principal, Point, Preference, BloodPressure, Chart, $translate) {
+        .controller('MainController', function ($scope, Principal, Point, Preference, BloodPressure, Weight, LineChart, $translate) {
             Principal.identity().then(function (account) {
                 $scope.account = account;
                 $scope.isAuthenticated = Principal.isAuthenticated;
@@ -14,13 +14,18 @@ angular.module('21pointsApp')
                 $scope.preferences = data;
             });
 
-            BloodPressure.lastDays({days: 30}, function (bpReadings) {
+            BloodPressure.lastDays(function (bpReadings) {
                 $scope.existeBpReadings = bpReadings.readings.length;
                 if ($scope.existeBpReadings) {
-                    $scope.bpOptions = angular.copy(Chart.getBpChartConfig());
+                    $scope.bpOptions = angular.copy(LineChart.getLineChartConfig());
                     //$scope.bpOptions.title.text = bpReadings.period;
                     //$scope.bpOptions.chart.yAxis.axisLabel = "Blood Pressure";
-                    traducciones();
+                    traduccionesBP(bpReadings.period);
+                    var today = new Date();
+                    var priorDate = new Date();
+                    priorDate.setDate(today.getDate() - bpReadings.period);
+                    priorDate.setHours(0,0,0,0);
+                    $scope.bpOptions.chart.xDomain = [priorDate, today];
                     var systolics, diastolics;
                     systolics = [];
                     diastolics = [];
@@ -45,11 +50,10 @@ angular.module('21pointsApp')
                             color: '#03a9f4'
                         }];
                 }
-
             });
             
-            function traducciones() {
-                $translate('main.blood.title').then(function (title) {
+            function traduccionesBP(days) {
+                $translate('main.blood.title', {days: days}).then(function (title) {
                     $scope.bpOptions.title.text = title;
                 });   
                 $translate('main.blood.xAxis').then(function (xAxis) {
@@ -65,5 +69,46 @@ angular.module('21pointsApp')
                     $scope.bpData[1].key = diastolic;
                 });   
             }
+
+            Weight.lastDays(function (wReadings) {
+                $scope.existeWReadings = wReadings.readings.length;
+                if ($scope.existeWReadings) {
+                    $scope.wOptions = angular.copy(LineChart.getLineChartConfig());
+                    traduccionesW(wReadings.period);
+                    var today = new Date();
+                    var priorDate = new Date().setDate(today.getDate() - wReadings.period);
+                    $scope.wOptions.chart.xDomain = [priorDate, today];
+                    var weights = [];
+                    wReadings.readings.forEach(function (item) {
+                        var fecha = new Date(item.timestamp);
+                        weights.push({
+                            x: fecha,
+                            y: item.weight
+                        });
+                    });
+                    $scope.wData = [{
+                            values: weights,
+                            key: 'Weights',
+                            color: '#673ab7'
+                        }];
+                }
+            });
+            
+            function traduccionesW(days) {
+                $translate('main.weight.title', {days: days}).then(function (title) {
+                    $scope.wOptions.title.text = title;
+                });   
+                $translate('main.weight.xAxis').then(function (xAxis) {
+                    $scope.wOptions.chart.xAxis.axisLabel = xAxis;
+                });   
+                $translate('main.weight.yAxis', {units: $scope.preferences.weightUnits}).then(function (yAxis) {
+                    $scope.wOptions.chart.yAxis.axisLabel = yAxis;
+                });   
+                $translate('main.weight.weight').then(function (weight) {
+                    $scope.wData[0].key = weight;
+                });   
+            }
+            
+            $translate.refresh();
 
         });

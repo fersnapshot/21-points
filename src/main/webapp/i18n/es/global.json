@@ -9,7 +9,7 @@
                 "main": "Entidades",
                 "point": "Puntos",
                 "weight": "Pesos",
-                "bloodPressure": "Presión Sanguínea",
+                "bloodPressure": "Presión Arterial",
                 "preference": "Preferencias",
                 "jhipster-needle-004": "JHipster will add additional entities here (do not translate!)"
             },
@@ -121,5 +121,5 @@
         "idexists": "La nueva {{entityName}} ya existe!",
         "idNoExists": "El ID {{ param }} no existe!"
     },
-    "footer": "pie de página"
+    "footer": "By <a href='http://www.desprogramar.com' target='_blank'>desprogramar</a>"
 }

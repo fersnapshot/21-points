@@ -7,93 +7,115 @@
             <h1 translate="main.title" translate-values="{name: '{{account.login ? account.login : 'Java Hipster'}}'}">Welcome, Java Hipster!</h1>
             <p class="lead" translate="main.subtitle">This is your homepage</p>
 
-            <br><hr>
             <div ng-switch="isAuthenticated()">
                 <div ng-switch-when="true">
 
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-8 col-md-9">
-                            <h4>
-                                <span class="hidden-xs" translate="main.point.thisWeek" translate-values="{date: '{{pointsThisWeek.week | date: 'longDate'}}'}">
-                                    Puntos de la semana del {{pointsThisWeek.week | date: 'longDate'}}
-                                </span>
-                                <span class="visible-xs" translate="main.point.thisWeekMobile" translate-values="{date: '{{pointsThisWeek.week | date: 'mediumDate'}}'}">
-                                    Puntos del {{pointsThisWeek.week | date: 'mediumDate'}}
-                                </span>
-                            </h4>
-                        </div>
-                        <div class="col-xs-6 col-sm-4 col-md-3 text-right">
-                            <a ui-sref="point.add" translate="main.point.add" class="btn btn-default">Add Points</a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="progress" ng-if="pointsThisWeek.points">
-                                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                    ng-class="{'progress-bar-warning': pointsThisWeek.points < 10,
-                                                'progress-bar-info': pointsThisWeek.points >= 10 && pointsThisWeek.points < preferences.weeklyGoal,
-                                                'progress-bar-success': pointsThisWeek.points >= preferences.weeklyGoal}"
-                                    aria-valuenow="{{pointsThisWeek.points}}" aria-valuemin="0" aria-valuemax="21" style="width: {{pointsPercentage}}%">
-                                    <span ng-show="pointsThisWeek.points">{{pointsThisWeek.points}} / {{preferences.weeklyGoal}}</span>
-                                    <span class="sr-only" translate="main.point.points" translate-values="{points: '{{pointsThisWeek.points}}'}">{{pointsThisWeek.points}} puntos exta semana</span>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-8 col-md-9">
+                                    <h4>
+                                        <span class="hidden-xs" translate="main.point.thisWeek" translate-values="{date: '{{pointsThisWeek.week| date: 'longDate'}}'}">
+                                            Puntos de la semana del {{pointsThisWeek.week| date: 'longDate'}}
+                                        </span>
+                                        <span class="visible-xs" translate="main.point.thisWeekMobile" translate-values="{date: '{{pointsThisWeek.week| date: 'mediumDate'}}'}">
+                                            Puntos del {{pointsThisWeek.week| date: 'mediumDate'}}
+                                        </span>
+                                    </h4>
+                                </div>
+                                <div class="col-xs-6 col-sm-4 col-md-3 text-right">
+                                    <a ui-sref="point.add" translate="main.point.add" class="btn btn-default">Add Points</a>
                                 </div>
                             </div>
-                            <div class="alert alert-info" ng-if="!pointsThisWeek.points" translate="main.point.no-datos">
-                                No hay puntos todavía esta semana, sólo hazlo!
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="progress" ng-if="pointsThisWeek.points">
+                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                             ng-class="{'progress-bar-warning': pointsThisWeek.points < 10,
+                                                'progress-bar-info': pointsThisWeek.points >= 10 && pointsThisWeek.points < preferences.weeklyGoal,
+                                                'progress-bar-success': pointsThisWeek.points >= preferences.weeklyGoal}"
+                                             aria-valuenow="{{pointsThisWeek.points}}" aria-valuemin="0" aria-valuemax="21" style="width: {{pointsPercentage}}%">
+                                            <span ng-show="pointsThisWeek.points">{{pointsThisWeek.points}} / {{preferences.weeklyGoal}}</span>
+                                            <span class="sr-only" translate="main.point.points" translate-values="{points: '{{pointsThisWeek.points}}'}">{{pointsThisWeek.points}} puntos exta semana</span>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info" ng-if="!pointsThisWeek.points" translate="main.point.no-datos">
+                                        No hay puntos todavía esta semana, sólo hazlo!
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
 
-                    <hr>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <h4 translate="main.blood.name">Presión Sanguínea</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h4 translate="main.blood.name">Presión Sanguínea</h4>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <a ui-sref="blood-add" class="btn btn-default">
+                                        <span translate="main.blood.add" class="hidden-xs">Add Presión Sanguínea</span>
+                                        <span translate="main.blood.addMobile" class="visible-xs">Add PS</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-6 text-right">
-                            <a ui-sref="blood.add" class="btn btn-default">
-                                <span translate="main.blood.add" class="hidden-xs">Add Presión Sanguínea</span>
-                                <span translate="main.blood.addMobile" class="visible-xs">Add PS</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div ng-if="existeBpReadings" style="border: 1px solid #ccc">
+                        <div class="panel-body">
+                            <div ng-if="existeBpReadings">
                                 <nvd3 options="bpOptions" data="bpData" class="with-3d-shadow with-transitions"></nvd3>
                             </div>
                             <div ng-if="!existeBpReadings">
                                 <uib-alert type="info">
                                     <span translate="main.blood.no-datos">No blood pressure readings found.</span>
                                 </uib-alert>
+                            </div>  
+                        </div>
+                    </div>                    
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6 col-md-8">
+                                    <h4 translate="main.weight.name">Peso</h4>
+                                </div>
+                                <div class="col-xs-6 col-md-4 text-right">
+                                    <a ui-sref="weight.add" translate="main.weight.add" class="btn btn-default">Add Peso</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <hr>
-                    <div class="row">
-                        <div class="col-xs-6 col-md-8">
-                            <h4 translate="main.weight.name">Peso</h4>
+                        <div class="panel-body">
+                            <div ng-if="existeWReadings">
+                                <nvd3 options="wOptions" data="wData" class="with-3d-shadow with-transitions"></nvd3>
+                            </div>
+                            <div ng-if="!existeWReadings">
+                                <uib-alert type="info">
+                                    <span translate="main.weight.no-datos">No weight readings found.</span>
+                                </uib-alert>
+                            </div>  
                         </div>
-                        <div class="col-xs-6 col-md-4 text-right">
-                            <a ui-sref="weight.add" translate="main.weight.add" class="btn btn-default">Add Peso</a>
+                    </div>                    
+                    
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6 col-md-8">
+                                    <h4 translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
+                                        You are logged in as user "{{account.login}}".
+                                    </h4>
+                                </div>
+                                <div class="col-xs-6 col-md-4 text-right">
+                                    <a ui-sref="preference.add" translate="main.preference.add" class="btn btn-default">
+                                        Add Preferences
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </div>                    
 
-                    <hr>
-                    <div class="row">
-                        <div class="col-xs-12 text-right">
-                            <a ui-sref="preference.add" translate="main.preference.add" class="btn btn-default">
-                                Add Preferences
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="alert alert-success" role="alert" translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
-                        You are logged in as user "{{account.login}}".
-                    </div>
+                    
                 </div>
 
                 <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.authenticated">

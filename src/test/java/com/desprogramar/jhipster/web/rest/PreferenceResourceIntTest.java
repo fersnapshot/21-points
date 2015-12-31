@@ -4,6 +4,7 @@ import com.desprogramar.jhipster.Application;
 import com.desprogramar.jhipster.domain.Preference;
 import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.PreferenceRepository;
+import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.service.UserService;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 import com.desprogramar.jhipster.web.rest.mapper.PreferenceMapper;
@@ -54,7 +55,10 @@ public class PreferenceResourceIntTest {
     private static final Integer UPDATED_WEEKLY_GOAL = 11;
 
     private static final Units DEFAULT_WEIGHT_UNITS = Units.kg;
-    private static final Units UPDATED_WEIGHT_UNITS = Units.lg;
+    private static final Units UPDATED_WEIGHT_UNITS = Units.lb;
+
+    private static final Integer DEFAULT_DAYS = 1;
+    private static final Integer UPDATED_DAYS = 2;
 
     @Inject
     private PreferenceRepository preferenceRepository;
@@ -75,12 +79,16 @@ public class PreferenceResourceIntTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PreferenceService preferenceService;
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         PreferenceResource preferenceResource = new PreferenceResource();
         ReflectionTestUtils.setField(preferenceResource, "preferenceRepository", preferenceRepository);
         ReflectionTestUtils.setField(preferenceResource, "preferenceMapper", preferenceMapper);
+        ReflectionTestUtils.setField(preferenceResource, "preferenceService", preferenceService);
         this.restPreferenceMockMvc = MockMvcBuilders.standaloneSetup(preferenceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -111,6 +119,7 @@ public class PreferenceResourceIntTest {
         preference = new Preference();
         preference.setWeeklyGoal(DEFAULT_WEEKLY_GOAL);
         preference.setWeightUnits(DEFAULT_WEIGHT_UNITS);
+        preference.setDays(DEFAULT_DAYS);
     }
 
     @Test
@@ -135,7 +144,8 @@ public class PreferenceResourceIntTest {
         Preference testPreference = preferences.get(preferences.size() - 1);
         assertThat(testPreference.getWeeklyGoal()).isEqualTo(DEFAULT_WEEKLY_GOAL);
         assertThat(testPreference.getWeightUnits()).isEqualTo(DEFAULT_WEIGHT_UNITS);
-
+        assertThat(testPreference.getDays()).isEqualTo(DEFAULT_DAYS);
+        
         this.deleteUsuarioConRolUser();
     }
 
@@ -179,6 +189,25 @@ public class PreferenceResourceIntTest {
 
     @Test
     @Transactional
+    public void checkDaysIsRequired() throws Exception {
+        int databaseSizeBeforeTest = preferenceRepository.findAll().size();
+        // set the field null
+        preference.setDays(null);
+
+        // Create the Preference, which fails.
+        PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
+
+        restPreferenceMockMvc.perform(post("/api/preferences")
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(preferenceDTO)))
+                .andExpect(status().isBadRequest());
+
+        List<Preference> preferences = preferenceRepository.findAll();
+        assertThat(preferences).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPreferences() throws Exception {
     	
     	preference.setUser(createUsuarioConRolUser());
@@ -192,7 +221,8 @@ public class PreferenceResourceIntTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(preference.getId().intValue())))
                 .andExpect(jsonPath("$.[*].weeklyGoal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
-                .andExpect(jsonPath("$.[*].weightUnits").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
+                .andExpect(jsonPath("$.[*].weightUnits").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())))
+                .andExpect(jsonPath("$.[*].days").value(hasItem(DEFAULT_DAYS)));
         
         this.deleteUsuarioConRolUser();
     }
@@ -212,7 +242,8 @@ public class PreferenceResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(preference.getId().intValue()))
             .andExpect(jsonPath("$.weeklyGoal").value(DEFAULT_WEEKLY_GOAL))
-            .andExpect(jsonPath("$.weightUnits").value(DEFAULT_WEIGHT_UNITS.toString()));
+            .andExpect(jsonPath("$.weightUnits").value(DEFAULT_WEIGHT_UNITS.toString()))
+            .andExpect(jsonPath("$.days").value(DEFAULT_DAYS));
         
         this.deleteUsuarioConRolUser();
     }
@@ -239,6 +270,7 @@ public class PreferenceResourceIntTest {
         // Update the preference
         preference.setWeeklyGoal(UPDATED_WEEKLY_GOAL);
         preference.setWeightUnits(UPDATED_WEIGHT_UNITS);
+        preference.setDays(UPDATED_DAYS);
         PreferenceDTO preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preference);
 
         restPreferenceMockMvc.perform(put("/api/preferences")
@@ -252,6 +284,7 @@ public class PreferenceResourceIntTest {
         Preference testPreference = preferences.get(preferences.size() - 1);
         assertThat(testPreference.getWeeklyGoal()).isEqualTo(UPDATED_WEEKLY_GOAL);
         assertThat(testPreference.getWeightUnits()).isEqualTo(UPDATED_WEIGHT_UNITS);
+        assertThat(testPreference.getDays()).isEqualTo(UPDATED_DAYS);
 
         this.deleteUsuarioConRolUser();
     }

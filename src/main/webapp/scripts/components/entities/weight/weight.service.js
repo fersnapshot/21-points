@@ -12,6 +12,12 @@ angular.module('21pointsApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'lastDays': { 
+                method: 'GET',
+                url: '/api/w-by-days',
+                transformResponse: function (data) {
+                    return angular.fromJson(data);
+                }}
         });
     });

@@ -2,8 +2,8 @@
     "21pointsApp": {
         "Units" : {
             "null": "",
-            "kg": "kg",
-            "lg": "lg"
+            "kg": "Quilos",
+            "lb": "Libras"
         }
     }
 }

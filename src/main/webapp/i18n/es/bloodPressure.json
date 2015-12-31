@@ -3,9 +3,8 @@
         "bloodPressure" : {
             "home": {
                 "title": "Presión Arterial",
-                "createLabel": "Añadir Presión",
-                "editLabel": "Editar Presión",
-                "search": "Buscar"
+                "createLabel": "Añadir Presión Arterial",
+                "editLabel": "Editar Presión Arterial"
             },
             "created": "Presión añadida.",
             "updated": "Presión actualizada.",

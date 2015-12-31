@@ -3,8 +3,8 @@
         "preference" : {
             "home": {
                 "title": "Preferencias",
-                "createLabel": "Crear Preferencias",
-                "editLabel": "Editar Preferencias"
+                "createLabel": "Preferencias",
+                "editLabel": "Preferencias"
             },
             "created": "Preferencias engadidas.",
             "updated": "Preferencias actualizadas.",
@@ -15,8 +15,9 @@
             "detail": {
                 "title": "Preferencias"
             },
-            "weeklyGoal": "Obxectivo Semanal",
+            "weeklyGoal": "Puntos Obxectivo Semanal",
             "weightUnits": "Unidades de Peso",
+            "days": "Gráficas dos últimos días",
             "user": "Usuario"
         }
     }

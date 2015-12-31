@@ -18,7 +18,7 @@ public class PreferenceMapper {
 
     public PreferenceDTO preferenceToPreferenceDTO(Preference p) {
     	if (p == null)  return null;
-    	return new PreferenceDTO(p.getId(), p.getWeeklyGoal(), p.getWeightUnits());
+    	return new PreferenceDTO(p.getId(), p.getWeeklyGoal(), p.getWeightUnits(), p.getDays());
     }
 
     public Preference preferenceDTOToPreference(PreferenceDTO preferenceDTO) {
@@ -28,6 +28,7 @@ public class PreferenceMapper {
         preference.setId(preferenceDTO.getId());
         preference.setWeeklyGoal(preferenceDTO.getWeeklyGoal());
         preference.setWeightUnits(preferenceDTO.getWeightUnits());
+        preference.setDays(preferenceDTO.getDays());
         return preference;
     }
 

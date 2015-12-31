@@ -4,11 +4,13 @@ import com.codahale.metrics.annotation.Timed;
 import com.desprogramar.jhipster.domain.Preference;
 import com.desprogramar.jhipster.repository.PreferenceRepository;
 import com.desprogramar.jhipster.security.SecurityUtils;
+import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.dto.PreferenceDTO;
 import com.desprogramar.jhipster.web.rest.mapper.PreferenceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,9 @@ public class PreferenceResource {
 
     @Inject
     private PreferenceMapper preferenceMapper;
+    
+    @Autowired
+    private PreferenceService preferenceService;
 
     /**
      * POST  /preferences -> Create a new preference.
@@ -157,15 +162,7 @@ public class PreferenceResource {
     @Timed
     public ResponseEntity<PreferenceDTO> getUserPreference() {
         log.debug("REST request to get Preference : {}", SecurityUtils.getCurrentUserLogin());
-        Optional<Preference> preferenceOpt = preferenceRepository.findOneByUserIsCurrentUser();
-        PreferenceDTO preferenceDTO;
-        if (preferenceOpt.isPresent()) {
-            preferenceDTO = preferenceMapper.preferenceToPreferenceDTO(preferenceOpt.get());
-        } else {
-            preferenceDTO = new PreferenceDTO();
-            preferenceDTO.setWeeklyGoal(10);
-        }
-        return new ResponseEntity<>(preferenceDTO, HttpStatus.OK);
+        return new ResponseEntity<>(preferenceService.getUserPreference(), HttpStatus.OK);
     }
-
+    
 }

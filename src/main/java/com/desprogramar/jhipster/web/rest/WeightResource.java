@@ -7,6 +7,8 @@ import com.desprogramar.jhipster.repository.WeightRepository;
 import com.desprogramar.jhipster.repository.search.WeightSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
+import com.desprogramar.jhipster.service.PreferenceService;
+import com.desprogramar.jhipster.web.rest.dto.WeightByPeriod;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -48,6 +51,9 @@ public class WeightResource {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PreferenceService preferenceService;
+    
     /**
      * POST  /weights -> Create a new weight.
      */
@@ -166,4 +172,23 @@ public class WeightResource {
             .stream(weightSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+    
+    /**
+     * GET  /w-by-days/:days -> get the "days" del período.
+     */
+    @RequestMapping(value = "/w-by-days",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<WeightByPeriod> getByDays() {
+    	Integer days = preferenceService.getUserPreference().getDays();
+    	log.debug("REST request to get Weight del período de días: {}", days);
+    	ZonedDateTime now = ZonedDateTime.now().withNano(0);
+    	ZonedDateTime desde = now.minusDays(days).withHour(0).withMinute(0).withSecond(0);
+    	
+    	List<Weight> weightList = weightRepository.findByTimestampAfterCurrentUserOrderByTime(desde, now);
+    	WeightByPeriod lastDaysDTO = new WeightByPeriod(days, weightList);
+    	return new ResponseEntity<>(lastDaysDTO, HttpStatus.OK);
+    }
+
 }

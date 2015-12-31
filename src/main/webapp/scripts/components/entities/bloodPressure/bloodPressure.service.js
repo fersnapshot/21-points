@@ -20,7 +20,7 @@
             'update': { method:'PUT' },
             'lastDays': { 
                 method: 'GET',
-                url: '/api/bp-by-days/:days',
+                url: '/api/bp-by-days',
                 transformResponse: function (data) {
                     return angular.fromJson(data);
                 }}

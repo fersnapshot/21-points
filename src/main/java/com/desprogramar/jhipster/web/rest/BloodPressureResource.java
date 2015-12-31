@@ -7,6 +7,7 @@ import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.BloodPressureSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
+import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.web.rest.dto.BloodPressureByPeriod;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
@@ -49,6 +50,9 @@ public class BloodPressureResource {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private PreferenceService preferenceService;
     
     /**
      * POST  /bloodPressures -> Create a new bloodPressure.
@@ -174,11 +178,12 @@ public class BloodPressureResource {
     /**
      * GET  /bp-by-days/:days -> get the "days" del período.
      */
-    @RequestMapping(value = "/bp-by-days/{days}",
+    @RequestMapping(value = "/bp-by-days",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<BloodPressureByPeriod> getByDays(@PathVariable Integer days) {
+    public ResponseEntity<BloodPressureByPeriod> getByDays() {
+    	Integer days = preferenceService.getUserPreference().getDays();
         log.debug("REST request to get BloodPressure del período de días: {}", days);
     	ZonedDateTime now = ZonedDateTime.now().withNano(0);
     	ZonedDateTime desde = now.minusDays(days).withHour(0).withMinute(0).withSecond(0);

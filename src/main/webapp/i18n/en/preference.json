@@ -3,20 +3,21 @@
         "preference" : {
             "home": {
                 "title": "Preferences",
-                "createLabel": "Add Preference",
-                "editLabel": "Edit Preference"
+                "createLabel": "Preferences",
+                "editLabel": "Preferences"
             },
-            "created": "Preference added successfully.",
-            "updated": "Preference updated successfully.",
-            "deleted": "Preference deleted.",
+            "created": "Preferences added successfully.",
+            "updated": "Preferences updated successfully.",
+            "deleted": "Preferences deleted.",
             "delete": {
                 "question": "Are you sure you want to delete this?"
             },
             "detail": {
-                "title": "Preference"
+                "title": "Preferences"
             },
-            "weeklyGoal": "Weekly Goal",
+            "weeklyGoal": "Weekly Goal Points",
             "weightUnits": "Weight Units",
+            "days": "Charts last days",
             "user": "User"
         }
     }

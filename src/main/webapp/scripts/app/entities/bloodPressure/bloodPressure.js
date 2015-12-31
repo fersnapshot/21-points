@@ -57,7 +57,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/bloodPressure/bloodPressure-dialog.html',
                         controller: 'BloodPressureDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: function () {
                                 var now = new Date();
@@ -87,7 +87,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/bloodPressure/bloodPressure-dialog.html',
                         controller: 'BloodPressureDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: ['BloodPressure', function(BloodPressure) {
                                 return BloodPressure.get({id : $stateParams.id});

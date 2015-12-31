@@ -6,6 +6,7 @@ import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.BloodPressureRepository;
 import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.BloodPressureSearchRepository;
+import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.service.UserService;
 
 import org.junit.Before;
@@ -92,6 +93,9 @@ public class BloodPressureResourceIntTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PreferenceService preferenceService;
+    
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -99,6 +103,7 @@ public class BloodPressureResourceIntTest {
         ReflectionTestUtils.setField(bloodPressureResource, "bloodPressureSearchRepository", bloodPressureSearchRepository);
         ReflectionTestUtils.setField(bloodPressureResource, "bloodPressureRepository", bloodPressureRepository);
         ReflectionTestUtils.setField(bloodPressureResource, "userRepository", userRepository);
+        ReflectionTestUtils.setField(bloodPressureResource, "preferenceService", preferenceService);
         this.restBloodPressureMockMvc = MockMvcBuilders.standaloneSetup(bloodPressureResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -356,7 +361,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(jsonPath("$", hasSize(8)));
         
         // Get the blood pressure readings for the last 30 days
-        restBloodPressureMockMvc.perform(get("/api/bp-by-days/{days}", 30))
+        restBloodPressureMockMvc.perform(get("/api/bp-by-days"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

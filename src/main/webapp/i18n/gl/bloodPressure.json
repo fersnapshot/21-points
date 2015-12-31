@@ -3,8 +3,8 @@
         "bloodPressure" : {
             "home": {
                 "title": "Presión Arterial",
-                "createLabel": "Engadir Presión",
-                "editLabel": "Editar Presión",
+                "createLabel": "Engadir Presión Arterial",
+                "editLabel": "Editar Presión Arterial",
                 "search": "Buscar"
             },
             "created": "Presión engadida.",

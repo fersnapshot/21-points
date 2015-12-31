@@ -27,6 +27,9 @@
             <column name="weight_units" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="days" type="integer">
+                <constraints nullable="false" />
+            </column>
             <column name="user_id" type="bigint"/>
         </createTable>
         

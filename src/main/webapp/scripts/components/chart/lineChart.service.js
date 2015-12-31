@@ -3,13 +3,11 @@
 
     angular
             .module('21pointsApp')
-            .factory('Chart', Chart);
+            .factory('LineChart', LineChart);
 
-    Chart.$inject = ['$filter'];
-    function Chart($filter) {
-        var today = new Date();
-        var priorDate = new Date().setDate(today.getDate() - 30);
-        var bpChartConfig = {
+    LineChart.$inject = ['$filter'];
+    function LineChart($filter) {
+        var lineChartConfig = {
             chart: {
                 type: "lineChart",
                 height: 200,
@@ -35,7 +33,6 @@
                         return $filter('date')(new Date(d),'MMM d');
                     }
                 },
-                xDomain: [priorDate, today],
                 yAxis: {
                     axisLabel: "",
                     axisLabelDistance: -10
@@ -47,8 +44,8 @@
             }
         };
         return {
-            getBpChartConfig: function () {
-                return bpChartConfig;
+            getLineChartConfig: function () {
+                return lineChartConfig;
             }
         };
     }

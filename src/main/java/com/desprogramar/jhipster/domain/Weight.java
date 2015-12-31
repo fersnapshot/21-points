@@ -41,6 +41,16 @@ public class Weight implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+	public Weight() {
+		super();
+	}
+
+	public Weight(ZonedDateTime timestamp, Double weight, User user) {
+		this();
+		this.timestamp = timestamp;
+		this.weight = weight;
+		this.user = user;
+	}
 
     public Long getId() {
         return id;

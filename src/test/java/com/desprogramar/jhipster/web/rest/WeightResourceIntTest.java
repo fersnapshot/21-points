@@ -6,12 +6,16 @@ import com.desprogramar.jhipster.domain.Weight;
 import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.WeightRepository;
 import com.desprogramar.jhipster.repository.search.WeightSearchRepository;
+import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
+
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
@@ -39,6 +43,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -88,6 +93,9 @@ public class WeightResourceIntTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PreferenceService preferenceService;
+    
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -95,6 +103,7 @@ public class WeightResourceIntTest {
         ReflectionTestUtils.setField(weightResource, "weightSearchRepository", weightSearchRepository);
         ReflectionTestUtils.setField(weightResource, "weightRepository", weightRepository);
         ReflectionTestUtils.setField(weightResource, "userRepository", userRepository);
+        ReflectionTestUtils.setField(weightResource, "preferenceService", preferenceService);
         this.restWeightMockMvc = MockMvcBuilders.standaloneSetup(weightResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -293,4 +302,52 @@ public class WeightResourceIntTest {
         
         this.deleteUsuarioConRolUser();
     }
+    
+    private void createWeightByMonth() {
+		User user = this.createUsuarioConRolUser();
+		// this month
+    	ZonedDateTime now = ZonedDateTime.now().withNano(0);
+    	weight = new Weight(now, 80.0, user);
+    	weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(10), 80.10, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(20), 80.20, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(27), 80.27, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(28), 80.28, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(29), 80.29, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(30), 80.30, user);
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(now.minusDays(31), 80.31, user);
+		weightRepository.saveAndFlush(weight);
+    }
+    
+    @Test
+    @Transactional
+    public void getWeightForLast30Days() throws Exception {
+        createWeightByMonth();
+        
+        // Get all the blood pressure readings
+        restWeightMockMvc.perform(get("/api/weights"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(8)));
+        
+        // Get the blood pressure readings for the last 30 days
+        restWeightMockMvc.perform(get("/api/w-by-days"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.period").value(30))
+        	.andExpect(jsonPath("$.readings.[*].weight").value(hasItems(80.0, 80.10, 80.20, 80.27, 80.28, 80.29)))
+        	.andExpect(jsonPath("$.readings.[*].weight").value(hasItem(80.30)));
+//        	.andExpect(jsonPath("$.readings.[*].weight").value(hasItem(80.31)));	// ERROR minusDays(31)
+
+        this.deleteUsuarioConRolUser();
+    }
+
+
 }

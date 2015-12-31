@@ -24,14 +24,19 @@
         },
         "weight": {
             "name": "Weight",
-            "add": "Add Weight"
+            "add": "Add Weight",
+            "no-datos": "No weight readings found.",
+            "title": "Last {{days}} dates",
+            "xAxis": "Dates",
+            "yAxis": "Weight",
+            "weight": "Weight"
         },
         "blood": {
             "name": "Blood Pressure",
             "add": "Add Blood Pressure",
             "addMobile": "Add BP",
             "no-datos": "No blood pressure readings found.",
-            "title": "Last 30 dates",
+            "title": "Last {{days}} dates",
             "xAxis": "Dates",
             "yAxis": "Blood Pressure",
             "systolic": "Systolic",

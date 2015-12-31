@@ -59,12 +59,13 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/preference/preference-dialog.html',
                         controller: 'PreferenceDialogController',
-                        size: 'lg',
+                        size: 'sm',
                         resolve: {
                             entity: function () {
                                 return {
                                     weeklyGoal: null,
                                     weightUnits: null,
+                                    days: null,
                                     id: null
                                 };
                             }
@@ -86,7 +87,7 @@ angular.module('21pointsApp')
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/preference/preference-dialog.html',
                         controller: 'PreferenceDialogController',
-                        size: 'lg',
+                        size: 'sm',
                         resolve: {
                             entity: ['Preference', function(Preference) {
                                 return Preference.get({id : $stateParams.id});

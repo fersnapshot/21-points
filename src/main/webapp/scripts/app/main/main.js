@@ -28,13 +28,13 @@ angular.module('21pointsApp')
                 parent: 'home',
                 url: 'add/point',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/point/point-dialog.html',
                         controller: 'PointDialogController',
-                        size: 'lg',
+                        size: 'md',
                         resolve: {
                             entity: function () {     // valores por defecto para nueva entidad
                                 return {
@@ -52,7 +52,7 @@ angular.module('21pointsApp')
                         $state.go('home', null, { reload: true });
                     }, function() {
                         $state.go('home');
-                    })
+                    });
                 }],
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -63,17 +63,90 @@ angular.module('21pointsApp')
 
             })
 
+            .state('blood-add', {
+                parent: 'home',
+                url: 'add/blood',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/bloodPressure/bloodPressure-dialog.html',
+                        controller: 'BloodPressureDialogController',
+                        size: 'md',
+                        resolve: {
+                            entity: function () {
+                                var now = new Date();
+                                return {
+                                    version: null,
+                                    timestamp: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()),
+                                    systolic: null,
+                                    diastolic: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('home', null, { reload: true });
+                    }, function() {
+                        $state.go('home');
+                    });
+                }],
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('bloodPressure');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            
+            .state('weight.add', {
+                parent: 'home',
+                url: 'add/weight',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/weight/weight-dialog.html',
+                        controller: 'WeightDialogController',
+                        size: 'md',
+                        resolve: {
+                            entity: function () {
+                                var now = new Date();
+                                return {
+                                    version: null,
+                                    timestamp: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()),
+                                    weight: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function(result) {
+                        $state.go('home', null, { reload: true });
+                    }, function() {
+                        $state.go('home');
+                    });
+                }],
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('weight');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+
             .state('preference.add', {
                 parent: 'home',
                 url: 'my-preferences',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'scripts/app/entities/preference/preference-dialog.html',
                         controller: 'PreferenceDialogController',
-                        size: 'lg',
+                        size: 'sm',
                         resolve: {
                             entity: ['Preference', function(Preference) {
                                 return Preference.user();
@@ -83,7 +156,7 @@ angular.module('21pointsApp')
                         $state.go('home', null, { reload: true });
                     }, function() {
                         $state.go('home');
-                    })
+                    });
                 }],
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -93,5 +166,6 @@ angular.module('21pointsApp')
                     }]
                 }
             })
+            
         ;
     });
