@@ -23,4 +23,12 @@ angular.module('21pointsApp')
           return null;
         }
       };
+      this.convertUTCToLocal = function(date) {
+        if (date) {
+            date.setHours(0,0,0,0);
+            return new Date(date.getTime()-(date.getTimezoneOffset()*60*1000));
+        } else {
+          return null;
+        }
+      };
     });

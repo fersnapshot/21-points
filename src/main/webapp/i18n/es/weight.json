@@ -5,7 +5,8 @@
                 "title": "Pesos",
                 "createLabel": "Añadir Peso",
                 "editLabel": "Editar Peso",
-                "search": "Buscar"
+                "searchDate": "Desde Fecha",
+                "searchWeight": "Desde Peso"
             },
             "created": "Peso añadido.",
             "updated": "Peso actualizado.",

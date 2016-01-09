@@ -5,7 +5,8 @@
                 "title": "Daily Points",
                 "createLabel": "Add Points",
                 "editLabel": "Edit Points",
-                "search": "Search"
+                "searchDate": "From Date",
+                "searchNotes": "Notes"
             },
             "created": "Points added successfully.",
             "updated": "Points updated successfully.",

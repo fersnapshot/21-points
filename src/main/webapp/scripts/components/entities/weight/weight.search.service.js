@@ -1,8 +1,23 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('21pointsApp')
-    .factory('WeightSearch', function ($resource) {
-        return $resource('api/_search/weights/:query', {}, {
-            'query': { method: 'GET', isArray: true}
+    angular.module('21pointsApp')
+            .factory('WeightSearch', WeightSearch);
+
+    WeightSearch.$inject = ['$resource', 'DateUtils'];
+
+    function WeightSearch($resource, DateUtils) {
+        return $resource('api/_search/weights', {}, {
+            'query': {
+                method: 'POST',
+                isArray: true,
+                transformRequest: function (data) {
+                    data.date = DateUtils.convertUTCToLocal(data.date);
+                    return angular.toJson(data);
+                }
+            }
         });
-    });
+    }
+    
+})();
+

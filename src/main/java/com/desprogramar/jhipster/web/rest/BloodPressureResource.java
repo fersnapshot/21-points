@@ -9,8 +9,13 @@ import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.web.rest.dto.BloodPressureByPeriod;
+import com.desprogramar.jhipster.web.rest.dto.BloodPressureSearch;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
+
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,14 +169,30 @@ public class BloodPressureResource {
      * SEARCH  /_search/bloodPressures/:query -> search for the bloodPressure corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/bloodPressures/{query}",
-        method = RequestMethod.GET,
+    @RequestMapping(value = "/_search/bloodPressures",
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<BloodPressure> searchBloodPressures(@PathVariable String query) {
-        log.debug("REST request to search BloodPressures for query {}", query);
+    public List<BloodPressure> searchBloodPressures(@RequestBody BloodPressureSearch search) {
+        log.debug("REST request to search BloodPressures for {}", search);
+        AndFilterBuilder filter = new AndFilterBuilder();
+		if (search.getTimestamp() != null) {
+			filter.add(FilterBuilders.rangeFilter("timestamp").gte(search.getTimestampElastic()));
+		}
+		if (search.getSystolic() != null) {
+			filter.add(FilterBuilders.rangeFilter("systolic").gte(search.getSystolic()));
+		}
+		if (search.getDiastolic() != null) {
+			filter.add(FilterBuilders.rangeFilter("diastolic").gte(search.getDiastolic()));
+		}
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        	filter.add(FilterBuilders.termFilter("user.login", SecurityUtils.getCurrentUserLogin()));
+        }
+        QueryBuilder query = filteredQuery(null, filter);
+                
         return StreamSupport
-            .stream(bloodPressureSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(bloodPressureSearchRepository.search(query).spliterator(), false)
             .collect(Collectors.toList());
     }
     

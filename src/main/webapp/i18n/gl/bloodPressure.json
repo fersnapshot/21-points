@@ -2,19 +2,21 @@
     "21pointsApp": {
         "bloodPressure" : {
             "home": {
-                "title": "Presión Arterial",
-                "createLabel": "Engadir Presión Arterial",
-                "editLabel": "Editar Presión Arterial",
-                "search": "Buscar"
+                "title": "Tensión Arterial",
+                "createLabel": "Engadir Tensión Arterial",
+                "editLabel": "Editar Tensión Arterial",
+                "searchDate": "Desde Data",
+                "searchSystolic": "Desde Alta",
+                "searchDiastolic": "Desde Baixa"
             },
-            "created": "Presión engadida.",
-            "updated": "Presión actualizada.",
-            "deleted": "Presión eliminada.",
+            "created": "Tensión engadida.",
+            "updated": "Tensión actualizada.",
+            "deleted": "Tensión eliminada.",
             "delete": {
                 "question": "Seguro que queres eliminala?"
             },
             "detail": {
-                "title": "Presión Arterial"
+                "title": "Tensión Arterial"
             },
             "version": "Versión",
             "timestamp": "Día e Hora",

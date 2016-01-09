@@ -121,5 +121,11 @@
         "idexists": "A new {{entityName}} cannot already have an ID",
         "idNoExists": "The ID {{ param }} does not exist!"
     },
-    "footer": "By <a href='http://www.desprogramar.com' target='_blank'>desprogramar</a>"
+    "footer": "By <a href='http://www.desprogramar.com' target='_blank'>desprogramar</a>",
+    "datePicker": {
+        "current": "Today",
+        "clear": "Clear",
+        "close": "Close",
+        "options": "{'starting-day': 0}"
+    }
 }

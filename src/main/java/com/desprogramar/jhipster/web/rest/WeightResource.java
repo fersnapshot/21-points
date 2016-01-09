@@ -9,8 +9,13 @@ import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.service.PreferenceService;
 import com.desprogramar.jhipster.web.rest.dto.WeightByPeriod;
+import com.desprogramar.jhipster.web.rest.dto.WeightSearch;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
+
+import org.elasticsearch.index.query.AndFilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,14 +167,27 @@ public class WeightResource {
      * SEARCH  /_search/weights/:query -> search for the weight corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/weights/{query}",
-        method = RequestMethod.GET,
+    @RequestMapping(value = "/_search/weights",
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Weight> searchWeights(@PathVariable String query) {
-        log.debug("REST request to search Weights for query {}", query);
+    public List<Weight> searchWeights(@RequestBody WeightSearch weightSearch) {
+        log.debug("REST request to search Weights for {}", weightSearch);
+        AndFilterBuilder filter = new AndFilterBuilder();
+		if (weightSearch.getTimestamp() != null) {
+			filter.add(FilterBuilders.rangeFilter("timestamp").gte(weightSearch.getTimestampElastic()));
+		}
+		if (weightSearch.getWeight() != null) {
+			filter.add(FilterBuilders.rangeFilter("weight").gte(weightSearch.getWeight()));
+		}
+
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        	filter.add(FilterBuilders.termFilter("user.login", SecurityUtils.getCurrentUserLogin()));
+        }
+        QueryBuilder query = filteredQuery(null, filter);
+                
         return StreamSupport
-            .stream(weightSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(weightSearchRepository.search(query).spliterator(), false)
             .collect(Collectors.toList());
     }
     

@@ -7,7 +7,18 @@
             <div class="col-xs-8 text-right" style="margin-top: 20px;">
                 <form name="searchForm" class="form-inline">
                     <div class="form-group">
-                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="{{'entity.action.search' | translate}}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="weightSearch.timestamp" id="searchDate" placeholder="{{'21pointsApp.weight.home.searchDate' | translate}}"
+                                uib-datepicker-popup="shortDate" is-open="datePickerForDate.status.opened" 
+                                datepicker-options="{{'datePicker.options' | translate}}"
+                                current-text="{{'datePicker.current' | translate}}" clear-text="{{'datePicker.clear' | translate}}" close-text="{{'datePicker.close' | translate}}">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="datePickerForDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span> 
+                        </div>
+                        <input type="number" class="form-control" ng-model="weightSearch.weight" id="searchQuery" placeholder="{{'21pointsApp.weight.home.searchWeight' | translate}}">
+                    </div>
+                    <div class="form-group">
                         <button class="btn btn-info" ng-click="search()" uib-tooltip="{{'entity.action.search' | translate}}"><span class="glyphicon glyphicon-search"></span></button>
                         <button class="btn btn-primary" ui-sref="weight.new" uib-tooltip="{{'entity.action.new' | translate}}"><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
@@ -20,7 +31,7 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-                <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
+                <tr jh-sort="predicate" ascending="reverse" callback="reset()">
                     <th jh-sort-by="timestamp"><span translate="21pointsApp.weight.timestamp">Timestamp</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="weight"><span translate="21pointsApp.weight.weight">Weight</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="user.login" has-authority="ROLE_ADMIN"><span translate="21pointsApp.weight.user">user</span> <span class="glyphicon glyphicon-sort"></span></th>

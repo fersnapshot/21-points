@@ -11,22 +11,17 @@
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
-        <div class="form-group" style="display: none;">
-            <label for="id" translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="point.id" readonly />
-        </div>
-        <div class="form-group" style="display: none;">
-            <label class="control-label" translate="21pointsApp.point.version" for="field_version">Version</label>
-            <input type="number" class="form-control" name="version" id="field_version"
-                    ng-model="point.version"
-                     />
-        </div>
         <div class="form-group">
             <label class="control-label" translate="21pointsApp.point.date" for="field_date">Date</label>
-            <input type="date" class="form-control" name="date" id="field_date"
-                    ng-model="point.date"
-                    required />
+            <div class="input-group">
+                <input type="text" class="form-control" name="date" id="field_date" ng-model="point.date" required
+                    uib-datepicker-popup="mediumDate" is-open="datePickerForDate.status.opened" 
+                    datepicker-options="{{'datePicker.options' | translate}}"
+                    current-text="{{'datePicker.current' | translate}}" clear-text="{{'datePicker.clear' | translate}}" close-text="{{'datePicker.close' | translate}}">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datePickerForDateOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span> 
+            </div>
             <div ng-show="editForm.date.$invalid">
                 <p class="help-block"
                     ng-show="editForm.date.$error.required" translate="entity.validation.required">

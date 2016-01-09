@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('21pointsApp')
-    .controller('PointController', function ($scope, $state, Point, PointSearch, ParseLinks) {
+angular.module('21pointsApp').controller('PointController', 
+    ['$scope', '$state', 'Point', 'PointSearch', 'ParseLinks', '$translate', 
+        function ($scope, $state, Point, PointSearch, ParseLinks, $translate) {
 
         $scope.points = [];
         $scope.predicate = 'id';
@@ -26,15 +27,18 @@ angular.module('21pointsApp')
         };
         $scope.loadAll();
 
-
         $scope.search = function () {
-            PointSearch.query({query: $scope.searchQuery}, function(result) {
-                $scope.points = result;
-            }, function(response) {
-                if(response.status === 404) {
-                    $scope.loadAll();
-                }
-            });
+            if ($scope.pointSearch) {
+                PointSearch.query($scope.pointSearch, function(result) {
+                    $scope.points = result;
+                }, function(response) {
+                    if(response.status === 404) {
+                        $scope.loadAll();
+                    }
+                });
+            } else {
+                $scope.reset();
+            }
         };
 
         $scope.refresh = function () {
@@ -53,4 +57,16 @@ angular.module('21pointsApp')
                 id: null
             };
         };
-    });
+        
+        $scope.datePickerForDate = {};
+        $scope.datePickerForDate.status = {
+            opened: false
+        };
+        $scope.datePickerForDateOpen = function($event) {
+            $scope.datePickerForDate.status.opened = true;
+        };
+        $translate('datePicker.startingDay').then(function (startingDay) {
+            $scope.datePickerForDate.startingDay = startingDay;
+        });
+        
+    }]);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('21pointsApp').controller('BloodPressureDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'BloodPressure', 'User',
-        function($scope, $stateParams, $uibModalInstance, entity, BloodPressure, User) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'BloodPressure', 'User', '$translate',
+        function($scope, $stateParams, $uibModalInstance, entity, BloodPressure, User, $translate) {
 
         $scope.bloodPressure = entity;
         $scope.users = User.query();
@@ -34,4 +34,15 @@ angular.module('21pointsApp').controller('BloodPressureDialogController',
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
+        
+        $scope.datePickerForDate = {};
+        $scope.datePickerForDate.status = {
+            opened: false
+        };
+        $scope.datePickerForDateOpen = function($event) {
+            $scope.datePickerForDate.status.opened = true;
+        };
+        $translate('datePicker.startingDay').then(function (startingDay) {
+            $scope.datePickerForDate.startingDay = startingDay;
+        });
 }]);

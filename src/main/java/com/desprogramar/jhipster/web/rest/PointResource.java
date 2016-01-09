@@ -7,9 +7,16 @@ import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.PointSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
+import com.desprogramar.jhipster.web.rest.dto.PointSearch;
 import com.desprogramar.jhipster.web.rest.dto.PointsPerWeekDTO;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
+
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.TermFilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +34,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -161,14 +169,34 @@ public class PointResource {
      * SEARCH  /_search/points/:query -> search for the point corresponding
      * to the query.
      */
-    @RequestMapping(value = "/_search/points/{query}",
-        method = RequestMethod.GET,
+    @RequestMapping(value = "/_search/points",
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Point> searchPoints(@PathVariable String query) {
-        log.debug("REST request to search Points for query {}", query);
+    public List<Point> searchPoints(@RequestBody PointSearch pointSearch) {
+        log.debug("REST request to search Points for {}", pointSearch);
+        QueryBuilder query = null;
+        if (StringUtils.isNotBlank(pointSearch.getNotes())) {
+        	String[] queries = pointSearch.getNotes().split("\\s+");		
+    		String queryString = Arrays.asList(queries).stream()
+//    			.map(it -> "*"+it+"*")
+    			.collect(Collectors.joining(" AND "));
+    		query = queryStringQuery(queryString)
+            		.field("notes");
+        }
+        FilterBuilder filter = null;
+		if (pointSearch.getDate() != null) {
+			filter = FilterBuilders.rangeFilter("date").gte(pointSearch.getDate());
+		}
+        		
+        if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)){
+        	TermFilterBuilder termFilter = FilterBuilders.termFilter("user.login", SecurityUtils.getCurrentUserLogin());
+        	filter = (filter != null) ? FilterBuilders.andFilter(termFilter, filter) : termFilter;
+        }
+        query = filteredQuery(query, filter);
+        
         return StreamSupport
-            .stream(pointSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(pointSearchRepository.search(query).spliterator(), false)
             .collect(Collectors.toList());
     }
 

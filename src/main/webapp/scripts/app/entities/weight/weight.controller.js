@@ -1,7 +1,9 @@
+(function () {
 'use strict';
 
-angular.module('21pointsApp')
-    .controller('WeightController', function ($scope, $state, Weight, WeightSearch, ParseLinks) {
+angular.module('21pointsApp').controller('WeightController', 
+    ['$scope', '$state', 'Weight', 'WeightSearch', 'ParseLinks', '$translate',
+        function ($scope, $state, Weight, WeightSearch, ParseLinks, $translate) {
 
         $scope.weights = [];
         $scope.predicate = 'id';
@@ -14,21 +16,29 @@ angular.module('21pointsApp')
                 $scope.weights = result;
             });
         };
+        $scope.reset = function() {
+            $scope.page = 0;
+            $scope.weights = [];
+            $scope.loadAll();
+        };
         $scope.loadPage = function(page) {
             $scope.page = page;
             $scope.loadAll();
         };
         $scope.loadAll();
 
-
         $scope.search = function () {
-            WeightSearch.query({query: $scope.searchQuery}, function(result) {
-                $scope.weights = result;
-            }, function(response) {
-                if(response.status === 404) {
-                    $scope.loadAll();
-                }
-            });
+            if ($scope.weightSearch) {
+                WeightSearch.query($scope.weightSearch, function(result) {
+                    $scope.weights = result;
+                }, function(response) {
+                    if(response.status === 404) {
+                        $scope.loadAll();
+                    }
+                });
+            } else {
+                $scope.reset();
+            }
         };
 
         $scope.refresh = function () {
@@ -44,4 +54,18 @@ angular.module('21pointsApp')
                 id: null
             };
         };
-    });
+        
+        $scope.datePickerForDate = {};
+        $scope.datePickerForDate.status = {
+            opened: false
+        };
+        $scope.datePickerForDateOpen = function($event) {
+            $scope.datePickerForDate.status.opened = true;
+        };
+        $translate('datePicker.startingDay').then(function (startingDay) {
+            $scope.datePickerForDate.startingDay = startingDay;
+        });
+        
+    }]);
+
+})();

@@ -5,7 +5,8 @@
                 "title": "Puntos Diarios",
                 "createLabel": "Añadir Punto",
                 "editLabel": "Editar Punto",
-                "search": "Buscar"
+                "searchDate": "Desde Fecha",
+                "searchNotes": "Notas"
             },
             "created": "Punto añadido.",
             "updated": "Punto actualizado.",

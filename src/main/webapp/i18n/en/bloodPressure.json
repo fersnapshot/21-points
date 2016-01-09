@@ -4,7 +4,10 @@
             "home": {
                 "title": "BloodPressures",
                 "createLabel": "Create a new BloodPressure",
-                "editLabel": "Edit a BloodPressure"
+                "editLabel": "Edit a BloodPressure",
+                "searchDate": "From Date",
+                "searchSystolic": "From Systolic",
+                "searchDiastolic": "From Diastolic"
             },
             "created": "BloodPressure added successfully.",
             "updated": "BloodPressure iupdated successfully.",

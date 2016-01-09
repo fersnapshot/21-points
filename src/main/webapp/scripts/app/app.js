@@ -69,7 +69,8 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             }
         };
     })
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider, 
+        AlertServiceProvider, uibDatepickerPopupConfig) {
         // uncomment below to make alerts look like toast
         //AlertServiceProvider.showAsToast(true);
 
@@ -115,6 +116,12 @@ angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage();
         tmhDynamicLocaleProvider.storageKey('NG_TRANSLATE_LANG_KEY');
+
+        // Datepicker Popup Settings can globally configured through the uibDatepickerPopupConfig
+        //uibDatepickerPopupConfig.datepickerPopup = "mediumDate";
+        //uibDatepickerPopupConfig.currentText = "Hoy";
+        //uibDatepickerPopupConfig.clearText = "Limpiar";
+        //uibDatepickerPopupConfig.closeText = "Cerrar";
 
     })
     .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {

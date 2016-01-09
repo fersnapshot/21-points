@@ -4,7 +4,9 @@
             "home": {
                 "title": "Weights",
                 "createLabel": "Create a new Weight",
-                "editLabel": "Edit a Weight"
+                "editLabel": "Edit a Weight",
+                "searchDate": "From Date",
+                "searchWeight": "From Weight"
             },
             "created": "Weight added successfully.",
             "updated": "Weight updated successfully.",

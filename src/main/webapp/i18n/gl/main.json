@@ -32,13 +32,13 @@
             "weight": "Peso"
         },
         "blood": {
-            "name": "Presión Arterial",
-            "add": "Engadir Presión Arterial",
-            "addMobile": "Engadir PA",
-            "no-datos": "Non hai lecturas da presión arterial.",
+            "name": "Tensión Arterial",
+            "add": "Engadir Tensión Arterial",
+            "addMobile": "Engadir TA",
+            "no-datos": "Non hai lecturas da tensión arterial.",
             "title": "Últimos {{days}} días",
             "xAxis": "Datas",
-            "yAxis": "Presión Arterial",
+            "yAxis": "Tensión Arterial",
             "systolic": "Alta",
             "diastolic": "Baixa"
         },
