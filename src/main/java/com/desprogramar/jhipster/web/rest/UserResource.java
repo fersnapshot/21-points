@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.desprogramar.jhipster.domain.Authority;
 import com.desprogramar.jhipster.domain.User;
 import com.desprogramar.jhipster.repository.AuthorityRepository;
+import com.desprogramar.jhipster.repository.PreferenceRepository;
 import com.desprogramar.jhipster.repository.UserRepository;
 import com.desprogramar.jhipster.repository.search.UserSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
@@ -16,6 +17,7 @@ import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -81,6 +83,9 @@ public class UserResource {
 
     @Inject
     private UserSearchRepository userSearchRepository;
+    
+    @Autowired
+    private PreferenceRepository preferenceRepository;
 
     /**
      * POST  /users -> Creates a new user.
@@ -208,6 +213,7 @@ public class UserResource {
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        preferenceRepository.deleteByUserLogin(login);
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
     }
