@@ -28,5 +28,5 @@ public interface BloodPressureRepository extends JpaRepository<BloodPressure,Lon
     void deleteByUserIsCurrentUser(Long id);
 
     @Query("select x from BloodPressure x where x.user.login = ?#{principal.username} and x.timestamp between ?1 and ?2 order by x.timestamp")
-    List<BloodPressure> findByTimestampAfterCurrentUserOrderByTime(ZonedDateTime desde, ZonedDateTime hasta);
+    List<BloodPressure> findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(ZonedDateTime desde, ZonedDateTime hasta);
 }

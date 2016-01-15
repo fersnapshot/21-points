@@ -1,7 +1,7 @@
 {
     "main": {
         "title": "Benvido, {{name}}!",
-        "subtitle": "21-Points está aquí para realizar un seguimento da túa saúde e mellorar a túa vida. &#128522;",
+        "subtitle": "21Points está aquí para realizar un seguimento da túa saúde e mellorar a túa vida. &#128522;",
         "logged": {
             "message": "Está conectado como \"{{username}}\"."
         },
@@ -44,6 +44,24 @@
         },
         "preference": {
             "add": "Preferencias"
+        },
+        "calendar": {
+            "title": "Calendario",
+            "firstDay": "1",
+            "today": "hoxe",
+            "month": "mes",
+            "week": "semana",
+            "day": "día",
+            "point": {
+                "title": "Puntos",
+                "tooltip": "Exercicio: {{exercise}}, Comiches San: {{meals}}, Non Alcol: {{alcohol}}"
+            },
+            "blood": {
+                "title": "Tensión"
+            },
+            "weight": {
+                "title": "Peso"
+            }
         }
     }
 }

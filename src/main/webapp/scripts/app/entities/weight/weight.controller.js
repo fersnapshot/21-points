@@ -2,8 +2,8 @@
 'use strict';
 
 angular.module('21pointsApp').controller('WeightController', 
-    ['$scope', '$state', 'Weight', 'WeightSearch', 'ParseLinks', '$translate',
-        function ($scope, $state, Weight, WeightSearch, ParseLinks, $translate) {
+    ['$scope', '$state', 'Weight', 'WeightSearch', 'ParseLinks',
+        function ($scope, $state, Weight, WeightSearch, ParseLinks) {
 
         $scope.weights = [];
         $scope.predicate = 'id';
@@ -62,9 +62,6 @@ angular.module('21pointsApp').controller('WeightController',
         $scope.datePickerForDateOpen = function($event) {
             $scope.datePickerForDate.status.opened = true;
         };
-        $translate('datePicker.startingDay').then(function (startingDay) {
-            $scope.datePickerForDate.startingDay = startingDay;
-        });
         
     }]);
 

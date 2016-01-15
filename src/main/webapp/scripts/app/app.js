@@ -3,7 +3,7 @@
 angular.module('21pointsApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
     'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar',
-    'nvd3'])
+    'nvd3', 'ui.calendar'])
 
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
         // update the window title using params in the following

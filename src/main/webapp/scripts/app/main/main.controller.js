@@ -29,6 +29,9 @@ angular.module('21pointsApp')
                     var systolics, diastolics;
                     systolics = [];
                     diastolics = [];
+                    var altas, bajas;
+                    altas = [];
+                    bajas = [];
                     bpReadings.readings.forEach(function (item) {
                         var fecha = new Date(item.timestamp);
                         systolics.push({
@@ -39,6 +42,8 @@ angular.module('21pointsApp')
                             x: fecha,
                             y: item.diastolic
                         });
+                        altas.push(item.systolic);
+                        bajas.push(item.diastolic);
                     });
                     $scope.bpData = [{
                             values: systolics,
@@ -49,6 +54,8 @@ angular.module('21pointsApp')
                             key: 'Diastolic',
                             color: '#03a9f4'
                         }];
+                    // set y scale to be 10 more than max and min
+                    $scope.bpOptions.chart.yDomain = [Math.min.apply(Math, bajas) - 10, Math.max.apply(Math, altas) + 10];
                 }
             });
             
@@ -79,18 +86,23 @@ angular.module('21pointsApp')
                     var priorDate = new Date().setDate(today.getDate() - wReadings.period);
                     $scope.wOptions.chart.xDomain = [priorDate, today];
                     var weights = [];
+                    var values = [];
                     wReadings.readings.forEach(function (item) {
                         var fecha = new Date(item.timestamp);
                         weights.push({
                             x: fecha,
                             y: item.weight
                         });
+                        values.push(item.weight);
                     });
                     $scope.wData = [{
                             values: weights,
                             key: 'Weights',
-                            color: '#673ab7'
+                            color: '#ffeb3b',
+                            area: true
                         }];
+                    // set y scale to be 10 more than max and min
+                    $scope.wOptions.chart.yDomain = [Math.round(Math.min.apply(Math, values) - 10), Math.round(Math.max.apply(Math, values) + 10)];
                 }
             });
             

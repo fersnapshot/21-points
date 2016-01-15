@@ -4,22 +4,34 @@
             <div class="heart img-responsive img-rounded hidden-xs"></div>
         </div>
         <div class="col-md-8">
-            <h1 translate="main.title" translate-values="{name: '{{account.login ? account.login : 'Java Hipster'}}'}">Welcome, Java Hipster!</h1>
             <p class="lead" translate="main.subtitle">This is your homepage</p>
 
             <div ng-switch="isAuthenticated()">
                 <div ng-switch-when="true">
 
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a ui-sref="calendar" translate="main.calendar.title" class="btn btn-default">Ver Calendario</a>
+                                    <a ui-sref="preference.add" translate="main.preference.add" class="btn btn-default pull-right">
+                                        Add Preferences
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-6 col-sm-8 col-md-9">
                                     <h4>
-                                        <span class="hidden-xs" translate="main.point.thisWeek" translate-values="{date: '{{pointsThisWeek.week| date: 'longDate'}}'}">
-                                            Puntos de la semana del {{pointsThisWeek.week| date: 'longDate'}}
+                                        <span class="hidden-xs" translate="main.point.thisWeek" translate-values="{date: '{{pointsThisWeek.date| date: 'longDate'}}'}">
+                                            Puntos de la semana del {{pointsThisWeek.date| date: 'longDate'}}
                                         </span>
-                                        <span class="visible-xs" translate="main.point.thisWeekMobile" translate-values="{date: '{{pointsThisWeek.week| date: 'mediumDate'}}'}">
-                                            Puntos del {{pointsThisWeek.week| date: 'mediumDate'}}
+                                        <span class="visible-xs" translate="main.point.thisWeekMobile" translate-values="{date: '{{pointsThisWeek.date| date: 'mediumDate'}}'}">
+                                            Puntos del {{pointsThisWeek.date| date: 'mediumDate'}}
                                         </span>
                                     </h4>
                                 </div>
@@ -97,24 +109,6 @@
                             </div>  
                         </div>
                     </div>                    
-                    
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-6 col-md-8">
-                                    <h4 translate="main.logged.message" translate-values="{username: '{{account.login}}'}">
-                                        You are logged in as user "{{account.login}}".
-                                    </h4>
-                                </div>
-                                <div class="col-xs-6 col-md-4 text-right">
-                                    <a ui-sref="preference.add" translate="main.preference.add" class="btn btn-default">
-                                        Add Preferences
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-
                     
                 </div>
 

@@ -6,24 +6,24 @@ import java.time.LocalDate;
 /**
  * Created by fer on 18/12/15.
  */
-public class PointsPerWeekDTO implements Serializable {
+public class PointPerWeek implements Serializable {
 
 	private static final long serialVersionUID = 6820640450964014159L;
 
-	private LocalDate week;
+	private LocalDate date;
     private Integer points;
 
-    public PointsPerWeekDTO(LocalDate week, Integer points) {
-        this.week = week;
+    public PointPerWeek(LocalDate week, Integer points) {
+        this.date = week;
         this.points = points;
     }
 
-    public LocalDate getWeek() {
-        return week;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setWeek(LocalDate week) {
-        this.week = week;
+    public void setDate(LocalDate week) {
+        this.date = week;
     }
 
     public Integer getPoints() {
@@ -36,8 +36,8 @@ public class PointsPerWeekDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "PointsPerWeekDTO{" +
-            "week=" + week +
+        return "PointPerWeek{" +
+            "date=" + date +
             ", points=" + points +
             '}';
     }

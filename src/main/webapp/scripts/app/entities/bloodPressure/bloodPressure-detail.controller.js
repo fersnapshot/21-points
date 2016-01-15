@@ -1,7 +1,13 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('21pointsApp')
-    .controller('BloodPressureDetailController', function ($scope, $rootScope, $stateParams, entity, BloodPressure, User) {
+    angular.module('21pointsApp')
+            .controller('BloodPressureDetailController', BloodPressureDetailController);
+
+    BloodPressureDetailController.$inject = ['$scope', '$rootScope', 'entity', 'BloodPressure'];
+
+    function BloodPressureDetailController($scope, $rootScope, entity, BloodPressure) {
+
         $scope.bloodPressure = entity;
         $scope.load = function (id) {
             BloodPressure.get({id: id}, function(result) {
@@ -13,4 +19,6 @@ angular.module('21pointsApp')
         });
         $scope.$on('$destroy', unsubscribe);
 
-    });
+    }
+
+})();

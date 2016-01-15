@@ -34,9 +34,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -327,8 +330,9 @@ public class BloodPressureResourceIntTest {
         this.deleteUsuarioConRolUser();
     }
     
-    private void createBloodPressureByMonth() {
+    private void createBloodPressureForLast30Days() {
 		User user = this.createUsuarioConRolUser();
+		bloodPressureRepository.deleteAll();
 		// this month
     	ZonedDateTime now = ZonedDateTime.now().withNano(0);
 		bloodPressure = new BloodPressure(now, 120, 0, user);
@@ -352,7 +356,7 @@ public class BloodPressureResourceIntTest {
     @Test
     @Transactional
     public void getBloodPressureForLast30Days() throws Exception {
-        createBloodPressureByMonth();
+    	createBloodPressureForLast30Days();
         
         // Get all the blood pressure readings
         restBloodPressureMockMvc.perform(get("/api/bloodPressures"))
@@ -370,6 +374,58 @@ public class BloodPressureResourceIntTest {
         	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItems(0, 10, 20, 27, 28, 29)))
         	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItem(30)));
 //        	.andExpect(jsonPath("$.readings.[*].diastolic").value(hasItem(31)));	// ERROR minusDays(31)
+
+        this.deleteUsuarioConRolUser();
+    }
+
+    // Crea datos en meses distintos
+    private void createBloodPressureByMonth(String fecha) {
+		User user = this.createUsuarioConRolUser();
+		bloodPressureRepository.deleteAll();
+
+		LocalDate fechaDate = LocalDate.parse(fecha);
+		ZonedDateTime primerDia = fechaDate.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+
+		bloodPressure = new BloodPressure(primerDia.minusDays(1), 130, 99, user);	// 2014-05-31
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia, 120, 1, user);					// 2014-06-01
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(3), 120, 4, user);		// 2014-06-04
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(23), 120, 24, user);	// 2014-06-24
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(28), 120, 29, user);	// 2014-06-29
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(29), 120, 30, user);	// 2014-06-30
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(30), 130, 31, user);	// 2014-07-01
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+		bloodPressure = new BloodPressure(primerDia.plusDays(31), 130, 32, user);	// 2014-07-02
+		bloodPressureRepository.saveAndFlush(bloodPressure);
+    }
+    
+    @Test
+    @Transactional
+    public void getBPByMonth() throws Exception {
+    	String fecha = "2014-06-15";
+    	createBloodPressureByMonth(fecha);
+        
+        // Get all the blood pressure readings
+        restBloodPressureMockMvc.perform(get("/api/bloodPressures"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(8)));
+        
+        // Get the blood pressure readings for the last 30 days
+        restBloodPressureMockMvc.perform(get("/api/bp-by-month/{month}", fecha))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].systolic").value(hasItem(120)))
+        	.andExpect(jsonPath("$.[*].diastolic").value(hasItems(1, 4, 24, 29)))
+        	.andExpect(jsonPath("$.[*].diastolic").value(hasItem(30)));
+//        	.andExpect(jsonPath("$.[*].diastolic").value(hasItem(31)))	// ERROR
+//        	.andExpect(jsonPath("$.[*].diastolic").value(hasItem(99)));	// ERROR
 
         this.deleteUsuarioConRolUser();
     }

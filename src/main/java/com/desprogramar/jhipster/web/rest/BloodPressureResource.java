@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +33,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -166,7 +171,7 @@ public class BloodPressureResource {
     }
 
     /**
-     * SEARCH  /_search/bloodPressures/:query -> search for the bloodPressure corresponding
+     * POST SEARCH  /_search/bloodPressures -> search for the bloodPressure corresponding
      * to the query.
      */
     @RequestMapping(value = "/_search/bloodPressures",
@@ -197,7 +202,7 @@ public class BloodPressureResource {
     }
     
     /**
-     * GET  /bp-by-days/:days -> get the "days" del período.
+     * GET  /bp-by-days -> get the "days" del período.
      */
     @RequestMapping(value = "/bp-by-days",
         method = RequestMethod.GET,
@@ -209,9 +214,25 @@ public class BloodPressureResource {
     	ZonedDateTime now = ZonedDateTime.now().withNano(0);
     	ZonedDateTime desde = now.minusDays(days).withHour(0).withMinute(0).withSecond(0);
     	
-    	List<BloodPressure> bloodList = bloodPressureRepository.findByTimestampAfterCurrentUserOrderByTime(desde, now);
+    	List<BloodPressure> bloodList = bloodPressureRepository.findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(desde, now);
     	BloodPressureByPeriod lastDaysDTO = new BloodPressureByPeriod(days, bloodList);
     	return new ResponseEntity<>(lastDaysDTO, HttpStatus.OK);
     }
 
+    /**
+     * GET  /bp-by-month/:month -> get all the bp for a particular month.
+     */
+    @RequestMapping(value = "/bp-by-month/{month}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<BloodPressure>> getBPByMonth(@PathVariable @DateTimeFormat(iso=ISO.DATE) LocalDate month) {
+    	ZonedDateTime primerDia = month.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+    	ZonedDateTime ultimoDia = month.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+        log.debug("REST request to get a BloodPressure for a particular month between: {} and {}", primerDia, ultimoDia);
+
+		List<BloodPressure> bps = bloodPressureRepository.findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(primerDia, ultimoDia);
+        return new ResponseEntity<>(bps, HttpStatus.OK);
+    }
+    
 }

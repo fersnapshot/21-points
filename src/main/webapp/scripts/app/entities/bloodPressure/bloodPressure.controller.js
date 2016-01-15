@@ -4,9 +4,9 @@
     angular.module('21pointsApp')
             .controller('BloodPressureController', BloodPressureController);
 
-    BloodPressureController.$inject = ['$scope', '$state', 'BloodPressure', 'BloodPressureSearch', 'ParseLinks', '$translate'];
+    BloodPressureController.$inject = ['$scope', 'BloodPressure', 'BloodPressureSearch', 'ParseLinks'];
 
-    function BloodPressureController($scope, $state, BloodPressure, BloodPressureSearch, ParseLinks, $translate) {
+    function BloodPressureController($scope, BloodPressure, BloodPressureSearch, ParseLinks) {
 
         $scope.bloodPressures = [];
         $scope.predicate = 'id';
@@ -67,9 +67,6 @@
         $scope.datePickerForDateOpen = function ($event) {
             $scope.datePickerForDate.status.opened = true;
         };
-        $translate('datePicker.startingDay').then(function (startingDay) {
-            $scope.datePickerForDate.startingDay = startingDay;
-        });
 
     }
 

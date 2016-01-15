@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('21pointsApp').controller('PointController', 
-    ['$scope', '$state', 'Point', 'PointSearch', 'ParseLinks', '$translate', 
-        function ($scope, $state, Point, PointSearch, ParseLinks, $translate) {
+    ['$scope', '$state', 'Point', 'PointSearch', 'ParseLinks', 
+        function ($scope, $state, Point, PointSearch, ParseLinks) {
 
         $scope.points = [];
         $scope.predicate = 'id';
@@ -65,8 +65,5 @@ angular.module('21pointsApp').controller('PointController',
         $scope.datePickerForDateOpen = function($event) {
             $scope.datePickerForDate.status.opened = true;
         };
-        $translate('datePicker.startingDay').then(function (startingDay) {
-            $scope.datePickerForDate.startingDay = startingDay;
-        });
         
     }]);

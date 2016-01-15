@@ -68,7 +68,7 @@ if (project.hasProperty('prod')) {
 }
 
 group = 'com.desprogramar.jhipster'
-version = '0.0.1-SNAPSHOT'
+version = '1.0-beta'
 
 description = ''
 

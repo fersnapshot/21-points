@@ -1,7 +1,7 @@
 {
     "main": {
         "title": "Welcome, {{name}}!",
-        "subtitle": "21-Points is here to track your health and improve your life. &#128522;",
+        "subtitle": "21Points is here to track your health and improve your life. &#128522;",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
@@ -44,6 +44,24 @@
         },
         "preference": {
             "add": "Preferences"
+        },
+        "calendar": {
+            "title": "Calendar",
+            "firstDay": "0",
+            "today": "today",
+            "month": "month",
+            "week": "week",
+            "day": "day",
+            "point": {
+                "title": "Points",
+                "tooltip": "Exercise: {{exercise}}, Meals: {{meals}}, No Alcohol: {{alcohol}}"
+            },
+            "blood": {
+                "title": "Blood Pressure"
+            },
+            "weight": {
+                "title": "Weight"
+            }
         }
     }
 }

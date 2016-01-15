@@ -1,7 +1,13 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('21pointsApp')
-    .config(function ($stateProvider) {
+    angular.module('21pointsApp')
+            .config(BloodPressureConfig);
+
+    BloodPressureConfig.$inject = ['$stateProvider'];
+
+    function BloodPressureConfig($stateProvider) {
+
         $stateProvider
             .state('bloodPressure', {
                 parent: 'entity',
@@ -123,4 +129,6 @@ angular.module('21pointsApp')
                     });
                 }]
             });
-    });
+    }
+            
+})();

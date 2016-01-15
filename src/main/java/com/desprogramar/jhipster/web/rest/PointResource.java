@@ -8,7 +8,7 @@ import com.desprogramar.jhipster.repository.search.PointSearchRepository;
 import com.desprogramar.jhipster.security.AuthoritiesConstants;
 import com.desprogramar.jhipster.security.SecurityUtils;
 import com.desprogramar.jhipster.web.rest.dto.PointSearch;
-import com.desprogramar.jhipster.web.rest.dto.PointsPerWeekDTO;
+import com.desprogramar.jhipster.web.rest.dto.PointPerWeek;
 import com.desprogramar.jhipster.web.rest.util.HeaderUtil;
 import com.desprogramar.jhipster.web.rest.util.PaginationUtil;
 
@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +35,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
@@ -166,7 +169,7 @@ public class PointResource {
     }
 
     /**
-     * SEARCH  /_search/points/:query -> search for the point corresponding
+     * POST SEARCH  /_search/points -> search for the point corresponding
      * to the query.
      */
     @RequestMapping(value = "/_search/points",
@@ -201,24 +204,41 @@ public class PointResource {
     }
 
     /**
-     * GET  /points -> get all the points for the current week.
+     * GET  /points-this-week -> get all the points for the current week.
      */
     @RequestMapping(value = "/points-this-week",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<PointsPerWeekDTO> getAllPointsThisWeek() {
+    public ResponseEntity<PointPerWeek> getPointsThisWeek() {
         LocalDate hoy = LocalDate.now();
         LocalDate lunes = hoy.with(WeekFields.ISO.dayOfWeek(), 1);
         LocalDate domingo = hoy.with(WeekFields.ISO.dayOfWeek(), 7);
         log.debug("REST request to get a points between: {} and {}", lunes, domingo);
 
-        List<Point> puntos = pointRepository.findAllByDateBetweenAndUsersCurrentUser(lunes, domingo);
+		List<Point> puntos = pointRepository.findAllByDateBetweenAndUsersCurrentUser(lunes, domingo);
         Integer numPuntos = puntos.stream()
             .mapToInt(p ->  (p.getExercise()?1:0) + (p.getMeals()?1:0) + (p.getAlcohol()?1:0) )
             .sum();
 
-        PointsPerWeekDTO pointsPerWeek = new PointsPerWeekDTO(lunes, numPuntos);
-        return new ResponseEntity<>(pointsPerWeek, HttpStatus.OK);
+        PointPerWeek pointPerWeek = new PointPerWeek(lunes, numPuntos);
+        return new ResponseEntity<>(pointPerWeek, HttpStatus.OK);
     }
+
+    /**
+     * GET  /points-by-month/:month -> get all the points for a particular month.
+     */
+    @RequestMapping(value = "/points-by-month/{month}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Point>> getPointsByMonth(@PathVariable @DateTimeFormat(iso=ISO.DATE) LocalDate month) {
+    	LocalDate primerDia = month.with(TemporalAdjusters.firstDayOfMonth());
+    	LocalDate ultimoDia = month.with(TemporalAdjusters.lastDayOfMonth());
+        log.debug("REST request to get a points for a particular month between: {} and {}", primerDia, ultimoDia);
+
+		List<Point> puntos = pointRepository.findAllByDateBetweenAndUsersCurrentUser(primerDia, ultimoDia);
+        return new ResponseEntity<>(puntos, HttpStatus.OK);
+    }
+    
 }

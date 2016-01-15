@@ -7,13 +7,14 @@
         <meta name="description" content="">
         <meta name="google" value="notranslate">
         <meta name="viewport" content="width=device-width">
-        <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css assets/styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css" />
+        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
@@ -74,6 +75,9 @@
         <script src="bower_components/d3/d3.js"></script>
         <script src="bower_components/nvd3/build/nv.d3.js"></script>
         <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+        <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -112,6 +116,7 @@
     <script src="scripts/components/util/dateutil.service.js"></script>
     <script src="scripts/components/util/data-util.service.js"></script>
     <script src="scripts/components/util/sort.directive.js"></script>
+    <script src="scripts/app/about/about.js"></script>
     <script src="scripts/app/account/account.js"></script>
     <script src="scripts/app/account/activate/activate.js"></script>
     <script src="scripts/app/account/activate/activate.controller.js"></script>
@@ -151,6 +156,8 @@
     <script src="scripts/app/error/error.js"></script>
     <script src="scripts/app/main/main.js"></script>
     <script src="scripts/app/main/main.controller.js"></script>
+    <script src="scripts/app/calendar/calendar.js"></script>
+    <script src="scripts/app/calendar/calendar.controller.js"></script>
     <script src="bower_components/messageformat/locale/en.js"></script>
     <script src="scripts/components/language/language.service.js"></script>
     <script src="scripts/components/language/language.controller.js"></script>

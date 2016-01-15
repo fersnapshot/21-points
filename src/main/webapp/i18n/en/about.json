@@ -1,0 +1,17 @@
+{
+    "about": {
+        "title": "About",
+        "subtitle": "<strong>21Points</strong> is an app you can use to monitor your health.",
+        "parrafo": {
+            "01": "Its rules were simple, you can earn up to three points per day for the following reasons:", 
+            "02": "<li>If you eat healthy, you get a point. Otherwise, zero.</li><li>If you exercise, you get a point.</li><li>If you don't drink alcohol, you get a point.</li>", 
+            "03": "You can choose a weekly goal by default is 10 points.", 
+            "04": "It also shows you graphically the evolution of your blood pressure and weight of the past few days, 30 default.", 
+            "05": "No need to create an account to prove, simply click Continue.<br>This will create an account with dummy data that can manipulate but is automatically erased.",
+            "06": "If you want to create an account for you to enter data from being erased, I encourage you to do not give your real email and use a <a target='_blank' href='https://www.google.es/webhp?q=temporary+email#q=free+temporary+email'>temporary email</a>.",
+            "07": "This application started as the sample application for <a target='_blank' href='http://www.jhipster-book.com/'>'JHipster Mini-Book'</a>, written by <a target='_blank' href='http://raibledesigns.com/'>Matt Raible</a>.", 
+            "08": "<li>All <a target='_blank' href='https://github.com/fersnapshot/21-points'>application code</a> on GitHub.</li><li>The web <a target='_blank' href='https://jhipster.github.io/'>jhipster</a>.</li>"
+        },
+        "referencias": "References"
+    }
+}

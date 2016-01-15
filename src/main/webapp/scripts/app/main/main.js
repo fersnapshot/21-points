@@ -19,6 +19,11 @@ angular.module('21pointsApp')
                 resolve: {
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                         $translatePartialLoader.addPart('main');
+                        $translatePartialLoader.addPart('point');
+                        $translatePartialLoader.addPart('bloodPressure');
+                        $translatePartialLoader.addPart('weight');
+                        $translatePartialLoader.addPart('preference');
+                        $translatePartialLoader.addPart('units');
                         return $translate.refresh();
                     }]
                 }
@@ -53,14 +58,7 @@ angular.module('21pointsApp')
                     }, function() {
                         $state.go('home');
                     });
-                }],
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('point');
-                        return $translate.refresh();
-                    }]
-                }
-
+                }]
             })
 
             .state('blood-add', {
@@ -91,13 +89,7 @@ angular.module('21pointsApp')
                     }, function() {
                         $state.go('home');
                     });
-                }],
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('bloodPressure');
-                        return $translate.refresh();
-                    }]
-                }
+                }]
             })
             
             .state('weight.add', {
@@ -127,13 +119,7 @@ angular.module('21pointsApp')
                     }, function() {
                         $state.go('home');
                     });
-                }],
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('weight');
-                        return $translate.refresh();
-                    }]
-                }
+                }]
             })
 
             .state('preference.add', {
@@ -157,14 +143,7 @@ angular.module('21pointsApp')
                     }, function() {
                         $state.go('home');
                     });
-                }],
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('preference');
-                        $translatePartialLoader.addPart('units');
-                        return $translate.refresh();
-                    }]
-                }
+                }]
             })
             
         ;

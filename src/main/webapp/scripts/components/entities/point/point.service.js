@@ -31,9 +31,14 @@ angular.module('21pointsApp')
                 url: 'api/points-this-week',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
-                    data.week = DateUtils.convertLocaleDateFromServer(data.week);
+                    data.date = DateUtils.convertLocaleDateFromServer(data.date);
                     return data;
                 }
+            },
+            'byMonth': { 
+                method: 'GET', 
+                isArray: true, 
+                url: 'api/points-by-month/:month'
             }
         });
     });

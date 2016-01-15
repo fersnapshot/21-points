@@ -36,9 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -303,9 +306,10 @@ public class WeightResourceIntTest {
         this.deleteUsuarioConRolUser();
     }
     
-    private void createWeightByMonth() {
+    private void createWeightBForLast30Days() {
 		User user = this.createUsuarioConRolUser();
-		// this month
+		weightRepository.deleteAll();
+
     	ZonedDateTime now = ZonedDateTime.now().withNano(0);
     	weight = new Weight(now, 80.0, user);
     	weightRepository.saveAndFlush(weight);
@@ -328,7 +332,7 @@ public class WeightResourceIntTest {
     @Test
     @Transactional
     public void getWeightForLast30Days() throws Exception {
-        createWeightByMonth();
+    	createWeightBForLast30Days();
         
         // Get all the blood pressure readings
         restWeightMockMvc.perform(get("/api/weights"))
@@ -349,5 +353,55 @@ public class WeightResourceIntTest {
         this.deleteUsuarioConRolUser();
     }
 
+    // Crea datos en meses distintos
+    private void createWeightByMonth(String fecha) {
+		User user = this.createUsuarioConRolUser();
+		weightRepository.deleteAll();
+
+		LocalDate fechaDate = LocalDate.parse(fecha);
+		ZonedDateTime primerDia = fechaDate.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+
+    	weight = new Weight(primerDia.minusDays(1), 80.99, user);	// 2014-05-31
+    	weightRepository.saveAndFlush(weight);
+    	weight = new Weight(primerDia, 80.01, user);				// 2014-06-01
+    	weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(3), 80.04, user);	// 2014-06-04
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(23), 80.24, user);	// 2014-06-24
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(28), 80.29, user);	// 2014-06-29
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(29), 80.30, user);	// 2014-06-30
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(30), 80.31, user);	// 2014-07-01
+		weightRepository.saveAndFlush(weight);
+		weight = new Weight(primerDia.plusDays(31), 80.32, user);	// 2014-07-02
+		weightRepository.saveAndFlush(weight);
+    }
+    
+    @Test
+    @Transactional
+    public void getWByMonth() throws Exception {
+    	String fecha = "2014-06-15";
+        createWeightByMonth(fecha);
+        
+        // Get all the blood pressure readings
+        restWeightMockMvc.perform(get("/api/weights"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(8)));
+        
+        // Get the blood pressure readings for the last 30 days
+        restWeightMockMvc.perform(get("/api/w-by-month/{month}", fecha))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        	.andExpect(jsonPath("$.[*].weight").value(hasItems(80.01, 80.04, 80.24, 80.29)))
+        	.andExpect(jsonPath("$.[*].weight").value(hasItem(80.30)));
+//    		.andExpect(jsonPath("$.[*].weight").value(hasItem(80.31)));	// ERROR
+//        	.andExpect(jsonPath("$.[*].weight").value(hasItem(80.99)));	// ERROR
+
+        this.deleteUsuarioConRolUser();
+    }
 
 }

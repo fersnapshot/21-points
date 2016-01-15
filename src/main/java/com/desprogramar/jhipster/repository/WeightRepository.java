@@ -31,5 +31,6 @@ public interface WeightRepository extends JpaRepository<Weight,Long> {
     void deleteByUserIsCurrentUser(Long id);
 
     @Query("select x from Weight x where x.user.login = ?#{principal.username} and x.timestamp between ?1 and ?2 order by x.timestamp")
-    List<Weight> findByTimestampAfterCurrentUserOrderByTime(ZonedDateTime desde, ZonedDateTime hasta);
+    List<Weight> findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(ZonedDateTime desde, ZonedDateTime hasta);
+
 }

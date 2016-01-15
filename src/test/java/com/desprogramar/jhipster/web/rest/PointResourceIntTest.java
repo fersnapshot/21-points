@@ -33,6 +33,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -307,7 +308,7 @@ public class PointResourceIntTest {
     // 2. Adding an API to get points achieved during the current week.
 
     private void createPointsByWeek(LocalDate esteLunes) {
-
+    	pointRepository.deleteAll();
         // Crea puntos en 2 semanas distintas
         point = new Point(esteLunes.plusDays(2), true, true, true, user);
         pointRepository.saveAndFlush(point);
@@ -343,8 +344,64 @@ public class PointResourceIntTest {
             .with(user("user").roles("USER")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.week").value(esteLunes.toString()))
+                .andExpect(jsonPath("$.date").value(esteLunes.toString()))
                 .andExpect(jsonPath("$.points").value(5));
+    }
+    
+
+    // Crea datos en meses distintos
+    private void createPointsByMonth(LocalDate dia1) {
+    	pointRepository.deleteAll();
+    	
+        point = new Point(dia1.minusDays(1), false, false, true, user);	// 2014-05-31
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1, false, false, true, user);	// 2014-06-01
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(3), false, false, false, user);	// 2014-06-04
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(23), false, false, true, user);	// 2014-06-24
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(28), false, false, false, user);// 2014-06-29
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(29), false, false, false, user);// 2014-06-30
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(30), false, true, false, user);	// 2014-07-01 MES DE 30 DÍAS
+        pointRepository.saveAndFlush(point);
+
+        point = new Point(dia1.plusDays(31), true, false, true, user);	// 2014-07-02
+        pointRepository.saveAndFlush(point);
+
+    }
+
+    @Test
+    @Transactional
+    public void getPointsByMonth() throws Exception {
+    	LocalDate dia1 = LocalDate.of(2014, 6, 1);
+        this.createPointsByMonth(dia1);
+
+        // Get all the points
+        restPointMockMvc.perform(get("/api/points")
+            .with(user("user").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(8)));
+
+        // Get the points for this week only
+        restPointMockMvc.perform(get("/api/points-by-month/{month}", "2014-06-15")
+            .with(user("user").roles("USER")))
+        		.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+		        .andExpect(jsonPath("$.[*].date").value(hasItem(dia1.toString())))
+		        .andExpect(jsonPath("$.[*].date").value(hasItem(dia1.plusDays(29).toString())));
+//        .andExpect(jsonPath("$.[*].date").value(hasItem(dia1.plusDays(30).toString()))); // ERROR
+//        .andExpect(jsonPath("$.[*].date").value(hasItem(dia1.minusDays(1).toString()))); // ERROR
     }
     
 }

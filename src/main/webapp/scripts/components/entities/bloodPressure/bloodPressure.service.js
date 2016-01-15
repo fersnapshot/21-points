@@ -23,7 +23,13 @@
                 url: '/api/bp-by-days',
                 transformResponse: function (data) {
                     return angular.fromJson(data);
-                }}
+                }
+            },
+            'byMonth': { 
+                method: 'GET', 
+                isArray: true, 
+                url: 'api/bp-by-month/:month'
+            }
         });
     }
     

@@ -1,0 +1,17 @@
+{
+    "about": {
+        "title": "Acerca de",
+        "subtitle": "<strong>21Points</strong> é unha aplicación que pode usar para monitorizar a súa saúde.",
+        "parrafo": {
+            "01": "As regras son simples, vostede pode gañar até tres puntos por día polas seguintes razóns:",
+            "02": "<li>Se vostede come san, obtense un punto. Pola contra, cero.</li><li>Se vostede fai exercicio, obtense un punto.</li><li>Se vostede non bebe alcol, obtense un punto.</li>",
+            "03": "Pode seleccionar un obxectivo semanal que por defecto é de 10 puntos.",
+            "04": "Ademais móstralle gráficamente a evolución da súa tensión arterial e o seu peso dos últimos días, 30 por defecto.",
+            "05": "Non é necesario crear unha conta para probar, simplemente faga clic en Continuar.<br>Isto creará unha conta con datos ficticios que podes manipular pero que se borrarán automaticamente.",
+            "06": "Se queres crear unha conta para que os datos que introduzas non se borren, anímoche a non dar o teu correo real e utilizar un <a target='_blank' href='https://www.google.es/webhp?q=correo+temporal#q=correo+temporal+gratis'>correo temporal</a>.",
+            "07": "Esta aplicación iniciouse como a aplicación de exemplo para o <a target='_blank' href='http://www.jhipster-book.com/'>'JHipster Mini-Book'</a>, escrita por <a target='_blank' href='http://raibledesigns.com/'>Matt Raible</a>.",
+            "08": "<li>Todo o <a target='_blank' href='https://github.com/fersnapshot/21-points'>código da aplicación</a> en GitHub.</li><li>A web de <a target='_blank' href='https://jhipster.github.io/'>jhipster</a>.</li>"
+        },
+        "referencias": "Referencias"
+    }
+}

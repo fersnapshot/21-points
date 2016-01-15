@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('21pointsApp').controller('PointDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Point', 'User', '$translate',
-        function($scope, $stateParams, $uibModalInstance, entity, Point, User, $translate) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Point', 'User',
+        function($scope, $stateParams, $uibModalInstance, entity, Point, User) {
 
         $scope.point = entity;
         $scope.point.date = new Date(entity.date);
@@ -43,8 +43,5 @@ angular.module('21pointsApp').controller('PointDialogController',
         $scope.datePickerForDateOpen = function($event) {
             $scope.datePickerForDate.status.opened = true;
         };
-        $translate('datePicker.startingDay').then(function (startingDay) {
-            $scope.datePickerForDate.startingDay = startingDay;
-        });
 
 }]);

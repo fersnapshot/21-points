@@ -1,6 +1,6 @@
 body {
     background: #fafafa;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: #333;
 }
 
@@ -9,6 +9,15 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
+}
+
+/* ==========================================================================
+ui-view="content"
+========================================================================== */
+.well {
+    background-color: #fff;
+    /* tipo card de material */
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
 }
 
 /* ==========================================================================
@@ -206,9 +215,29 @@ Paneles
 ========================================================================== */
 
 .panel {
-    /* tipo card de w3school */
-    /* box-shadow:0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12) !important; */
-    
     /* tipo card de material */
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+/* ==========================================================================
+Events in Calendar
+========================================================================== */
+
+.fc-event.label {
+    display: inline-block;
+    padding: 1px 4px;
+    float: right;
+    border: 0;
+}
+
+.fc-event.label-success {
+    background-color: #5cb85c;
+}
+
+.fc-event.label-info {
+    background-color: #5bc0de;
+}
+
+.fc-event.label-primary {
+    background-color: #337ab7;
 }

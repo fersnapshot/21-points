@@ -1,7 +1,12 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('21pointsApp')
-	.controller('BloodPressureDeleteController', function($scope, $uibModalInstance, id, BloodPressure) {
+    angular.module('21pointsApp')
+            .controller('BloodPressureDeleteController', BloodPressureDeleteController);
+
+    BloodPressureDeleteController.$inject = ['$scope', '$uibModalInstance', 'id', 'BloodPressure'];
+
+    function BloodPressureDeleteController($scope, $uibModalInstance, id, BloodPressure) {
 
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
@@ -13,4 +18,6 @@ angular.module('21pointsApp')
                 });
         };
 
-    });
+    }
+
+})();

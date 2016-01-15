@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('21pointsApp').controller('WeightDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Weight', 'User', '$translate',
-        function($scope, $stateParams, $uibModalInstance, entity, Weight, User, $translate) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Weight', 'User',
+        function($scope, $stateParams, $uibModalInstance, entity, Weight, User) {
 
         $scope.weight = entity;
         $scope.users = User.query();
@@ -42,7 +42,5 @@ angular.module('21pointsApp').controller('WeightDialogController',
         $scope.datePickerForDateOpen = function($event) {
             $scope.datePickerForDate.status.opened = true;
         };
-        $translate('datePicker.startingDay').then(function (startingDay) {
-            $scope.datePickerForDate.startingDay = startingDay;
-        });
+
 }]);

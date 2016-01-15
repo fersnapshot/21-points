@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +33,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -164,7 +169,7 @@ public class WeightResource {
     }
 
     /**
-     * SEARCH  /_search/weights/:query -> search for the weight corresponding
+     * POST SEARCH  /_search/weights -> search for the weight corresponding
      * to the query.
      */
     @RequestMapping(value = "/_search/weights",
@@ -192,7 +197,7 @@ public class WeightResource {
     }
     
     /**
-     * GET  /w-by-days/:days -> get the "days" del período.
+     * GET  /w-by-days -> get the "days" del período.
      */
     @RequestMapping(value = "/w-by-days",
         method = RequestMethod.GET,
@@ -204,9 +209,24 @@ public class WeightResource {
     	ZonedDateTime now = ZonedDateTime.now().withNano(0);
     	ZonedDateTime desde = now.minusDays(days).withHour(0).withMinute(0).withSecond(0);
     	
-    	List<Weight> weightList = weightRepository.findByTimestampAfterCurrentUserOrderByTime(desde, now);
+    	List<Weight> weightList = weightRepository.findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(desde, now);
     	WeightByPeriod lastDaysDTO = new WeightByPeriod(days, weightList);
     	return new ResponseEntity<>(lastDaysDTO, HttpStatus.OK);
     }
 
+    /**
+     * GET  /w-by-month/:month -> get all the Weight for a particular month.
+     */
+    @RequestMapping(value = "/w-by-month/{month}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Weight>> getWByMonth(@PathVariable @DateTimeFormat(iso=ISO.DATE) LocalDate month) {
+    	ZonedDateTime primerDia = month.with(TemporalAdjusters.firstDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+    	ZonedDateTime ultimoDia = month.with(TemporalAdjusters.lastDayOfMonth()).atStartOfDay(ZoneOffset.UTC);
+        log.debug("REST request to get a Weight for a particular month between: {} and {}", primerDia, ultimoDia);
+
+		List<Weight> ws = weightRepository.findAllByTimestampBetweenAndUsersCurrentUserOrderByTime(primerDia, ultimoDia);
+        return new ResponseEntity<>(ws, HttpStatus.OK);
+    }
 }

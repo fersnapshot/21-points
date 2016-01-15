@@ -18,6 +18,12 @@ angular.module('21pointsApp')
                 url: '/api/w-by-days',
                 transformResponse: function (data) {
                     return angular.fromJson(data);
-                }}
+                }
+            },
+            'byMonth': { 
+                method: 'GET', 
+                isArray: true, 
+                url: 'api/w-by-month/:month'
+            }
         });
     });

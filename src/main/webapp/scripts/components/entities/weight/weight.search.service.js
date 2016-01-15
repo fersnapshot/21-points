@@ -12,7 +12,7 @@
                 method: 'POST',
                 isArray: true,
                 transformRequest: function (data) {
-                    data.date = DateUtils.convertUTCToLocal(data.date);
+                    data.date = DateUtils.convertDateUTCToLocal(data.date);
                     return angular.toJson(data);
                 }
             }
